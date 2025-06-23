@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_open_employee_me" model="ir.actions.server">
+            <field name="name">Open Employee Personal Form</field>
+            <field name="model_id" ref="Employee.model_employee_base"/> 
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_open_employee_personal_form()
+            </field>
+    </record>
+
+    <record id="view_all_employee_filter" model="ir.ui.view">
+            <field name="name">employee.base.search</field>
+            <field name="model">employee.base</field>
+            <field name="arch" type="xml">
+                <search string="Nhân sự">
+                    <searchpanel>
+                        <field name="department_id" string="Phòng ban" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
+                    </searchpanel>
+                </search>
+            </field>
+    </record>
+
+    <record id="empty_search_view_employee" model="ir.ui.view">
+            <field name="name">empty.search.view.employee</field>
+            <field name="model">employee.base</field>
+            <field name="arch" type="xml">
+                <search>
+                    <searchpanel class="o_custom_search_panel">
+                        <field name="department_id" string="Phòng ban" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
+                        <field name= "state" string="Trạng thái" icon="fa-check-square-o" enable_counters="1" select="multi"/>
+                        <field name="gender" string="Giới tính" icon="fa-venus-mars" enable_counters="1" />
+                        <field name="position_type" string="Vị trí" icon="fa-bookmark" enable_counters="1" />
+                    </searchpanel>
+                    <field name="search_name" string="Search" placeholder="Search across fields"/>
+                    <field name="name"/>
+                    <filter name="official_employee" string="Đang làm việc" domain="['|',('state', '=', 'official'), ('state', '=', 'probation')]"/>
+                    <filter name="probate_employee" string="Đang thử việc" domain="[('state', '=', 'probation')]"/>
+                    <filter name="break_employee" string="Đang tạm nghỉ" domain="[('state', '=', 'break')]"/>
+                    <filter name="quit_employee" string="Đã nghỉ việc" domain="[('state', '=', 'quit')]"/>
+                    <separator/>
+                    <filter name="male_employee" string="Nhân sự nam" domain="[('gender','=','male')]"/>
+                    <filter name="female_employee" string="Nhân sự nữ" domain="[('gender','=','female')]"/>
+                    <separator/>
+                    <filter name="birthday_month" string="Sinh nhật tháng này" domain="[('birthday_month', '=', context_today().month)]"/>
+                    <separator/>
+                    <group expand="0" string="Nhóm">
+                        <filter name="group_department" string="Phòng ban" domain="[]" context="{'group_by': 'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+
+    <record id="view_employee_kanban" model="ir.ui.view">
+        <field name="name">employee.base.kanban</field>
+        <field name="model">employee.base</field>
+        <field name="arch" type="xml">
+            <kanban  sample="1" create="0" class="o_custom_employee3c_kanban">
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click  o_kanban_record_has_image_fill ">
+                            <t>
+                                <field name="image_1920" class="o_kanban_image_fill_left d-block" preview_image="image_128"
+                                       widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                            </t>
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name" />
+                                    </strong>
+                                    <span class="o_kanban_record_subtitle">
+                                        <field name="position_title"/>
+                                    </span>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-fw me-2 fa-envelope text-primary" title="Email" />
+                                        <field name="work_email" />
+                                    </li>
+                                    <li>
+                                         <i class="fa fa-fw me-2 fa-phone text-primary" title="Phone" />
+                                        <field name="mobile_phone" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_employee_form" model="ir.ui.view">
+            <field name="name">employee.base.form</field>
+            <field name="model">employee.base</field>
+            <field name="groups_id" eval="[(4, ref('Employee.group_cf_admin'))]"/>
+            <field name="arch" type="xml">
+                 <form string="Employees"  duplicate="0" create="0" edit="1" delete="0">
+                     <field name="image_128" invisible="1" />
+
+                     <sheet style="max-width: 1400px; margin-left: auto; margin-right: auto;" invisible="not id"  >
+                         <field name="avatar_128" invisible="1"/>
+                         <field name="make_visible" invisible="1"/>
+                         <field name="make_visible2" invisible="1"/>
+                         <field name="make_visible3" invisible="1"/>
+
+                         <div class="d-flex text-dark" style="background-color: #f5efff; padding: 15px; display: block; width: 100%; border-radius:7px;">
+                             
+                            <div class="mr-3" style="display: flex; align-items: center;">
+                                <field name="image_1920" widget="image" options="{'size': [150, 150]}" class="o_circle_avatar" readonly="1"/>
+                            </div>
+                             
+                            <div style="flex-grow: 1; padding-left: 40px; display: flex; align-items: center;">
+                                <div style="flex: 1; text-align: left;">
+                                     <h1>
+                                         <field name="name" readonly="1"/>
+                                     </h1>
+                                     <div style="display: flex; align-items: center; ">
+                                         <span class="fa fa-heart fa-lg" style="margin-right: 10px; margin-bottom: 3px; color: red;"/>
+                                         <field name="full_work_time" style="font-size: 16px; font-weight: 450;" readonly="1"/>
+                                     </div>
+                                     <div style="display: flex; align-items: center;">
+                                         <span class="fa fa-qrcode fa-lg" style="margin-right: 10px; margin-bottom: 3px; "/>
+                                         <field name="employee_index" style="color:rgb(82, 98, 170); font-weight: bold; font-size: 16px;" readonly="1"/>
+                                     </div>
+                                     <div style="display: flex; align-items: center;">
+                                         <span class="fa fa-envelope-o fa-lg" style="margin-right: 8px; margin-bottom: 3px; "/>
+                                         <field name="work_email" style="font-size: 16px; " readonly="1"/>
+                                     </div>
+                                     <div style="display: flex; align-items: center;">
+                                         <span class="fa fa-phone fa-lg" style="margin-right: 8px; margin-bottom: 3px;"/>
+                                         <field name="mobile_phone" style="font-size: 16px; " readonly="1"/>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <notebook class="o_custom_employee3c_form_height_view text-dark">
+                             <page name="main_info" string="Thông tin chính">
+                                 <div id="o_work_employee_container2" class="d-lg-flex">
+                                     <div id="o_work_employee_main2" class="flex-grow-1 pe-lg-3">
+                                         <div class="d-flex justify-content-between align-items-center w-100" style="border-bottom: 1px solid #c7c8cc; margin-bottom:10px;">
+                                            <span class="m-0" style="font-size:15px; font-weight: bold;">THÔNG TIN CÔNG VIỆC</span>
+                                            <div style="margin-right: 10px;" invisible="not make_visible">
+                                                <button name="action_edit_main_info" type="object" class="btn_custom" icon="fa-pencil" title="Chỉnh sửa thông tin công việc"/>
+                                            </div>
+                                        </div>
+                                         <field name="currency_id" invisible="1"/>
+                                         <table style='width:100%;' border='0' class="o_employee3c_employee_info_form">
+                                             <tr>
+                                                 <th style='width:2%; '/>
+                                                 <th style='width:32%; '><span >Chức danh</span></th>
+                                                 <th style='width:32%; '><span >Phòng ban</span></th>
+                                                 <th style='width:34%; '><span >Phân loại nhân sự</span></th>
+                                             </tr>
+                                             <tr>
+                                                 <td />
+                                                 <td ><field name="position_title" /></td>
+                                                 <td><field name="department_id" readonly="1"/></td>
+                                                 <td><field name="employee_type_2" readonly="1"/></td>
+                                             </tr>
+                                             <tr style="height:20px">
+                                                 <td/>
+                                                 <td/>
+                                                 <td/>
+                                                 <td/>
+                                             </tr>
+                                             <tr>
+                                                 <th style='width:2%; '/>
+                                                 <th style='width:32%; '><span >Tình trạng làm việc</span></th>
+                                                 <th style='width:32%; '><span >Ngày bắt đầu</span></th>
+                                                 <th style='width:34%; '><span >Ngày chính thức</span></th>
+                                             </tr>
+                                             <tr>
+                                                 <td />
+                                                 <td ><field name="state" style="font-weight: bold; "
+                                                             decoration-success="state == 'official' or state == 'probation'"
+                                                             decoration-danger="state == 'quit'" decoration-warning="state == 'break'" readonly="1"/></td>
+                                                 <td ><field name="start_date" readonly="1" /></td>
+                                                 <td ><span invisible="official_date">--</span><field name="official_date" readonly="1"/></td>
+                                             </tr>
+                                             <tr style="height:20px">
+                                                 <td />
+                                                 <td/>
+                                                 <td/>
+                                                 <td/>
+                                             </tr>
+                                         </table>
+                                     </div>
+
+                                     <div id="o_employee_right" class="col-lg-4 px-0 ps-lg-3 pe-lg-0">
+                                         <div class="d-flex justify-content-between align-items-center w-100" style="border-bottom: 1px solid #c7c8cc; margin-bottom:20px;">
+                                            <span class="m-0" style="font-size:15px; font-weight: bold;">QUẢN LÝ</span>
+                                            <div style="margin-right: 10px;" invisible="not make_visible">
+                                                <button name="action_change_managers" type="object" class="btn_custom" icon="fa-pencil" title="Thay đổi quản lý"/>
+                                            </div>
+                                        </div>
+                                         <field mode="tree" name="parent_ids" readonly="1" >
+                                             <tree class="o_employee3c_name_avatar_list">
+                                                 <field name="avatar_name_job" widget="html" readonly="1" />
+                                             </tree>
+                                         </field>
+                                         
+                                         <separator string="cấp trên trực tiếp" style='font-size: 16px;'/>
+                                         <field name="parent_display" string="" />
+                                     </div>
+                                 </div>
+                                 <hr style="height:2px;"/>
+                                 <div class="d-flex justify-content-between align-items-center w-100" style="border-bottom: 1px solid #c7c8cc; margin-bottom:10px;">
+                                            <span class="m-0" style="font-size:15px; font-weight: bold;">THÔNG TIN CÁ NHÂN</span>
+                                            <div style="margin-right: 10px;" invisible="not make_visible2 and not make_visible">
+                                                <button name="action_edit_extra_info" type="object" class="btn_custom" icon="fa-pencil" title="Chỉnh sửa thông tin cá nhân"/>
+                                            </div>
+                                        </div>
+                                 <table style='width:100%;' border='0' class="o_employee3c_employee_info_form">
+                                     <tr>
+                                         <th style='width:2%; '/>
+                                         <th style='width:30%; '><span >Ngày sinh</span></th>
+                                         <th style='width:30%; '><span >Giới tính</span></th>
+                                         <th style='width:38%; '><span >Quốc tịch</span></th>
+                                     </tr>
+                                     <tr>
+                                         <td />
+                                         <td><field name="birthday" readonly="1"/></td>
+                                         <td>
+                                             <span class="fa fa-venus" style="margin-right: 8px; color: #ffb6b9" invisible="gender!='female'"/>
+                                             <span class="fa fa-mars" style="margin-right: 8px; color: #61b0cf" invisible="gender!='male'"/>
+                                             <span class="fa fa-venus-mars" style="margin-right: 8px;" invisible="gender!='other'"/>
+                                             <field name="gender" default_focus="1" readonly="1"/>
+                                         </td>
+                                         <td><field name="nationality" options='{"no_create": True}' readonly="1"/></td>
+                                     </tr>
+                                     <tr style="height:20px">
+                                         <td />
+                                         <td/>
+                                         <td/>
+                                         <td/>
+                                     </tr>
+                                     <tr>
+                                         <th style='width:2%; '/>
+                                         <th style='width:30%; '><span >Căn cước công dân</span></th>
+                                         <th style='width:30%; '><span >Địa chỉ thường trú</span></th>
+                                         <th style='width:38%; '><span >Địa chỉ hiện tại</span></th>
+                                     </tr>
+                                     <tr>
+                                         <td />
+                                         <td><span invisible="identification_id">--</span><field name="identification_id" readonly="1"/></td>
+                                         <td><span invisible="permanent_address">--</span><field name="permanent_address" readonly="1"/></td>
+                                         <td><span invisible="current_address">--</span><field name="current_address" readonly="1"/></td>
+                                     </tr>
+                                     <tr style="height:20px">
+                                         <td />
+                                         <td/>
+                                         <td/>
+                                         <td/>
+                                     </tr>
+                                 </table>
+
+                             </page>
+
+                             <page string="Tình trạng việc làm" invisible="not (make_visible or make_visible3)">
+                                 <div style="display: flex; align-items: center;">
+                                     <span invisible="state != 'quit'" class="fa fa-exclamation-circle fa-2x" style="color: red; margin-bottom: 5px;"/>
+                                     <span invisible="state != 'break'" class="fa fa-snowflake-o fa-2x" style="color: orange; margin-bottom: 5px;"/>
+                                     <span invisible="state != 'official'" class="fa fa-check-circle-o fa-2x" style="color: green; margin-bottom: 5px;"/>
+                                     <span invisible="state != 'probation'" class="fa fa-question-circle-o fa-2x" style="color: #8fd14f; margin-bottom: 5px;"/>
+                                     <field name="name" style="font-weight: bold; font-size: 18px; padding-left: 8px; padding-right:5px;" readonly="1"/>
+
+                                     <span invisible="state != 'official'" style="color: green; font-size: 16px; margin-bottom: 5px;"> đang làm việc</span>
+                                     <span invisible="state != 'probation'" style="color: #8fd14f; font-size: 16px; margin-bottom: 5px;"> đang trong thời gian thử việc</span>
+                                     <span invisible="state != 'break'" style="color: orange; font-size: 16px; "> đang tạm nghỉ</span>
+                                 </div>
+                                 <div style="padding-top: 20px;" invisible="not make_visible">
+                                     <button string="Thử việc" special="save" invisible="1" class="btn btn-info ms-2"/>
+                                     <button string="Chính thức" special="save" invisible="state !='probation'" class="btn btn-success ms-2"/>
+                                     <button string="Kích hoạt tạm nghỉ" type="object" name="action_employee_break" invisible="state=='break' or state=='quit'" class="btn btn-warning ms-2"/>
+                                     <button string="Thôi việc nhân sự" type="object" name="action_employee_quit" invisible="state=='quit'" class="btn btn-danger ms-2"/>
+                                     <button string="Quay lại làm việc" type="object" name="action_employee_working" invisible="state !='break'" class="btn btn-success ms-2"/>
+                                 </div>
+                                 <hr style="height: 2px;"/>
+                             </page>
+                         </notebook>
+
+                     </sheet>
+                     
+                     <div class="oe_chatter" invisible="not id or not make_visible" style="max-width: 80%; margin-right: 0px;">
+                         <field name="message_ids"/>
+                     </div>
+
+                     <sheet invisible="id" style="max-width: 50%; margin-left: auto; margin-right: auto;" >
+                         <h1>
+                             Thêm nhân sự mới
+                         </h1>
+                         <h7>
+                             Hãy chọn một tài khoản để tạo mới thông tin nhân sự
+                         </h7>
+                         <hr/>
+                         <group>
+                             <field name="employee_user_ids" invisible="1"/>
+                             <field name="user_id" domain="[('id', 'not in', employee_user_ids)]" string="Chọn tài khoản *" widget="many2one_avatar" options="{'no_create': true}" style="border: 1px solid #ced4da;" placeholder="--Chọn một tài khoản đã tạo--"/>
+                             <field name="is_manager" string="Nhân sự có phải quản lý không"/>
+                             <field name="employee_index"  string="Mã nhân sự *"  style="border: 1px solid #ced4da;" placeholder="Mã nhân sự"/>
+                             <field string="" name="latest_employee_index" style="font-size: 11px; color: gray;"/>
+                         </group>
+                         <group string="Thông tin đồng bộ từ tài khoản">
+                             <field name="name" />
+                             <field name="work_email" />
+                         </group>
+                         <div id="o_work_employee_container2" class="d-lg-flex">
+                                     <div id="o_work_employee_main2" class="flex-grow-1">
+                                         <separator string="chọn ảnh đại diện"/>
+                                         <field name="image_1920" widget='image' string="" options="{'size': [80, 80]}"/>
+                                     </div>
+
+                         </div>
+                         <group string="Thông tin chính">
+                             <group>
+                                 <field name="birthday" string="Ngày sinh *" style="border: 1px solid #ced4da;" placeholder="Chọn ngày sinh"/>
+                                 <field name="gender" required="1" string="Giới tính *" style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/>
+                                 <field name="state" style="border: 1px solid #ced4da;"/>
+                                 <field name="start_date"  string="Ngày bắt đầu *" placeholder="Ngày làm việc đầu tiên" style="border: 1px solid #ced4da;"/>
+                             </group>
+                             <group>
+                                 <field name="department_id" string="Phòng ban *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn --" />
+                                 <field name="position_id" required="1" string="Vị trí *" options="{'no_create': true}" style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/> <!-- domain="[('department_id', '=', 'department_id')]" -->
+                                 <field name="employee_type_2" required="1" string="Phân loại nhân sự *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/>
+                                 
+                             </group>
+                         </group>
+                         <group string="Thông tin cá nhân">
+                            <field name="mobile_phone" placeholder="Số điện thoại" style="border: 1px solid #ced4da;" string="Số điện thoại"/>
+                             <field name="current_address" placeholder="Nơi ở hiện tại" string="Đia chỉ" style="border: 1px solid #ced4da;" />
+                             <field name="place_of_birth" style="border: 1px solid #ced4da;" placeholder="Nơi sinh"/>
+                             <field name="nationality" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/>
+                             <label for="identification_id" string="Căn cước công dân" style="border: 1px solid #ced4da;"/>
+                             <div class="o_address_format">
+                                 <field name="identification_id" placeholder="CCCD"  style="border: 1px solid #ced4da;"/>
+                             </div>
+                         </group>
+                         <div style="text-align: right; padding-top: 20px;">
+                            <button  special="save" class="btn btn-success " confirm="Bạn muốn thêm nhân sự mới?" ><i class="fa fa-check" /> Thêm nhân sự</button>
+                            <span style="color: white; padding-left:15px;"></span>
+                            <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                        </div>
+                     </sheet>
+                 </form>
+            </field>
+    </record>
+
+
+    <record id="view_employee_tree" model="ir.ui.view">
+            <field name="name">employee.base.tree</field>
+            <field name="model">employee.base</field>
+            <field name="arch" type="xml">
+                <tree string="Employees" class="o_employee_list_view_2" duplicate="0" default_order="employee_index" >
+                    <field name="user_id"/> 
+                    <field name="avatar_name" widget="html" string="NHÂN SỰ" />
+                    <field name="employee_index" string="MÃ" optional="show"/>
+                    <field name="gender" string="GIỚI TÍNH" optional="show"/>
+                    <field name="birthday" string="NGÀY SINH" optional="show"/>
+                    <field name="state" string="TRẠNG THÁI" widget="employee3c_status"  class="text-center" optional="show"/>
+                    <field name="position_id" string="CHỨC DANH" optional="show"/>
+                    <field name="start_date" string="NGÀY BẮT ĐẦU" optional="show"/>
+                    <field name="official_date" string="NGÀY CHÍNH THỨC" optional="show"/>
+                    <field name="department_id" string="PHÒNG BAN" widget="many2one" optional="show"/>
+                    <field name="employee_type_2" string="PHÂN LOẠI NHÂN SỰ" widget="many2one" optional="show"/>
+                    <field name="mobile_phone" string="ĐIỆN THOẠI" widget="phone" optional="show"/>
+                    <field name="work_email" string="EMAIL" widget="email" optional="show"/>
+                    <field name="parent_ids" string="QUẢN LÝ" widget="many2many_avatar_user" optional="show"/>
+                    <field name="parent_id" string="QUẢN LÝ (M1)" widget="many2one_avatar" optional="show"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="view_all_employee" model="ir.actions.act_window">
+            <field name="name">Danh sách nhân sự</field>
+            <field name="res_model">employee.base</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_official_employee': 1}</field>
+            <field name="search_view_id" ref="empty_search_view_employee"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có thông tin.
+                </p>
+            </field>
+    </record>
+
+    <record id="view_all_employee_manager" model="ir.actions.act_window">
+            <field name="name">Danh sách nhân sự</field>
+            <field name="res_model">employee.base</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_official_employee': 1}</field>
+            <field name="search_view_id" ref="empty_search_view_employee"/>
+             <field name="domain">['|',('parent_ids.user_id', '=', uid), ('user_id', '=', uid)]</field>
+             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_employee_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_employee_form')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có thông tin.
+                </p>
+            </field>
+    </record>
+
+    <record id="view_all_employee2" model="ir.actions.act_window">
+            <field name="name">Nhân sự</field>
+            <field name="res_model">employee.base</field>
+            <field name="view_mode">kanban</field>
+            <field name="search_view_id" ref="view_all_employee_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có nhân sự nào!
+                </p>
+            </field>
+    </record>
+
+</odoo>

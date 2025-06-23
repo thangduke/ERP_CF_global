@@ -1,0 +1,29 @@
+.o_custom_kanban.o_kanban_renderer {
+    .o_kanban_record {
+        width: 400px !important;
+
+        }
+}
+
+.o_custom_employee3c_kanban .o_kanban_renderer {
+    --KanbanRecord-width: 350px;
+}
+
+.o_custom_employee3c_small_kanban .o_kanban_renderer {
+    --KanbanRecord-width: 150px !important;
+}
+
+.o_custom_timeoff_policy_kanban .o_kanban_renderer {
+    .o_kanban_record > div:not(.o_dropdown_kanban),
+    .o_kanban_quick_create {
+        border: 0px;
+        background-color: $o-view-background-color;
+    }
+    .o_kanban_record {
+        .o_dropdown_kanban {
+            .dropdown-menu {
+                border: $border-width solid $border-color;
+            }
+            }
+        }
+}

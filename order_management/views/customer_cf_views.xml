@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="customer_cf_search_view" model="ir.ui.view">
+            <field name="name">customer.cf.search</field>
+            <field name="model">customer.cf</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm khách hàng">
+                    <field name="name" string="Tên"/>
+                    <field name="customer_index" string="Mã KH"/>
+                    <field name="phone" string="Điện thoại"/>
+                    <field name="email" string="Email"/>
+                    <field name="address" string="Địa chỉ"/>
+                
+                            
+                    <searchpanel>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+        <!-- From view -->
+            <record id="customer_cf_form_view" model="ir.ui.view">
+                <field name="name">customer.cf.form</field>
+                <field name="model">customer.cf</field>
+                <field name="arch" type="xml">
+                   <form string="Khách hàng" create="0" edit="1" >
+                        <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;" >
+                            <h1>
+                                Thêm khách hàng mới
+                            </h1>
+                            <hr/>
+                            <group>
+                                <field name="name" placeholder="Tên khách hàng..."/>
+                            </group>
+                            <group>
+                                <group string="Thông tin liên hệ">
+                                    <field name="customer_index" placeholder="Mã khách hàng..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="phone" placeholder="Số điện thoại..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="email" placeholder="Email..."  style="border: 1px solid #ced4da;" />
+                                </group>
+                                <group string="Địa chỉ">
+                                    <field name="address" placeholder="Địa chỉ chi tiết..."  style="border: 1px solid #ced4da;"/>
+                                </group>
+                            </group>
+                            <group string="Thông tin khác"> 
+                                <field name="description" placeholder="Mô tả về khách hàng..."  style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <div style="text-align: right; padding-top: 20px;">
+                                <button  special="save" class="btn btn-success " ><i class="fa fa-check" /> Thêm khách hàng</button>
+                                <span style="color: white; padding-left:15px;"></span>
+                                <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                            </div>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="customer_cf_tree_view" model="ir.ui.view">
+            <field name="name">customer.cf.tree</field>
+            <field name="model">customer.cf</field>
+            <field name="arch" type="xml">
+                <tree string="khách hàng">
+                    <field name="customer_index" string="MÃ KHÁCH HÀNG"/>
+                    <field name="name" string="TÊN KHÁCH HÀNG"/>
+                    <field name="phone" string="ĐIỆN THOẠI"/>
+                    <field name="email" string="EMAIL"/>
+                    <field name="address" string="ĐỊA CHỈ" optional="hide"/>
+                    <field name="avatar_name_job" string="NGƯỜI TẠO" />
+                    <field name="description_display" string="MÔ TẢ" optional="hide"/>
+                    <field name="active" widget="boolean_toggle" string="TRẠNG THÁI"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window -->
+        <record id="action_customer_cf" model="ir.actions.act_window">
+            <field name="name">Danh sách Khách hàng</field>
+            <field name="res_model">customer.cf</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="customer_cf_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo khách hàng mới
+                </p>
+            </field>
+        </record>
+
+    </data>    
+</odoo>
+

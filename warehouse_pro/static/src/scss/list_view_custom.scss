@@ -1,0 +1,95 @@
+.o_material_list_view table {
+    display: block;
+    width: 100%;
+    min-width: 3000px !important;
+    --table-striped-bg: none !important;
+
+    thead {
+        position: sticky;
+        top: 0;
+        background-color: #f3f3f3;
+
+        th {
+            text-align: center !important;
+            vertical-align: middle !important;
+            white-space: nowrap;
+            padding: 8px 10px;
+            font-weight: 600;
+            border-bottom: 1px solid #ddd;
+            white-space: normal !important;  /* Cho phép xuống dòng nếu cần */
+            word-break: break-word !important;
+            min-width: 150px !important;     /* Đảm bảo không bị hẹp quá */
+        }
+    }
+
+    tbody {
+        td {
+            text-align: center  !important;
+            vertical-align: middle;
+            padding: 6px 10px;
+            white-space: nowrap;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+    }
+}
+
+/* Đảm bảo table hiển thị ngang đầy đủ trong container */
+.o_material_list_view {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.o_progarm_list_view table {
+    width: 100%;
+    table-layout: auto !important;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    thead {
+        th {
+            text-align: left;
+            vertical-align: middle;
+            padding: 8px 10px;
+            font-weight: 600;
+            font-size: 12px;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            min-width: 100px;
+            max-width: 280px;
+            white-space: nowrap;
+            word-break: break-word;
+        }
+    }
+
+    tbody {
+        td {
+            text-align: left;
+            vertical-align: middle;
+            padding: 6px 10px;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #eee;
+            font-size: 13px;
+            white-space: nowrap;
+            min-width: 100px;
+            max-width: 280px;
+        }
+    }
+}
+
+
+/* Đảm bảo table hiển thị ngang đầy đủ trong container */
+.o_progarm_list_view {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.o_progarm_list_view .o_list_renderer thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #f3f3f3;
+}

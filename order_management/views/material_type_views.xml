@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_material_type_form" model="ir.ui.view">
+            <field name="name">material.type.form</field>
+            <field name="model">material.type</field>
+            <field name="arch" type="xml">
+                <form string="Loại vật tư">
+                    <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                        <h1>
+                            TẠO LOẠI VẬT TƯ MỚI
+                        </h1>
+                        <hr/>
+                        <group>
+                            <field name="name_type" string="Tên loại vật tư *" 
+                                   style="border: 1px solid #ced4da; font-size: 18px; margin-top: 5px; margin-bottom: 15px;" 
+                                   placeholder="Tên loại vật tư..."/>
+                        </group>
+                        <group>
+                            <field name="name" string="Mã loại vật tư" 
+                                   style="border: 1px solid #ced4da; font-size: 18px;" 
+                                   placeholder="Mã loại vật tư..."/>
+                        </group>
+                        <group>
+                            <field name="employee_id" widget="many2one_avatar" readonly="1"/>
+                            <field name="date_create" readonly="1"/>
+                        </group>
+                        <group string="Thông tin khác"> 
+                            <field name="description" placeholder="Mô tả ..." 
+                                   style="border: 1px solid #ced4da;"/>
+                        </group>
+                        <div style="text-align: right; padding-top: 20px;">
+                            <button special="save" class="btn btn-success">
+                                <i class="fa fa-check"/> Tạo mới
+                            </button>
+                            <span style="color: white; padding-left:15px;"/>
+                            <button special="cancel" class="btn btn-secondary ms-2">
+                                <i class="fa fa-undo"/> Hủy bỏ
+                            </button>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_material_type_tree" model="ir.ui.view">
+            <field name="name">material.type.tree</field>
+            <field name="model">material.type</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách loại vật tư" >
+                    <field name="name" string="MÃ LOẠI VẬT TƯ"/>
+                    <field name="name_type" string="TÊN LOẠI VẬT TƯ"/>
+                    <field name="employee_id" string="NGƯỜI TẠO" widget="many2one_avatar"/>
+                    <field name="date_create" string="NGÀY TẠO"/>
+                    <field name="description_display" string="MÔ TẢ"/>
+                    <field name="active" widget="boolean_toggle" string="TRẠNG THÁI"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window -->
+        <record id="action_material_type" model="ir.actions.act_window">
+            <field name="name">Loại vật tư</field>
+            <field name="res_model">material.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo loại vật tư mới
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

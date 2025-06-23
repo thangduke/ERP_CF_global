@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="change_employee_extra_info_form" model="ir.ui.view">
+         <field name="name">change.extra.info.form</field>
+        <field name="model">change.extra.info</field>
+        <field name="arch" type="xml">
+            <form class="o_employee3c_form_border">
+                <sheet >
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="gender" />
+                            <field name="birthday" />
+                            <field name="phone_number" />
+                            
+
+                        </group>
+                        <group>
+                            <field name="nationality" />
+                            <field name="permanent_address" />
+                            <field name="current_address"/>
+                            <label for="identification_id" string="Căn cước công dân"/>
+                                        <div >
+                                            <field name="identification_id" placeholder="CCCD" />
+                                        </div>
+                        </group>
+                        <field name="employee_id"  invisible="1"/>
+                        <field name="user_id" invisible="1"/>
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="change_employee_extra_info" model="ir.actions.act_window">
+        <field name="name">Thay đổi thông tin cá nhân</field>
+        <field name="res_model">change.extra.info</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search view -->
+        <record id="material_line_search_view" model="ir.ui.view">
+            <field name="name">material_line_search_view</field>
+            <field name="model">material.line</field>
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+                <search string="Allocations Search">
+                </search>
+            </field>
+        </record>
+
+        <!-- Form view -->
+        <record id="material_line_form_view" model="ir.ui.view">
+            <field name="name">material.line.form</field>
+            <field name="model">material.line</field>
+            <field name="arch" type="xml">
+                <form string="Chi tiết vật tư PO" duplicate="0" create="0" edit="1" delete="0">
+                    <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                        <h1>Thêm Vật tư mới</h1>
+                        <h7>
+                            Vui lòng đảm bảo nhập đầy đủ thông tin như mã vật tư, loại, màu sắc, kích thước, để thuận tiện cho quản lý và định mức sản xuất.
+                        </h7>
+                        <hr/>
+                        <group>
+                            <field name="po_id" required="1"/>
+                            <field name="order_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="position" placeholder="Vị trí sử dụng..." style="border: 1px solid #ced4da;"/>
+                            <field name="supplier" placeholder="Nhà cung cấp..." style="border: 1px solid #ced4da;"/>
+                            <field name="country" placeholder="Quốc gia..." style="border: 1px solid #ced4da;"/>
+                            <field name="entry_date" placeholder="Ngày nhập" readonly="1"/>
+                            <field name="employee_id" widget="many2one_avatar_user" readonly="1"/>
+                        </group>
+                        <group>
+                            <group string="Thông tin cơ bản">
+                                <field name="mtr_no" placeholder="Mã vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="mtr_type" placeholder="Chọn loại vật tư" style="border: 1px solid #ced4da;"/>
+                                <field name="mtr_name" placeholder="Tên vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="mtr_code" placeholder="Mã nội bộ..." style="border: 1px solid #ced4da;"/>
+                                <field name="dimension" placeholder="Kích thước..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group string="Thông tin màu sắc">
+                                <field name="color_item" placeholder="Mã màu vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="color_name" placeholder="Tên màu..." style="border: 1px solid #ced4da;"/>
+                                <field name="color_set" placeholder="Bộ màu..." style="border: 1px solid #ced4da;"/>
+                                <field name="color_code" placeholder="Mã code màu..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Số lượng và đơn giá">
+                                <field name="est_qty" placeholder="Số lượng ước tính" style="border: 1px solid #ced4da;"/>
+                                <field name="act_qty" placeholder="Số lượng thực tế" style="border: 1px solid #ced4da;"/>
+                                <field name="rate" placeholder="Đơn vị đo" style="border: 1px solid #ced4da;"/>
+                                <field name="price" readonly="1"/>
+                            </group>
+                            <group string="Thông tin giá">
+                                <field name="cif_price" placeholder="Giá CIF..." style="border: 1px solid #ced4da;"/>
+                                <field name="fob_price" placeholder="Giá FOB..." style="border: 1px solid #ced4da;"/>
+                                <field name="exwork_price" placeholder="Giá EXW..." style="border: 1px solid #ced4da;"/>
+                                <field name="total" readonly="1"/>
+                            </group>
+                        </group>
+                        <div style="text-align: right; padding-top: 20px;">
+                            <button special="save" class="btn btn-success"><i class="fa fa-check" /> Thêm vật tư</button>
+                            <span style="color: white; padding-left:15px;"></span>
+                            <button special="cancel" class="btn btn-secondary ms-2"><i class="fa fa-undo" /> Hủy bỏ</button>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="material_line_tree_view" model="ir.ui.view">
+            <field name="name">material.line.tree</field>
+            <field name="model">material.line</field>
+            <field name="arch" type="xml">
+                <tree string="Vật tư" class="o_material_list_view">
+                    <field name="mtr_type" string="Phân loại"/>
+                    <field name="mtr_no" string="Mã vật tư"/>
+                    <field name="mtr_code" string="Code nhà cung cấp"/>
+                    <field name="mtr_name" string="Tên vật tư"/>
+                    <field name="dimension" string="Kích thước"/>
+                    <field name="color_item" string="Mã màu vật tư"/>
+                    <field name="color_name" string="Tên màu"/>
+                    <field name="color_set" string="Bộ màu"/>
+                    <field name="color_code" string="Mã code màu"/>
+                    <field name="est_qty" string="SL ước tính"/>
+                    <field name="act_qty" string="SL thực tế"/>
+                    <field name="rate" string="Đơn vị tính"/>
+                    <field name="price" string="Đơn giá" sum="Total"/>
+                    <field name="supplier" string="Nhà cung cấp"/>
+                    <field name="country" string="Quốc gia"/>
+                    <field name="cif_price" string="Giá CIF"/>
+                    <field name="fob_price" string="Giá FOB"/>
+                    <field name="exwork_price" string="Giá EXW"/>
+                    <field name="total" string="Tổng thành tiền" sum="Total Amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window -->
+        <record id="action_material_line" model="ir.actions.act_window">
+            <field name="name">Danh sách Vật tư</field>
+            <field name="res_model">material.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="material_line_tree_view"/>
+            <field name="context">{'create': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo vật tư mới
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

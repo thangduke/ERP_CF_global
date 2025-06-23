@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="module_category_design_library" model="ir.module.category" >
+            <field name="name">Design_Library</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <record id="group_design_library_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_design_library"/>
+
+        </record>
+
+        <record id="group_design_library_manager" model="res.groups">
+            <field name="name">Quản trị viên</field>
+            <field name="category_id" ref="module_category_design_library"/>
+            <field name="implied_ids" eval="[(4, ref('group_design_library_user'))]"/>
+        </record>
+    </data>
+</odoo>

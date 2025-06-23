@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_user3c_root"
+              name = "Tài khoản"
+              sequence="1"
+              web_icon="user_3c,static/description/icon.png"
+    />
+        <menuitem id= "menu_user3c_my_info"
+                  name = "Cá nhân"
+                  sequence="2"
+                  parent="menu_user3c_root"
+                  action = "action_open_my_account_info"
+        />
+        <menuitem id= "menu_user3c_list"
+                  name = "Người dùng"
+                  sequence="5"
+                  parent="menu_user3c_root"
+                  action = "view_all_user_account"
+
+        /><!-- action = "view_all_user_account" 
+        <menuitem id= "menu_user3c_access_right"
+                  name = "Phân quyền"
+                  sequence="8"
+                  groups="base.group_erp_manager"
+                  parent="menu_user3c_root"
+                  action = "action_access_right" 
+        />-->
+        <!-- action = "action_access_right" 
+    <menuitem id= "menu_user3c_access_right_list"
+                  name = "Phân quyền thao tác"
+                  sequence="1"
+                  parent="menu_user3c_access_right"
+                    action = "action_access_right"
+        />-->
+        <!-- action = "action_access_right" 
+        <menuitem id= "menu_user3c_access_right_account"
+                  name = "Phân quyền tài khoản"
+                  sequence="2"
+                  parent="menu_user3c_access_right"
+                  action = "action_access_right_account"
+        />-->
+        <!-- action = "action_access_right" 
+        <menuitem id= "menu_user3c_list_employee"
+                  name = "Thành viên"
+                  sequence="12"
+                  parent="menu_user3c_root"
+                  groups="Employee.group_cf_manager"
+                  action = "view_all_user_account_employee"
+        />-->
+        <!-- action = "view_all_user_account_employee" -->
+</odoo>

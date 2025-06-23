@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_material_delivery" model="ir.sequence">
+            <field name="name">Số phiếu xuất kho</field>
+            <field name="code">material.delivery</field>
+            <field name="prefix">XK-</field>
+            <field name="padding">2</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,100 @@
+.o_employee3c_form_custom{
+    .o_form_label{
+        display: block;
+        color: gray;
+        }
+
+    }
+
+.o_employee3c_employee_info_form{
+    th{
+        font-size: 16px; 
+        font-weight: 500;
+        }
+    td{
+        font-size: 16px;
+        }
+    }
+
+.o_employee3c_policy_form_custom{
+    th{
+        color: gray;
+        font-size:11px;
+        text-transform: uppercase;
+        }
+    }
+
+.o_employee3c_calendar_table_custom{
+    th{
+        font-size:16px;
+        text-transform: uppercase;
+        }
+    }
+
+.o_employee3c_form_border.o_form_view {
+    .o_input {
+        border: 1px solid #ced4da !important;
+        }
+    }
+
+.o_employee3c_forn_wizard.o_form_view {
+    .oe_title {
+        @include media-breakpoint-up(sm) {
+            max-width: 100% !important;
+        }
+        }
+    }
+
+.custom_pdf{
+    .o_field_pdfviewer, &.o_field_pdf_viewer .o_pdfview_iframe {
+            width: 100%;
+            height: 1200px;
+            border: 0;
+            margin-top: 10px;
+        }
+    }
+
+.oe_title {
+        @include media-breakpoint-up(sm) {
+            max-width: 100% !important;
+        }
+        }
+.o_identification_format.o_form_editable .o_address_format {
+        .o_address_zip {
+            display: inline-block;
+            width: 75%;
+        }
+    }
+
+.btn_custom{
+    background-color: transparent;
+    color: #745c9c;
+    }
+
+.btn_custom:hover {
+  color: #3B1E54;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.o_custom_small_form_sheet{
+    .o_form_sheet_bg {
+        max-width: 940px !important;
+    }
+    }
+
+    #o_employee_right {
+        @include media-breakpoint-up(lg) {
+           border-left: $border-width solid $o-form-separator-color;
+       }
+       }
+
+.o_custom_employee3c_form_height_view{
+    min-height: 610px;
+}
+
+.o_employee3c_long_form_sheet{
+    .o_form_sheet{
+        min-height: 750px;
+        }
+    }

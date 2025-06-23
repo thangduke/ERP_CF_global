@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+
+access_finished_product_user,access_finished_product_user,finished_product.model_finished_product,finished_product.group_finished_product_user,1,1,0,0
+access_finished_product_manager,access_finished_product_manager,finished_product.model_finished_product,finished_product.group_finished_product_manager,1,1,1,1
+

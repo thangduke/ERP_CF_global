@@ -1,0 +1,33 @@
+.o_request_list_view table {
+    min-width: unset !important; /* Bỏ cố định chiều rộng */
+    
+    thead {
+        background-color: #f4eeff !important;
+        
+        th {
+            font-weight: bold !important;
+            color: #424874 !important;
+            font-size: 12px !important;
+            border-right: 1px solid #ddd;
+            text-align: center; /* Căn giữa tiêu đề */
+            padding: 8px;
+        }
+    }
+    
+    tbody {
+        tr {
+            td {
+                border-right: 1px solid #ddd !important;
+                vertical-align: middle; /* Đảm bảo căn giữa theo chiều dọc */
+                padding: 8px;
+                word-wrap: break-word; /* Tự động xuống dòng nếu text dài */
+                white-space: normal; /* Bỏ trạng thái không xuống dòng */
+            }
+        }
+    }
+
+    /* Bỏ padding hoặc căn lề đặc biệt cho các cột số */
+    .o_list_number {
+        text-align: center !important;
+    }
+}

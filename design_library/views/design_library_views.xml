@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_design_library_form" model="ir.ui.view">
+    <field name="name">design.library.form</field>
+    <field name="model">design.library</field>
+    <field name="arch" type="xml">
+      <form string="Thư Viện Thiết Kế">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="design_code"/>
+            <field name="designer_id"/>
+            <field name="product_type"/>
+            <field name="size_range"/>
+            <field name="color_palette"/>
+            <field name="design_file" filename="design_code"/>
+            <field name="description"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_design_library_tree" model="ir.ui.view">
+    <field name="name">design.library.tree</field>
+    <field name="model">design.library</field>
+    <field name="arch" type="xml">
+      <tree string="Thiết Kế">
+        <field name="name"/>
+        <field name="design_code"/>
+        <field name="product_type"/>
+      </tree>
+    </field>
+  </record>
+
+
+  <record id="action_design_library" model="ir.actions.act_window">
+    <field name="name">Thư Viện Thiết Kế</field>
+    <field name="res_model">design.library</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+</odoo>

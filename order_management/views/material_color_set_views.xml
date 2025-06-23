@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form View for material.color.set -->
+        <record id="view_material_color_set_form" model="ir.ui.view">
+            <field name="name">material.color.set.form</field>
+            <field name="model">material.color.set</field>
+            <field name="arch" type="xml">
+                <form string="Bộ mã màu vật tư">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active"/>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="avatar_name_job" readonly="1"/>
+                            <field name="date_create" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for material.color.set -->
+        <record id="view_material_color_set_tree" model="ir.ui.view">
+            <field name="name">material.color.set.tree</field>
+            <field name="model">material.color.set</field>
+            <field name="arch" type="xml">
+                <tree string="Bộ mã màu vật tư">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action for material.color.set -->
+        <record id="action_material_color_set" model="ir.actions.act_window">
+            <field name="name">Bộ mã màu vật tư</field>
+            <field name="res_model">material.color.set</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

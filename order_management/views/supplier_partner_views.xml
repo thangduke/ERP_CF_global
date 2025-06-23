@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- View for Supplier -->
+    <record id="view_supplier_partner_form" model="ir.ui.view">
+        <field name="name">supplier.partner.form</field>
+        <field name="model">supplier.partner</field>
+        <field name="arch" type="xml">
+            <form string="Nhà cung cấp">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="address"/>
+                        <field name="phone"/>
+                        <field name="email"/>
+                        <field name="website"/>
+                        <field name="country_id"/>
+                        <field name="city"/>
+                        <field name="active"/>
+                        <field name="color" widget="color"/>
+                    </group>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="avatar_name_job" readonly="1"/>
+                        <field name="date_create" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_supplier_partner_tree" model="ir.ui.view">
+        <field name="name">supplier.partner.tree</field>
+        <field name="model">supplier.partner</field>
+        <field name="arch" type="xml">
+            <tree string="Nhà cung cấp">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="city"/>
+                <field name="country_id"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_supplier_partner" model="ir.actions.act_window">
+        <field name="name">Nhà cung cấp</field>
+        <field name="res_model">supplier.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>  
+        <menuitem id="menu_design_library_root" 
+                name="Thư Viện Thiết Kế"
+                web_icon="design_library,static/description/icon.png"
+                sequence="6"/>
+
+                <menuitem id="menu_design_library" 
+                        name="Mẫu thiết kế" parent="menu_design_library_root" 
+                        action="action_design_library"/>
+
+   </data>
+</odoo>
+      

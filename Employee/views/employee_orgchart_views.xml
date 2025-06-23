@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_all_employee_hierarchy" model="ir.ui.view">
+        <field name="name">employee.base.view.hierarchy</field>
+        <field name="model">employee.base</field>
+        <field name="arch" type="xml">
+            <hierarchy child_field="child_ids"  draggable="1" create="0">
+                    <field name="name" />
+                    <field name="department_id" />
+                    <field name="parent_id" />
+                    <templates>
+                        <t t-name="hierarchy-box">
+                            <div t-attf-class="o_hierarchy_node_header d-flex justify-content-center pb-4 "
+                                 t-att-title="parent_id">
+                                <field name="image_1024" preview_image="image_128"
+                                   options="{'zoom': true, 'zoom_delay': 1000}" widget="background_image"  />
+                            </div>
+                            <div class="o_hierarchy_node_body d-flex flex-column text-center">
+                                <div class="w-100 position-relative">
+                                    <field class="fw-bold" name="name"/>
+                                </div>
+                                <field name="job_title"/>
+                            </div>
+                        </t>
+                    </templates>
+            </hierarchy>
+        </field>
+    </record>
+
+        <record id="view_org_chart" model="ir.actions.act_window">
+            <field name="name">Cơ cấu tổ chức</field>
+            <field name="res_model">employee.base</field>
+            <field name="view_mode">hierarchy,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có nhân sự nào!
+                </p>
+            </field>
+        </record>
+
+        <record id="action_open_company_info" model="ir.actions.server">
+            <field name="name">Thông tin công ty</field>
+            <field name="model_id" ref="base.model_res_company"/> 
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_open_company_info_form()
+            </field>
+    </record>
+</odoo>

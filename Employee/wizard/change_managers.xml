@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="change_managers_form" model="ir.ui.view">
+        <field name="name">change.managers.form</field>
+        <field name="model">change.managers</field>
+        <field name="arch" type="xml">
+            <form >
+                <group style="display: block;">
+                    <field name="employee_id" invisible="1"/>
+                    <field name="parent_ids" widget="many2many_avatar_user" placeholder="Chọn quản lý" style="border: 1px solid #ced4da;" string=""/>
+                </group>
+                <footer>
+                        <button string="Lưu thay đổi" special="save" class="btn-primary" data-hotkey="q"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel" data-hotkey="x" />
+                    </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="change_managers" model="ir.actions.act_window">
+        <field name="name">Thay đổi quản lý</field>
+        <field name="res_model">change.managers</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+
+access_design_library_user,access_design_library_user,design_library.model_design_library,design_library.group_design_library_user,1,1,0,0
+access_design_library_manager,access_design_library_manager,design_library.model_design_library,design_library.group_design_library_manager,1,1,1,1

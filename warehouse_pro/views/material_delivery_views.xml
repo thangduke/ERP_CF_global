@@ -1,0 +1,154 @@
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_material_delivery_form" model="ir.ui.view">
+            <field name="name">material.delivery.form</field>
+            <field name="model">material.delivery</field>
+            <field name="arch" type="xml">
+                <form string="Delivery">
+                    <sheet style="max-width: 100%; height: 90vh; margin-left: auto; margin-right: auto; background-color: #f8f9fa">
+                        <h3>TẠO MÃ XUẤT KHO</h3>
+                        <hr/>
+
+                        <!-- PHẦN 1: 3 KHỐI NGANG -->
+                        <notebook>
+                            <page string="Thông tin xuất kho" class="fw-bold"> 
+                                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <!-- Thông tin đơn hàng -->
+                                    <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                            <span class="fa fa-industry" style="color: gray; margin-right: 5px;"></span>Thông tin xuất kho
+                                        </h3>
+                                        <label for="delivery_no">Mã xuất kho :</label>
+                                        <field name="delivery_no" style="border: 1px solid #ced4da;width: 100%;"/>
+
+                                        <label for="order_id">Đơn hàng :</label>
+                                        <field name="order_id" style="border: 1px solid #ced4da;width: 100%;"/>
+
+                                    <!--    <label for="program_id">Mã hàng :</label>
+                                        <field name="program_id" style="border: 1px solid #ced4da;width: 100%;"/>
+                                    -->
+                                    </div>
+                                    <!-- Thông tin xuất kho -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                            <span class="fa fa-shopping-cart" style="color: gray; margin-right: 5px;"></span>Thông tin kho xuất
+                                        </h3>
+                                        <label for="store_id">Kho xuất :</label>
+                                        <field name="store_id" style="border: 1px solid #ced4da;width: 100%;"/>
+
+                                        <label for="shelf_id">Kệ hàng :</label>
+                                        <field name="shelf_id" style="border: 1px solid #ced4da;width: 100%;"/>
+                                    </div>
+
+                                    <!-- Thông tin người tạo -->
+                                    <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                            <span class="fa fa-user-circle" style="color: gray; margin-right: 5px;"></span>Thông tin người tạo
+                                        </h3>
+                                        <label for="employee_id">Người tạo :</label>
+                                        <field name="employee_id" widget="many2one_user_avatar" readonly="1" style="border: 1px solid #ced4da;width: 100%;"/>
+                                        <label for="date_delivery">Ngày tạo :</label>
+                                        <field name="date_delivery" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    </div>
+                                </div>
+                            </page>
+                            <page string="Thông tin chuyền sản xuất" class="fw-bold">
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <!-- Thông tin khác -->
+                                <!-- Thông tin xuất kho -->
+                                <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                    <h3 style="font-size: 16px; font-weight: bold;">
+                                        <span class="fa fa-cogs" style="color: gray; margin-right: 5px;"></span>Thông tin chuyền sản xuất
+                                    </h3>
+                                    <label for="production_id">Chuyền sản xuất:</label>
+                                    <field name="production_id" style="border: 1px solid #ced4da;width: 100%;"
+                                        placeholder="Nhập chuyền xuất kho"/>
+
+                                    <label for="receiver">Người nhận :</label>
+                                    <field name="receiver" widget="many2many_avatar_user" style="border: 1px solid #ced4da;width: 100%;"/>
+                                </div>
+                                <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                    <h3 style="font-size: 16px; font-weight: bold;">
+                                        <span class="fa fa-info-circle" style="color: gray; margin-right: 5px;"></span>Thông tin khác
+                                    </h3>
+                                    <label for="purpose">Mô tả :</label>
+                                    <field name="purpose" style="border: 1px solid #ced4da;width: 100%;"/>
+                                </div>
+                            </div>
+                            </page>
+                        </notebook>
+                        
+
+                        <!-- PHẦN 2: DANH SÁCH VẬT TƯ -->
+                        <div style="background-color: rgb(237, 237, 237); padding: 15px; border-radius: 6px;">
+                            <!-- Thanh tiêu đề và tìm kiếm -->
+                            <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 10px;">
+                                <!-- BÊN TRÁI: Tiêu đề -->
+                                <div style="flex: 1; font-weight: bold; font-size: 16px;">
+                                    <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>Danh sách vật tư
+                                </div>
+                            </div>
+
+                            <div style="overflow-x: auto; max-width: 100%;">
+                                <!-- Tree view danh sách vật tư -->
+                                <field name="program_line_ids" string=" ">
+                                    <tree string="Vật tư" class="o_material_list_view table" editable="bottom" create="false">
+                                        <!-- Thông tin vị trí và phân loại -->
+                                        <field name="position" string="VỊ TRÍ"/>
+                                        <field name="mtr_type" string="PHÂN LOẠI"/>
+                                        
+                                        <!-- Mã và thông tin cơ bản -->
+                                        <field name="mtr_no" string="MÃ ITEM"/>
+                                        <field name="mtr_code" string="CODE NHÀ CUNG CẤP"/>
+                                        <field name="mtr_name" string="TÊN VẬT TƯ"/>
+                                        
+                                        <!-- Thông số kỹ thuật -->
+                                        <field name="dimension" string="KÍCH THƯỚC"/>
+                                        <field name="color_item" string="KÍ HIỆU"/>
+                                        <field name="color_name" string="MÀU SẮC"/>
+                                        <!-- Số lượng ước tính-->
+                                        <field name="est_qty" string="SL ƯỚC TÍNH" />
+                                        <field name="act_qty" string="SL THỰC TẾ" />                   
+                                        <!-- Định mức và đơn vị -->
+                                        <field name="rate" string="ĐƠN VỊ TÍNH"/>                   
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_material_delivery_tree" model="ir.ui.view">
+            <field name="name">material.delivery.tree</field>
+            <field name="model">material.delivery</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách Phiếu Xuất Kho">
+                    <field name="delivery_no" string="MÃ XUẤT KHO"/>
+                    <field name="store_id" string="KHO XUẤT"/>
+                    <field name="shelf_id" string="KỆ HÀNG"/>
+                    <field name="order_id" string="ĐƠN HÀNG"/>
+                    <field name="production_id" string="CHUYỀN SẢN XUẤT"/>
+                    <field name="employee_id" widget="many2one_avatar_user" string="NGƯỜI XUẤT KHO"/>
+                    <field name="date_delivery" string="NGÀY XUẤT " />
+                    <field name="purpose" optional="hide" string="MÔ TẢ"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_material_delivery" model="ir.actions.act_window">
+            <field name="name">Phiếu Xuất Kho</field>
+            <field name="res_model">material.delivery</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo phiếu xuất kho mới
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

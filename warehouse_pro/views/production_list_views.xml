@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="production_list_search_view" model="ir.ui.view">
+            <field name="name">production.list.search</field>
+            <field name="model">production.list</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm dây chuyền">
+                    <field name="name" string="Tên dây chuyền"/>
+                    <field name="employee_id" string="Người tạo"/>
+                    <field name="description" string="Mô tả"/>
+                    
+                    <filter string="Đang hoạt động" name="active" 
+                            domain="[('active', '=', True)]"/>
+                    <filter string="Lưu trữ" name="inactive" 
+                            domain="[('active', '=', False)]"/>
+                            
+                    <searchpanel>
+                        <field name="employee_id" icon="fa-user"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+        <!-- From view -->
+            <record id="production_list_form_view" model="ir.ui.view">
+                <field name="name">production.list.form</field>
+                <field name="model">production.list</field>
+                <field name="arch" type="xml">
+                     
+                   <form string="Dây chuyền" create="0" edit="1" >
+                        <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;" invisible="id==False">
+                            <span style="background-color: #dcd6f7; padding-top: 30px; padding-bottom: 30px; display: block; width: 100%; ">
+                                <div style="text-align: center; ">
+                                    <h1>
+                                        <i class="fa fa-industry fa-lg" aria-hidden="true"/>
+                                        <br/>
+                                        <field name="name"/>
+                                    </h1>
+                                </div>
+                            </span>
+                            <div style="margin-bottom: 12px;"></div>
+                            <hr/>
+                            <h3>
+                                Thông tin chi tiết
+                            </h3>
+                            <table style='width:100%;' border='0' >
+                                <tr>
+                                    <th style='width:33%;'><span class="fa fa-hashtag fa-lg" style="color: gray; padding-right:5px;"/>Mã khách hàng</th>
+                                    <th style='width:60%;'><span class="fa fa-map-marker fa-lg" style="color: gray; padding-right:5px;"/>Địa chỉ</th>
+                                    <th style='width:33%;'><span class="fa fa-phone fa-lg" style="color: gray; padding-right:5px;"/>Điện thoại</th>
+                                </tr>
+                                <tr>
+                                    <td><field name="production_index" style="margin-left: 20px;" /></td>
+                                    <td ><field name="address" style="margin-left: 20px;"/></td>
+                                    <td ><field name="phone" style="margin-left: 20px;"/></td>
+                                </tr>
+                                <tr style="height:20px">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                                <tr>
+                                    <th style='width:60%;'><span class="fa fa-calendar fa-lg" style="color: gray; padding-right:5px;"/>Ngày tạo</th>
+                                    <th style='width:40%;'><span class="fa fa-user fa-lg" style="color: gray; padding-right:5px;"/>Người tạo</th>
+                                </tr>
+                                <tr>
+                                    <td ><field name="date_create"  style="margin-left: 20px;"/></td>
+                                    <td ><field name="avatar_name_job"  widget="html" style="margin-left: 20px;"/></td>
+                                </tr>
+                                <tr style="height:20px">
+                                    <td/>
+                                    <td/>
+                                    <td/>
+                                </tr>
+                            </table>
+                            <table style='width:100%;' border='0' >
+                                <tr>
+                                    <th style='width:100%; '><span class="fa fa-bars fa-lg" style="color: gray; padding-right:5px;"/>mô tả</th>
+                                </tr>
+                                <tr>
+                                    <td ><field name="description" /></td>
+                                </tr>
+                            </table>
+                            <hr style="height: 2px;"/>
+                        </sheet>   
+
+                        <sheet  invisible="id" style="max-width: 50%; margin-left: auto; margin-right: auto;" >
+                            <h1>
+                                Thêm dây chuyền mới
+                            </h1>
+                            <hr/>
+                            <group>
+                                <field name="name" placeholder="Tên dây chuyền ..."/>
+                            </group>
+                            <group>
+                                <field name="employee_id"  widget= "many2one_user_avatar" readonly="1"/>
+                                <field name="date_create" readonly="1"/>
+                            </group>
+                            <group>
+                                <group string="Thông tin liên hệ">
+                                    <field name="production_index" placeholder="Mã dây chuyền..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="phone" placeholder="Số điện thoại..."  style="border: 1px solid #ced4da;"/>
+                                </group>
+                                <group string="Địa chỉ">
+                                    <field name="address" placeholder="Địa chỉ chi tiết..."  style="border: 1px solid #ced4da;"/>
+                                </group>
+                            </group>
+                            <group string="Thông tin khác"> 
+                                <field name="description" placeholder="Mô tả về chuyền ..."  style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <div style="text-align: right; padding-top: 20px;">
+                                <button  special="save" class="btn btn-success " ><i class="fa fa-check" /> Tạo mới</button>
+                                <span style="color: white; padding-left:15px;"></span>
+                                <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                            </div>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="production_list_tree_view" model="ir.ui.view">
+            <field name="name">production.list.tree</field>
+            <field name="model">production.list</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="TÊN DÂY CHUYỀN"/>
+                    <field name="production_index" string="MÃ DÂY CHUYỀN"/>
+                    <field name="avatar_name_job" string="NGƯỜI TẠO" widget="html"/>
+                    <field name="date_create" string="NGÀY TẠO"/>
+                    <field name="description_display" string="MÔ TẢ"/>
+                    <field name="active" widget="boolean_toggle" string="TRẠNG THÁI"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window -->
+        <record id="action_production_list" model="ir.actions.act_window">
+            <field name="name">Danh sách dây chuyền</field>
+            <field name="res_model">production.list</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="production_list_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo dây chuyền sản xuất mới
+                </p>
+            </field>
+        </record>
+    </data>    
+</odoo>
+

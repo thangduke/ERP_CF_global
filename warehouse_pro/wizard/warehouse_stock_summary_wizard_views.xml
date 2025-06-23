@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_warehouse_stock_summary_wizard_form" model="ir.ui.view">
+        <field name="name">warehouse.stock.summary.wizard.form</field>
+        <field name="model">warehouse.stock.summary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tổng hợp tồn kho toàn hệ thống">
+                        <sheet  style="max-width: 100%; height: 90vh;  margin-left: auto; margin-right: auto; 
+                            background-color: #f8f9fa"  >
+                            <div style="background-color: rgb(237, 237, 237); padding: 15px; border-radius: 6px;">
+                                <!-- Thanh tiêu đề và tìm kiếm -->
+                                <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 10px;">
+                                    
+                                    <!-- BÊN TRÁI: Tiêu đề -->
+                                    <div style="flex: 1; font-weight: bold; font-size: 16px;">
+                                        <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>Danh sách vật tư toàn hệ thống
+                                    </div>
+
+                                    <!-- Ở GIỮA: Ô tìm kiếm -->
+                                    <div style="flex: 1; display: flex; justify-content: center;">
+                                        <div style="width: 500px; display: flex; justify-content: center; align-items: center; height: 38px; border: 1px solid #ced4da; border-radius: 3px; padding: 4px 8px;">
+                                            <field name="search_active" invisible="1"/>
+                                            <field name="search_text" placeholder="Tìm kiếm vật tư..." style="flex: 1; border: none; outline: none;"/>
+                                            <button type="object" name="action_search" class="btn btn-link p-0" title="Search" invisible="search_active == True">
+                                                <span class="fa fa-search" style="color: #6c757d;"/>
+                                            </button>
+                                            <button type="object" name="clear_search" class="btn btn-link p-0" title="Clear" invisible="search_active == False">
+                                                <span class="fa fa-times" style="color: #6c757d;"/>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- BÊN PHẢI: Các nút -->
+                                    <div style="flex: 1; display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+                                        <!-- Nút Export -->
+                                        <button type="object" name="action_export" class="btn btn-outline-primary btn-sm" title="Export"
+                                                style="border-radius: 4px;">
+                                            <span class="fa fa-upload" style="margin-right: 5px;"></span>
+                                            <span style="color: #007bff;">Export</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="overflow-x: auto; max-width: 100%;">
+                                    <!-- Tree view danh sách vật tư -->
+                                    <field name="summary_line_ids" string=" ">
+                                        <tree string="Vật tư" class="o_material_list_view table" editable="bottom" create="false" >
+                                        <!-- Thông tin vị trí và phân loại -->
+                                            <field name="position" string="VỊ TRÍ"/>
+                                            <field name="mtr_type" string="PHÂN LOẠI"/>
+                                            
+                                            <!-- Mã và thông tin cơ bản -->
+                                            <field name="mtr_no" string="MÃ ITEM"/>
+                                            <field name="mtr_code" string="CODE NHÀ CUNG CẤP"/>
+                                            <field name="mtr_name" string="TÊN VẬT TƯ"/>
+                                            
+                                            <!-- Thông số kỹ thuật -->
+                                            <field name="dimension" string="KÍCH THƯỚC"/>
+                                            <field name="color_item" string="KÍ HIỆU"/>
+                                            <field name="color_name" string="MÀU SẮC"/>
+                                            <!-- Số lượng ước tính-->
+                                            <field name="est_qty" string="SL ƯỚC TÍNH" />
+                                            <field name="act_qty" string="SL THỰC TẾ" />                   
+                                            <!-- Định mức và đơn vị -->
+                                            <field name="rate" string="ĐƠN VỊ TÍNH"/>                           
+                                            
+                                            <!-- Thông tin nhà cung cấp -->
+                                            <field name="supplier" string="NHÀ CUNG CẤP"/>
+                                            <field name="country" string="NƯỚC XUẤT XỨ"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_warehouse_stock_summary_wizard" model="ir.actions.act_window">
+        <field name="name">Tổng hợp tồn kho toàn hệ thống</field>
+        <field name="res_model">warehouse.stock.summary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+
+</odoo>

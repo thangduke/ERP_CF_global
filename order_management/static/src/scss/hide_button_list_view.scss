@@ -1,0 +1,56 @@
+.o_hide_open_product table {
+    tbody {
+        tr {
+            position: relative;
+            cursor: pointer;
+
+            button[name="open_product_code_form"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0; // Ẩn nút nhưng vẫn có thể bấm
+                z-index: 1; // Bên dưới các phần tử khác nếu có
+            }
+        }
+    }
+}
+
+.o_hide_open_po table {
+    tbody {
+        tr {
+            position: relative;
+            cursor: pointer;
+
+            button[name="open_po_form_view"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0; // Ẩn nút nhưng vẫn có thể bấm
+                z-index: 1; // Bên dưới các phần tử khác nếu có
+            }
+        }
+    }
+}
+
+.o_hide_open_product_color_size table {
+    tbody {
+        tr {
+            position: relative;
+            cursor: pointer;
+
+            button[name="open_product_color_size_form"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0; // Ẩn nút nhưng vẫn có thể bấm
+                z-index: 1; // Bên dưới các phần tử khác nếu có
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- View cho model product.size -->
+    <record id="view_product_size_form" model="ir.ui.view">
+        <field name="name">product.size.form</field>
+        <field name="model">product.size</field>
+        <field name="arch" type="xml">
+            <form string="Size sản phẩm">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                        <field name="active"/>
+                        <field name="employee_id" readonly="1"/>
+                        <field name="avatar_name_job" readonly="1"/>
+                        <field name="date_create" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_size_tree" model="ir.ui.view">
+        <field name="name">product.size.tree</field>
+        <field name="model">product.size</field>
+        <field name="arch" type="xml">
+            <tree string="Size sản phẩm">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_product_size" model="ir.actions.act_window">
+        <field name="name">Kích thước sản phẩm</field>
+        <field name="res_model">product.size</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

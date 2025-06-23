@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Gán hành động client là home_action_id cho nhóm nội bộ -->
+    <record id="base.group_user" model="res.groups">
+        <field name="home_action_id" ref="responsive_web.action_web_responsive"/>
+    </record>
+</odoo>

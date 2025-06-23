@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_finished_product_root" 
+                name="Kho Thành Phẩm"
+                web_icon="finished_product,static/description/icon.png"
+                sequence="5"/>
+                <menuitem id="menu_finished_product" 
+                        name="Sản phẩm" 
+                        parent="menu_finished_product_root" 
+                        action="action_finished_product"/>
+   </data>
+</odoo>
+      

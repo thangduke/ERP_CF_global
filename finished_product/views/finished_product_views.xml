@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_finished_product_form" model="ir.ui.view">
+    <field name="name">finished.product.form</field>
+    <field name="model">finished.product</field>
+    <field name="arch" type="xml">
+      <form string="Kho Thành Phẩm">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="product_code"/>
+            <field name="category"/>
+            <field name="color"/>
+            <field name="size"/>
+            <field name="unit"/>
+            <field name="quantity"/>
+            <field name="completed_date"/>
+            <field name="location"/>
+            <field name="design_id"/>
+            <field name="description"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_finished_product_tree" model="ir.ui.view">
+    <field name="name">finished.product.tree</field>
+    <field name="model">finished.product</field>
+    <field name="arch" type="xml">
+      <tree string="Kho Thành Phẩm">
+        <field name="name"/>
+        <field name="product_code"/>
+        <field name="category"/>
+        <field name="quantity"/>
+        <field name="completed_date"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_finished_product" model="ir.actions.act_window">
+    <field name="name">Kho Thành Phẩm</field>
+    <field name="res_model">finished.product</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+</odoo>

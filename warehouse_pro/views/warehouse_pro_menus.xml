@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root menu -->
+        <menuitem id="menu_warehouse_pro_root"
+                  name="Kho Vật Tư"
+                  groups= "warehouse_pro.group_warehouse_pro_user"
+                  web_icon="warehouse_pro,static/description/icon.png"
+                  sequence="4"/>
+
+
+        <menuitem id="menu_store_cf_list"
+                name="Quản lý Kho"
+                parent="menu_warehouse_pro_root"
+                action="action_store_list"
+                sequence="1"/>
+        <!-- manager receive delivery-->
+        <menuitem id="menu_warehouse_receive_delivery"
+                name="Quản lý xuất/nhập kho"
+                parent="menu_warehouse_pro_root"
+                sequence="3"/>
+
+                <menuitem id="menu_warehouse_material_receive"
+                        name="Quản lý nhập kho"
+                        parent="menu_warehouse_receive_delivery"
+                        action="action_material_receive"
+                        sequence="1"/>  
+
+                <menuitem id="menu_warehouse_material_delivery"
+                        name="Quản lý xuất kho"
+                        parent="menu_warehouse_receive_delivery"
+                        action="action_material_delivery"
+                        sequence="2"/>
+        <!-- Inventory Management -->
+
+        <menuitem id="menu_warehouse_material_stock"
+                name="Quản lý hàng tồn"
+                parent="menu_warehouse_pro_root"
+                 
+                sequence="7"/>
+
+        <!-- Settings Menu -->
+        <menuitem id="menu_setting_warehouse_pro"
+                name="Thiết lập Kho Vật Tư"
+                groups= "warehouse_pro.group_warehouse_pro_manager"
+                parent="menu_warehouse_pro_root"
+                sequence="10"/>
+
+                <!-- Store/Production/Invoice Settings -->
+                <menuitem id="menu_store_production_cf"
+                        name="Thiết lập Kho"
+                        parent="menu_setting_warehouse_pro"
+                        sequence="30"/>
+                        
+                        <menuitem id="menu_shelf_listt_warehouse"
+                                name="Danh sách kệ hàng"
+                                parent="menu_store_production_cf"
+                                action="action_shelf_list"
+                                sequence="2"/>
+                    <!--   <menuitem id="menu_production_cf_list"
+                                name="Danh sách Chuyền"
+                                parent="menu_store_production_cf"
+                                action="action_production_list"
+                                sequence="3"/>-->
+                        <menuitem id="menu_shelf_material_line"
+                                name="Danh sách vật tư trong kho"
+                                parent="menu_store_production_cf"
+                                action="action_shelf_material_line"
+                                sequence="4"/>
+
+    </data>
+</odoo>

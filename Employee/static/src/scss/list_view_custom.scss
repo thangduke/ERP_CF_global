@@ -1,0 +1,525 @@
+.o_employee_list_view table {
+    min-width: 2200px !important;
+    thead {
+    background-color: #ffffff !important; /* #d6efd8 */
+        th {
+        color: #424874 !important; /* Thay đổi màu của tiêu đề cột (#387f39: xanh) */
+        font-size: 12px !important;
+         border-right-width: 1px ;
+
+        }
+        tr > :nth-child(2) {
+            /*border-right-width: 0px !important;  Loại bỏ border của cột đầu tiên và thứ hai */
+            width: 50px !important;
+        }
+    }
+     //.o_data_row > .o_data_cell {
+        //border-right-width: 1px !important;
+    //}
+    tbody {
+        tr > :first-child {
+            font-size: 16px;
+            }
+        /* Chỉ áp dụng từ cột thứ 3 trở đi */
+        tr > :nth-child(n+3) {
+            border-right-width: 1px !important; /* Màu và kích cỡ border */
+        }
+        tr > :nth-child(2) {
+            border-right-width: 0px !important; /* Loại bỏ border của cột đầu tiên và thứ hai */
+        }
+    }
+}
+
+.o_employee_list_view_2 table {
+    min-width: 2200px !important;
+    --table-striped-bg: none !important;
+    thead {
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+        background-color: #ffffff !important; /* #d6efd8 */
+        th {
+        color: #424874 !important; /* Thay đổi màu của tiêu đề cột (#387f39: xanh) */
+        font-size: 12px !important;
+         border-right-width: 1px ;
+    }
+}
+    tbody {
+        tr > :nth-child(n) {
+            border-right-width: 1px !important; /* Màu và kích cỡ border */
+        }
+         tr > :nth-child(3) {
+               color: #375df6 !important;
+               font-weight: bold !important;
+            }
+    }
+    tbody> tr > td{
+        &.o_list_number {
+                /*rtl:ignore*/
+                text-align: left !important;
+
+            }
+        }
+
+}
+
+.o_employee3c_form_view.o_form_view{
+    .o_input {
+        border: 1px solid #ced4da !important;
+    }
+    }
+
+.o_employee3c_list_header table {
+    --table-striped-bg: none !important;
+    thead {
+        th {
+            text-transform: uppercase;
+            color: #387f39 !important; /* Thay đổi màu của tiêu đề cột */
+            font-size: 11px !important;
+        }
+    }
+    tbody {
+        tr{
+            vertical-align: middle;
+            }
+        }
+}
+
+.o_employee3c_list_view_no_header.o_list_view {
+    table {
+        thead{
+            display: none !important;
+        }
+        tbody{
+            border-bottom-width: 0px !important;
+            border-top-width: 0px !important;
+            }
+        --table-striped-bg: none !important;
+        --table-bg: transparent !important;
+    }
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.o_employee3c_list_view_no_header_position.o_list_view {
+    thead{
+    display: none !important;
+    }
+    tbody {
+        tr > :nth-child(1) {
+            width: 70px !important;
+            }
+        tr > :nth-child(2) {
+            width: 30px !important;
+            font-size:13px !important;
+            color: gray;
+            }
+    }
+}
+
+.o_employee3c_list_first_column table{
+    thead{
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+        th {
+            text-transform: uppercase;
+            color: #387f39 !important; /* Thay đổi màu của tiêu đề cột */
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(2) {
+            font-size: 16px;
+            }
+        tr > :nth-child(4)::before {
+             content: "\f0c0";
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            }
+    }
+    tbody> tr > td{
+            &.o_list_number {
+                    /*rtl:ignore*/
+                    text-align: left !important;
+
+                }
+            }
+
+}
+
+.o_employee3c_list_first_column_2 table{
+    --table-striped-bg: none !important;
+    thead{
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+        th {
+            text-transform: uppercase;
+            color: #694f8e !important; /* Thay đổi màu của tiêu đề cột */
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(2) {
+            font-size: 18px;
+            }
+    }
+}
+
+.o_employee3c_list_second_column table{
+    --table-striped-bg: none !important;
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #694f8e !important;
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(3) {
+            font-size: 20px;
+            }
+    }
+}
+
+.o_employee3c_small_list_view.o_list_view{
+     margin-left: 50px;
+    }
+
+.o_employee3c_list_upper_header table{
+    thead{
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+        th {
+            text-transform: uppercase;
+            color: #0fc150 !important; /* Thay đổi màu của tiêu đề cột */
+            font-size: 11px !important;
+            }
+        }
+    tbody> tr > td{
+        &.o_list_number {
+                /*rtl:ignore*/
+                text-align: left !important;
+
+            }
+        }
+    .o_data_row td[title] {
+        position: relative;
+        }
+
+    .o_data_row td[title]:hover::after {
+        display: none;
+    }
+}
+
+.o_employee3c_document_list table{
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #387f39 !important; /* Thay đổi màu của tiêu đề cột */
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(2){
+            font-size: 18px;
+
+            }
+    }
+}
+.o_employee3c_document_list table{
+    tbody {
+        tr > :nth-child(2)::before {
+             content: "\f115"; /* Đây là mã cho biểu tượng folder trong FontAwesome. web\static\src\libs\fontawesome\css\font-awesome.css*/
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            font-size: 25px;
+            }
+    }
+}
+
+.o_employee3c_overflow_list_view {
+    .o_list_view {
+        overflow-x: auto !important;
+        white-space: nowrap; /* Cho phép nội dung xuống dòng hoặc cuộn ngang nếu cần */
+    }
+
+    .o_list_view table {
+        table-layout: auto; /* Đặt chế độ bảng tự động mở rộng */
+        width: auto;
+    }
+
+    .o_list_view td {
+        min-width: 300px;
+        white-space: nowrap;
+        text-overflow: initial;
+        overflow: visible;
+        }
+    }
+
+.o_employee3c_position_list table{
+    thead{
+        th {
+            text-transform: uppercase;
+            /* color: #0fc150 !important;*/
+            font-size: 11px !important;
+            color: #387f39 !important; /* Thay đổi màu của tiêu đề cột */
+
+        }
+        }
+    tbody {
+        tr > :nth-child(2) {
+            font-size: 16px;
+            }
+        tr > :nth-child(3) {
+            font-size: 12px;
+            color: gray;
+            }
+        tr > :nth-child(4)::after {
+             content: "\f0c0";
+            font-family: "FontAwesome";
+            padding-left: 8px;
+            }
+    }
+}
+
+.o_employee3c_welfare_list table{
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #0fc150 !important;
+            font-size: 12px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(2) {
+            font-weight: bold;
+            font-size: 15px;
+            }
+        tr > :nth-child(3) {
+            font-size: 12px;
+            color: gray;
+            }
+        tr > :nth-child(2)::before {
+             content: "\f08a";
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            color: gray;
+            }
+    }
+}
+
+.o_employee3c_welfare_register_list table{
+    --table-striped-bg: none !important;
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #387f39 !important;
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr > :nth-child(1) {
+            font-weight: bold;
+            font-size: 16px;
+            }
+        tr > :nth-child(2) {
+            font-size: 14px;
+            color: gray;
+            }
+        tr > :nth-child(1)::before {
+             content: "\f08a";
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            color: gray;
+            }
+    }
+}
+
+.o_has_number_list_view table{
+    thead {
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+    }
+    tbody> tr > td{
+        &.o_list_number {
+                /*rtl:ignore*/
+                text-align: left !important;
+
+            }
+        }
+    tbody {
+        tr > :nth-child(2) {
+            font-weight: bold !important;
+        }
+    }
+    }
+
+.o_custom_search_panel {
+    --SearchPanel-width: 270px !important;
+    }
+
+.o_custom_welfare_search_panel {
+    --SearchPanel-width: 310px !important;
+    }
+
+.o_employee3c_document_list_view_no_header.o_list_view {
+    thead{
+    display: none !important;
+    }
+    tbody {
+        tr > :nth-child(1)::before {
+             content: "\f0f6";
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            color: gray;
+            }
+    }
+}
+
+.o_employee3c_list_view_no_header_basic.o_list_view {
+    thead{
+    display: none !important;
+    }
+}
+
+.o_employee3c_working_schedule_list table {
+    --table-striped-bg: none !important;
+
+    border-right-width: 1px !important;
+    thead{
+        display: none !important;
+        }
+    tbody{
+        tr > :nth-child(1) {
+            border-top-width: 1px ;
+            border-left-width: 1px !important;
+            }
+        tr > :nth-child(2) {
+            border-top-width: 1px ;
+            border-right-width: 1px !important;
+            }
+        tr > :nth-child(1)::before {
+            content: "\f111";
+            font-family: "FontAwesome";
+            padding-right: 5px;
+            color: #6ec207;
+            }
+        }
+    }
+
+.o_employee3c_calendar_list table{
+    --table-striped-bg: none !important;
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #694f8e !important;
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr{
+            vertical-align: middle;
+            }
+        tr > :nth-child(2){
+            font-size: 20px;
+            font-weight: 500;
+            border-right-width: 1px !important;
+            }
+        tr > :nth-child(n+3) {
+            border-right-width: 1px !important;
+            max-width: 40px !important;
+            }
+         tr > :nth-child(10) {
+            border-right-width: 0px !important;
+            }
+    }
+}
+
+.o_employee3c_basic_list table{
+    --table-striped-bg: none !important;
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #694f8e !important;
+            font-size: 11px !important;
+            }
+        }
+    tbody {
+        tr{
+            vertical-align: middle;
+            }
+        tr > :nth-child(2){
+            font-size: 18px;
+            }
+        tr > td{
+        &.o_list_number {
+                text-align: left !important;
+
+            }
+        }
+    }
+}
+
+.o_employee3c_department_list table{
+    --table-striped-bg: none !important;
+    thead{
+        th {
+            text-transform: uppercase;
+            color: #694f8e !important;
+            font-size: 11px !important;
+            }
+        .o_list_number_th {
+                text-align: left !important;
+                padding-left: 0px !important;
+            }
+        }
+    tbody {
+        tr{
+            vertical-align: middle;
+            }
+        tr > :nth-child(2){
+            font-size: 20px;
+            }
+        tr > :nth-child(3),tr > :nth-child(4){
+            font-size: 13px;
+            color: gray
+            }
+        tr > td{
+        &.o_list_number {
+                text-align: left !important;
+
+            }
+        }
+        tr > :nth-child(5)::before {
+             content: "\f0c0";
+            font-family: "FontAwesome";
+            padding-right: 8px;
+            }
+    }
+}
+
+.o_employee3c_name_avatar_list.o_list_view {
+    table {
+        thead{
+            display: none !important;
+        }
+        tbody{
+            tr{
+            border-bottom-width: 0px !important;
+            }
+            }
+        --table-striped-bg: none !important;
+        --table-bg: transparent !important;
+    }
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}

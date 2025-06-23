@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_position_type_read_form" model="ir.ui.view">
+            <field name="name">position.type.form</field>
+            <field name="model">position.type</field>
+            <field name="arch" type="xml">
+                <form string="Phân loại vị trí" edit="1" create="0" >
+                    <sheet style="max-width: 700px; margin-left: auto; margin-right: auto;" invisible="not id">
+                        <h1>
+                            <i class="fa fa-briefcase "/>
+                            <field name="name"  style="padding-left: 10px;"/>
+                        </h1>
+                        <hr style="height:2px;"/>
+                         <h3>
+                            Vị trí công việc đã liên kết
+                         </h3>
+                        <field name="position_ids"  options='{"no_create": True}'>
+                            <tree class="o_employee3c_list_view_no_header_position">
+                                <field name="name"/>
+                                <field name="position_code" />
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <record id="action_position_type_create_form" model="ir.ui.view">
+            <field name="name">position.type.form</field>
+            <field name="model">position.type</field>
+            <field name="arch" type="xml">
+                <form string="Phân loại vị trí" edit="0" create="0" >
+                    <sheet >
+                        <group style="display: block;">
+                            <field name="name" placeholder="Ví dụ: Trưởng phòng.." style="border: 1px solid #ced4da; font-size: 20px; margin-top: 5px; margin-bottom: 15px;"/>
+                            <field name="description" placeholder="Mô tả khái quát" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_create_position_type" model="ir.actions.act_window">
+            <field name="name">TẠO LOẠI VỊ TRÍ CÔNG VIỆC MỚI</field>
+            <field name="res_model">position.type</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="action_position_type_create_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+    </record>
+
+        <record id="action_position_type_kanban" model="ir.ui.view">
+            <field name="name">position.type.kanban</field>
+            <field name="model">position.type</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Employee.open_create_position_type">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_card_header_title" style="text-align: center; align-items: center; ">
+                                    <h2 style="font-weight:bold; font-size:20px;"><field name="name"/></h2>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_position_type_tree" model="ir.ui.view">
+            <field name="name">position.type.tree</field>
+            <field name="model">position.type</field>
+            <field name="arch" type="xml">
+                <tree string="Loại vị trí" class="o_employee3c_list_second_column" default_order="sequence" >
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" string="Loại vị trí"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_position_type" model="ir.actions.act_window">
+            <field name="name">Phân loại vị trí</field>
+            <field name="res_model">position.type</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('action_position_type_kanban')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('action_position_type_read_form')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có loại vị trí nào.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="module_category_order_management" model="ir.module.category">
+            <field name="name">Order Management</field>
+            <field name="description">Quản lý đơn hàng, mã hàng, vật tư,...</field>
+            <field name="sequence">10</field>
+            <!-- <field name="module">order_management</field>  --> <!-- Gỡ dòng này -->
+        </record>
+
+        <record id="group_order_management_user" model="res.groups">
+            <field name="name">Người dùng</field>
+            <field name="category_id" ref="order_management.module_category_order_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_order_management_manager" model="res.groups">
+            <field name="name">Quản trị viên</field>
+            <field name="category_id" ref="order_management.module_category_order_management"/>
+            <field name="implied_ids" eval="[(4, ref('order_management.group_order_management_user'))]"/>
+        </record>
+    </data>
+</odoo>

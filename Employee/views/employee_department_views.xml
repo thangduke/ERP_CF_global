@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="open_employee_from_department" model="ir.actions.act_window">
+             <field name="name">Nhân sự</field>
+             <field name="res_model">employee.base</field>
+             <field name="view_mode">tree,kanban,form</field>
+             <field name="domain">[('state', '!=', 'quit')]</field>
+             <field name="context">{
+                "searchpanel_default_department_id": active_id,
+                "default_department_id": active_id,
+                "search_default_group_department": 1,
+                "search_default_department_id": active_id,
+                "expand": 1}
+             </field>
+             <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">ư
+                    Không có thông tin.
+                </p>
+             </field>
+         </record>
+
+        <record id="view_department_kanban" model="ir.ui.view">
+            <field name="name">employee.department.kanban</field>
+            <field name="model">employee.department</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard o_hr_department_kanban o_kanban_small_column" sample="1">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div >
+                                <div class="o_kanban_card_header_title" style="text-align: center; padding-bottom: 20px; ">
+                                    <h2 style="font-weight:bold; font-size:20px;"><a type="edit"><field name="name"/></a></h2>
+                                </div>
+                                <div class="o_kanban_card_content">
+                                    <div style="text-align: center;">
+                                        <button class="btn btn-primary" name="%(open_employee_from_department)d" type="action">
+                                            <field name="total_employee" widget="statinfo" string=" Nhân viên"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_department_form" model="ir.ui.view">
+            <field name="name">employee.department.form</field>
+            <field name="model">employee.department</field>
+            <field name="arch" type="xml">
+                 <form string="Phòng ban" create="0" edit="1" js_class="timeoff3c_form" class="o_custom_small_form_sheet">
+                     <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;" invisible="id==False">
+                         <div class="oe_button_box" name="button_box" invisible="id==False">
+                             <button class="oe_stat_button" type="action" name="%(open_employee_from_department)d" icon="fa-users">
+                                 <field string="Thành viên" name="total_employee" widget="statinfo"/>
+                             </button>
+                         </div>
+                         <span style="background-color: #dcd6f7; padding-top: 30px; padding-bottom: 30px; display: block; width: 100%; ">
+                             <div style="text-align: center; ">
+                                 <h1>
+                                     <i class="fa fa-cubes fa-lg" aria-hidden="true"/>
+                                     <br/>
+                                     <field name="name"/>
+                                 </h1>
+                             </div>
+                         </span>
+                         <div style="margin-bottom: 12px;"></div>
+                         <hr/>
+                         <h3>
+                             Chi tiết
+                         </h3>
+                         <table style='width:100%;' border='0' class="o_employee3c_policy_form_custom">
+                             <tr>
+                                 <th style='width:60%; '><span class="fa fa-code fa-lg" style="color: gray; padding-right:5px;"/>mã phòng ban </th>
+                                 <th style='width:40%; '><span class="fa fa-user-o fa-lg" style="color: gray; padding-right:5px;"/>quản lý</th>
+                             </tr>
+                             <tr>
+                                 <td><field name="department_code" style="margin-left: 20px;" /></td>
+                                 <td ><field name="manager_id" style="margin-left: 20px;"/></td>
+                             </tr>
+                             <tr style="height:10px">
+                                 <td/>
+                                 <td/>
+                             </tr>
+                             <tr>
+                                 <th style='width:60%; '><span class="fa fa-clock-o fa-lg" style="color: gray; padding-right:5px;"/>ngày tạo</th>
+                                 <th style='width:40%; '><span class="fa fa-user-circle-o fa-lg" style="color: gray; padding-right:5px;"/>người tạo</th>
+                             </tr>
+                             <tr>
+                                 <td ><field name="create_date"  style="margin-left: 20px;"/></td>
+                                 <td ><field name="create_uid" style="margin-left: 20px;"/></td>
+                             </tr>
+                             <tr style="height:10px">
+                                 <td/>
+                                 <td/>
+                             </tr>
+                         </table>
+                         <table style='width:100%;' border='0' class="o_employee3c_policy_form_custom">
+                             <tr>
+                                 <th style='width:100%; '><span class="fa fa-bars fa-lg" style="color: gray; padding-right:5px;"/>mô tả</th>
+                             </tr>
+                             <tr>
+                                 <td ><field name="description" /></td>
+                             </tr>
+                         </table>
+                         <hr style="height: 2px;"/>
+                         <h3>
+                             Nhân sự (<field name="total_employee"/>)
+                         </h3>
+                         <field name="member_ids" readonly="True">
+                             <kanban class="o_custom_employee3c_small_kanban">
+                                 <templates>
+                                     <t t-name="kanban-box" >
+                                         <div class="oe_kanban_global_click " >
+                                             <div style="display: flex; justify-content: center; align-items: center;" >
+                                                 <field name="image_1920" style="width: 150px; height:150px; " widget="image" />
+                                             </div>
+                                             <div style="text-align: center;" >
+                                                 <strong >
+                                                     <field name="name" placeholder="Employee's Name"/>
+                                                 </strong>
+                                                 <br/>
+                                                 <span >
+                                                     <field name="position_title"/>
+                                                 </span>
+                                             </div>
+                                         </div>
+                                     </t>
+                                 </templates>
+                            </kanban>
+                        </field>
+                     </sheet>
+                     <sheet style="max-width: 35%; margin-left: auto; margin-right: auto;" invisible="id">
+                         <h3>
+                             TẠO PHÒNG BAN MỚI
+                         </h3>
+                         <hr/>
+                         <group style="display: block;">
+                             <field name="name" string="Tên phòng ban *" style="border: 1px solid #ced4da; font-size: 18px; margin-top: 5px; margin-bottom: 15px;" placeholder="Tên phòng ban mới..."/>
+                             <field name="department_code" string="Mã phòng ban" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="Mã phòng ban..."/>
+                             <field name="parent_id" string="Phòng ban cha" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="-- Chọn --"/>
+                             <field name="manager_id" string="Quản lý" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="-- Chọn --"/> 
+                             <field name="description" string="Mô tả" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="Mô tả..."/>
+                         </group>
+
+                         <div style="text-align: right; padding-top: 20px;">
+                            <button  special="save" class="btn btn-success " confirm="Bạn muốn tạo phòng ban mới?" ><i class="fa fa-check" /> Lưu</button>
+                            <span style="color: white; padding-left:15px;"></span>
+                            <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Xóa</button>
+                        </div>
+                     </sheet>
+                 </form>
+            </field>
+        </record>
+
+        <record id="view_department_tree" model="ir.ui.view">
+            <field name="name">employee.department.tree</field>
+            <field name="model">employee.department</field>
+            <field name="arch" type="xml">
+                <tree string="Phòng ban"  sample="1" class="o_employee3c_department_list" >
+                    <field name="name"/>
+                    <field name="department_code"/>
+                    <field name="description"/>
+                    <field name="total_employee" />
+                    <field name="active" widget="boolean_toggle" string="Trạng thái"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_all_department" model="ir.actions.act_window">
+            <field name="name">Phòng ban</field>
+            <field name="res_model">employee.department</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="view_department_kanban"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có thông tin.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_department" model="ir.actions.act_window">
+            <field name="name">Phòng ban</field>
+            <field name="res_model">employee.department</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có thông tin.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

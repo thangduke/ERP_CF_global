@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_material_import_export_wizard" model="ir.ui.view">
+        <field name="name">material.import.export.wizard.form</field>
+        <field name="model">material.import.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Danh sách Vật tư">
+                <group>
+                    <field name="order_id" string="Đơn hàng" readonly="1"/>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+
+                </group>
+
+
+                <footer>
+                    <button name="import_excel" type="object" string="Import" class="btn-primary"/>
+                    <button name="action_download_template" type="object" string="📥 Tải file import mẫu" class="btn-secondary"/>
+                    <button string="Đóng" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_material_import_export" model="ir.actions.act_window">
+        <field name="name">Import Vật tư</field>
+        <field name="res_model">material.import.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

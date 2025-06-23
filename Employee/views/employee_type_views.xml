@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employee_type_form_view" model="ir.ui.view">
+        <field name="name">employee.form.view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <form edit="1" create="0">
+                <sheet style="max-width: 30%; margin-left: auto; margin-right: auto;" invisible="id" js_class="timeoff3c_form">
+                    <h3>
+                        TẠO MỚI LOẠI NHÂN SỰ
+                    </h3>
+                    <hr />
+                    <group style="display: block;">
+                        <field name="name" string="Phân loại nhân sự *" style="border: 1px solid #ced4da; font-size: 18px; margin-top: 5px; margin-bottom: 15px; " placeholder="Phân loại nhân sự"/>
+                        <field name="employee_type_code" string="Mã" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="Mã"/>
+                        <field name="description" string="Mô tả" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;" placeholder="Mô tả"/>
+                    </group>
+                    <div style="text-align: right; padding-top: 20px;">
+                            <button  special="save" class="btn btn-primary " confirm="Bạn muốn tạo phân loại nhân sự mới?" ><i class="fa fa-check" /> Lưu</button>
+                            <span style="color: white; padding-left:15px;"></span>
+                            <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Xóa</button>
+                    </div>
+                </sheet>
+                <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;" invisible="id==False">
+                    <h2>
+                        <i class="fa fa-user-o ms-2 fa-lg"/>
+                        <field name="name" style="padding-left: 5px;"/>
+                    </h2>
+                    <h6 style="color: gray; padding-left: 5px;">Mã <field name="employee_type_code"/></h6>
+                    <hr style="height:2px;"/>
+                    <h3>
+                        Nhân sự hiện tại (<field name="total_employee"/>)
+                    </h3>
+                    <field name="employee_ids"  options='{"no_create": True}'>
+                        <kanban class="o_custom_employee3c_small_kanban">
+                            <templates>
+                                <t t-name="kanban-box" >
+                                    <div style="text-align: center;" >
+                                        <div style="display: flex; justify-content: center; align-items: center;">
+                                            <field name="image_1920" style="width: 150px; height:150px;" widget="image" />
+                                        </div>
+                                        <div  >
+                                            <strong >
+                                                <field name="name" placeholder="Employee's Name"/>
+                                            </strong>
+                                            <br/>
+                                            <span >
+                                                <field name="job_title"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_type_tree_view" model="ir.ui.view">
+        <field name="name">employee.tree.view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <tree name="Phân loại nhân sự" class="o_employee3c_list_first_column_2">
+                <field name="name" string="Phân loại nhân sự"/>
+                <field name="employee_type_code"/>
+                <field name="state" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_employee_type" model="ir.actions.act_window">
+         <field name="name">Phân loại nhân sự</field>
+        <field name="res_model">employee.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Không có thông tin
+                </p>
+        </field>
+    </record>
+
+</odoo>

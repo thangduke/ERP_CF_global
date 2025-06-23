@@ -1,0 +1,10 @@
+.o_circle_avatar {
+    .img {
+        max-width: 150px;
+        max-height: 150px;
+        vertical-align: top;
+        border: 1px solid $o-gray-300;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+}
