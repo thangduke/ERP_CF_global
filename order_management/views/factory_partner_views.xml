@@ -1,31 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-
+    <record id="view_factory_partner_search" model="ir.ui.view">
+        <field name="name">factory.partner.search</field>
+        <field name="model">factory.partner</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Đơn vị sản xuất">
+                <field name="name" string="Tên"/>
+                <field name="code" string="Mã"/>
+                <field name="phone" string="Số điện thoại"/>
+                <field name="email" string="Email"/>
+                <separator/>
+                <filter string="Đang hoạt động" name="active" domain="[('active','=',True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Quốc gia" name="country" context="{'group_by':'country_id'}"/>
+                    <filter string="Thành phố" name="city" context="{'group_by':'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
     <!-- View for Factory -->
     <record id="view_factory_partner_form" model="ir.ui.view">
         <field name="name">factory.partner.form</field>
         <field name="model">factory.partner</field>
         <field name="arch" type="xml">
-            <form string="Đơn vị sản xuất">
-                <sheet>
+            <form string="Đơn vị sản xuất" create="0" edit="1">
+                <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                    <h1>
+                        Thêm đơn vị sản xuất mới
+                    </h1>
+                    <hr/>
                     <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                        <field name="location"/>
-                        <field name="phone"/>
-                        <field name="email"/>
-                        <field name="website"/>
-                        <field name="country_id"/>
-                        <field name="city"/>
-                        <field name="active"/>
-                        <field name="color" widget="color"/>
+                        <field name="name" placeholder="Tên đơn vị sản xuất..."/>
                     </group>
                     <group>
-                        <field name="employee_id"/>
+                        <group string="Thông tin liên hệ">
+                            <field name="code" placeholder="Mã đơn vị..." style="border: 1px solid #ced4da;"/>
+                            <field name="phone" placeholder="Số điện thoại..." style="border: 1px solid #ced4da;"/>
+                            <field name="email" placeholder="Email..." style="border: 1px solid #ced4da;"/>
+                            <field name="website" placeholder="Website..." style="border: 1px solid #ced4da;"/>
+                        </group>
+                        <group string="Địa chỉ">
+                            <field name="location" placeholder="Địa chỉ chi tiết..." style="border: 1px solid #ced4da;"/>
+                            <field name="country_id" style="border: 1px solid #ced4da;"/>
+                            <field name="city" placeholder="Thành phố..." style="border: 1px solid #ced4da;"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin khác">
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                     <group>
                         <field name="avatar_name_job" readonly="1"/>
                         <field name="date_create" readonly="1"/>
                     </group>
+                    <div style="text-align: right; padding-top: 20px;">
+                        <button special="save" class="btn btn-success"><i class="fa fa-check"/> Lưu</button>
+                        <span style="color: white; padding-left:15px;"></span>
+                        <button special="cancel" class="btn btn-secondary ms-2"><i class="fa fa-undo"/> Hủy bỏ</button>
+                    </div>
                 </sheet>
             </form>
         </field>
@@ -35,14 +68,14 @@
         <field name="name">factory.partner.tree</field>
         <field name="model">factory.partner</field>
         <field name="arch" type="xml">
-            <tree string="Đơn vị sản xuất">
+            <tree string="Đơn vị sản xuất" class="o_general_list_view_product">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="city"/>
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="active"/>
+                <field name="active" widget="boolean_toggle"/>
             </tree>
         </field>
     </record>
@@ -51,6 +84,7 @@
         <field name="name">Đơn vị sản xuất</field>
         <field name="res_model">factory.partner</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_factory_partner_search"/>
     </record>
 
 </odoo>

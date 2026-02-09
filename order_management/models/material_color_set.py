@@ -2,9 +2,12 @@ from odoo import models, fields, api
 
 class MaterialColorSet(models.Model):
     _name = 'material.color.set'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Bộ mã màu vật tư'
-    name = fields.Char(string='Tên bộ màu', required=True)
+    
+    name = fields.Char(string='Tên bộ màu', required=True ,tracking=True)
     description = fields.Char(string='Mô tả')
+    color= fields.Char(string="Màu sắc", )
     active = fields.Boolean(string='Kích hoạt', default=True)
 
     # Thông tin người tạo
@@ -18,3 +21,7 @@ class MaterialColorSet(models.Model):
     avatar_name_job = fields.Html(related='employee_id.avatar_name_job', string="Người tạo")
     
     date_create = fields.Datetime(string='Ngày tạo', default=fields.Datetime.now, readonly=True)
+    
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Tên bộ màu đã tồn tại. Vui lòng chọn một tên khác!')
+    ]

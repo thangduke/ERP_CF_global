@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search View for material.color.set -->
+    <record id="view_garment_consumption_search" model="ir.ui.view">
+        <field name="name">garment.consumption.search</field>
+        <field name="model">garment.consumption</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Tiêu hao vải">
+                <field name="name" string="Tên tiêu hao vải"/>
+                <separator/>
+                <filter string="Đang hoạt động" name="active" domain="[('active','=',True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+    <!-- Form View for Garment Consumption -->
+    <record id="garment_consumption_view_form" model="ir.ui.view">
+        <field name="name">garment.consumption.view.form</field>
+        <field name="model">garment.consumption</field>
+        <field name="arch" type="xml">
+            <form string="Consumption Line">
+                <sheet>
+                    <group>
+                        <group string="Linking Information">
+                            <field name="style_id"/>
+                            <field name="style_material_id" domain="[('style_id', '=', style_id)]"/>
+                            <field name="material_id"/>
+                        </group>
+                        <group string="Consumption Quantities">
+                            <field name="est_qty"/>
+                            <field name="fct_qty"/>
+                            <field name="act_qty"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Material Details">
+                            <group>
+                                <group>
+                                    <field name="position"/>
+                                    <field name="mtr_no"/>
+                                    <field name="mtr_code"/>
+                                    <field name="mtr_name"/>
+                                </group>
+                                <group>
+                                    <field name="mtr_type"/>
+                                    <field name="rate"/>
+                                    <field name="dimension"/>
+                                    <field name="supplier"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Garment Consumption -->
+    <record id="garment_consumption_view_tree" model="ir.ui.view">
+        <field name="name">garment.consumption.view.tree</field>
+        <field name="model">garment.consumption</field>
+        <field name="arch" type="xml">
+            <tree string="Consumption Lines">
+                <field name="style_id"/>
+                <field name="material_id"/>
+                <field name="mtr_name"/>
+                <field name="est_qty"/>
+                <field name="fct_qty"/>
+                <field name="act_qty"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Window for Garment Consumption -->
+    <record id="garment_consumption_action" model="ir.actions.act_window">
+        <field name="name">Consumptions</field>
+        <field name="res_model">garment.consumption</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new consumption line
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="garment_consumption_menu"
+        name="Consumptions"
+        parent="garment_order_menu_root"
+        action="garment_consumption_action"
+        sequence="10"/>
+
+</odoo>

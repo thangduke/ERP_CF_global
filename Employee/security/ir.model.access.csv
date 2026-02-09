@@ -5,8 +5,9 @@ access_employee_department_admin,employee.department.admin,model_employee_depart
 access_employee_department_manager,employee.department.manager,model_employee_department,group_cf_manager,1,0,0,0
 
 access_employee_employee,employee.employee,model_employee_base,base.group_user,1,0,0,0
+access_employee_user,employee.user,model_employee_base,group_cf_user,1,1,0,0
 access_employee_admin,employee.admin,model_employee_base,group_cf_admin,1,1,1,1
-access_employee_manager,employee.manager,model_employee_base,group_cf_manager,1,0,0,0
+access_employee_manager,employee.manager,model_employee_base,group_cf_manager,1,1,0,0
 
 access_employee_position_admin,employee.position.admin,model_employee_position,group_cf_admin,1,1,1,1
 access_employee_position_employee,employee.position.employee,model_employee_position,base.group_user,1,0,0,0
@@ -35,12 +36,5 @@ access_change_managers_employee,change.managers.employee,model_change_managers,b
 access_change_managers_manager,change.managers.manager,model_change_managers,group_cf_manager,1,0,0,0
 
 
-
-
-
-
-
-
-
-
-
+access_res_company_user,res.company.user,model_res_company,group_cf_user,1,1,0,0
+access_res_company_admin,res.company.admin,model_res_company,group_cf_admin,1,1,1,1

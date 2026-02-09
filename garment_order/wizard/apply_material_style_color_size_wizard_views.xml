@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_apply_material_color_size_wizard_form" model="ir.ui.view">
+        <field name="name">apply.material.style.color.size.wizard.form</field>
+        <field name="model">apply.material.style.color.size.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Áp dụng vật tư theo ma trận">
+                <sheet style="max-width: 100%; margin-left: auto; margin-right: auto;">
+
+                    <!-- Tiêu đề đặt riêng trong div, không nằm trong group để không phá layout -->
+                    <div style="margin: 0 0 8px 0;">
+                    <h2 style="font-weight:600; color:#4b4b4b; margin:0;">
+                        Áp dụng vật tư theo style (Color-Size)
+                    </h2>
+                    </div>
+
+                    <!-- Hai cột: Thông tin chương trình | Danh sách style -->
+                    <group col="2" style="align-items: flex-start;">
+                        <group string="THÔNG TIN CHƯƠNG TRÌNH">
+                            <field name="warehouse_order_id" readonly="1" placeholder="Chọn chương trình...."/>
+                            <field name="customer_id" readonly="1" placeholder="Chọn khách hàng...."/>
+                            <field name="product_code_id"  readonly="1" placeholder="Chọn mã vật tư...."/>
+                        </group>
+
+                        <group string="DANH SÁCH STYLE (COLOR-SIZE)">
+                            <field name="product_color_size_ids"
+                            string ="Style(Color,size):"
+                                widget="many2many_tags"
+                                style="border: 1px solid #ced4da; padding-left: 2px;"
+                                placeholder="Chọn style..."/>
+                        </group>
+                    </group>
+
+                    <separator string="Bảng vật tư theo Size / Color"/>
+                     <field name="html_preview" nolabel="1" widget="material_color_matrix_field" style="width:100%; "/>
+
+                    <footer>
+                        <button string="✔️ Áp dụng" name="action_apply" type="object" class="btn-primary"/>
+                        <button string="✖️ Hủy" special="cancel" class="btn-secondary" style="margin-left:6px;"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

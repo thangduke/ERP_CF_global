@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="ir_cron_cleanup_material_matrix_wizard" model="ir.cron">
+            <field name="name">WIZARD CLEANUP: Material Matrix Wizard</field>
+            <!-- SỬA LỖI: Thêm tiền tố tên module 'order_management' vào ref -->
+            <field name="model_id" ref="order_management.model_apply_material_style_color_size_wizard"/>
+            <field name="state">code</field>
+            <field name="code">model._cleanup_old_wizards()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

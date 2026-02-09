@@ -2,10 +2,10 @@ from odoo import models, fields
 
 class PositionType(models.Model):
     _name = "position.type"
-    _description = "Phân loại vị trí"
+    _description = "Vị trí công tác"
 
-    name = fields.Char(string='Loại vị trí', required=True)
+    name = fields.Char(string='Vị trí công tác', required=True)
     description = fields.Text('Mô tả')
     active = fields.Boolean(default=True)
     sequence = fields.Integer('Sequence')
-    position_ids = fields.One2many('employee.position', 'position_type_id', 'Vị trí đã liên kết')
+

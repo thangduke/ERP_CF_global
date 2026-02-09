@@ -7,7 +7,17 @@
             <field name="model">material.line</field>
             <field name="priority" eval="10"/>
             <field name="arch" type="xml">
-                <search string="Allocations Search">
+                <search string="Tìm kiếm Vật tư">
+                    <field name="name" string="Mã vật tư"/>
+                    <field name="mtr_type" string="Loại vật tư"/>
+                    <field name="mtr_name" string="Tên vật tư"/>
+                    <field name="mtr_code" string="Mã nội bộ"/>
+                    <field name="supplier" string="Nhà cung cấp"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Nhà cung cấp" name="supplier" context="{'group_by':'supplier'}"/>
+                        <filter string="Loại vật tư" name="mtr_type" context="{'group_by':'mtr_type'}"/>
+                    </group>
                 </search>
             </field>
         </record>
@@ -29,7 +39,6 @@
                             <field name="order_id" readonly="1"/>
                         </group>
                         <group>
-                            <field name="position" placeholder="Vị trí sử dụng..." style="border: 1px solid #ced4da;"/>
                             <field name="supplier" placeholder="Nhà cung cấp..." style="border: 1px solid #ced4da;"/>
                             <field name="country" placeholder="Quốc gia..." style="border: 1px solid #ced4da;"/>
                             <field name="entry_date" placeholder="Ngày nhập" readonly="1"/>
@@ -37,23 +46,27 @@
                         </group>
                         <group>
                             <group string="Thông tin cơ bản">
-                                <field name="mtr_no" placeholder="Mã vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="name" placeholder="Mã vật tư..." style="border: 1px solid #ced4da;"/>
                                 <field name="mtr_type" placeholder="Chọn loại vật tư" style="border: 1px solid #ced4da;"/>
                                 <field name="mtr_name" placeholder="Tên vật tư..." style="border: 1px solid #ced4da;"/>
                                 <field name="mtr_code" placeholder="Mã nội bộ..." style="border: 1px solid #ced4da;"/>
                                 <field name="dimension" placeholder="Kích thước..." style="border: 1px solid #ced4da;"/>
                             </group>
                             <group string="Thông tin màu sắc">
-                                <field name="color_item" placeholder="Mã màu vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="color_item" string="Color#" placeholder="Mã màu vật tư..." style="border: 1px solid #ced4da;"/>
                                 <field name="color_name" placeholder="Tên màu..." style="border: 1px solid #ced4da;"/>
-                                <field name="color_set" placeholder="Bộ màu..." style="border: 1px solid #ced4da;"/>
-                                <field name="color_code" placeholder="Mã code màu..." style="border: 1px solid #ced4da;"/>
+                                <field name="color_set" placeholder="Bộ màu..." style="border: 1px solid #ced4da;"/>     
                             </group>
                         </group>
                         <group>
                             <group string="Số lượng và đơn giá">
-                                <field name="est_qty" placeholder="Số lượng ước tính" style="border: 1px solid #ced4da;"/>
-                                <field name="act_qty" placeholder="Số lượng thực tế" style="border: 1px solid #ced4da;"/>
+                                <field name="cons_qty" placeholder="Số lượng định mức" style="border: 1px solid #ced4da;"/>
+                                <field name="est_qty" placeholder="Số lượng đặt hàng" style="border: 1px solid #ced4da;"/>
+                                <field name="act_qty" placeholder="Số lượng đặt theo đợt" style="border: 1px solid #ced4da;"/>
+                                <field name="remaining_qty" placeholder="Số lượng còn lại" style="border: 1px solid #ced4da;"/>
+                                <field name="percent" widget="percentage" placeholder="Tỷ lệ % sử dụng" style="border: 1px solid #ced4da;"/>
+                            <!--   <field name="fct_qty" placeholder="Số lượng thực tế" style="border: 1px solid #ced4da;"/>--> 
+                                <field name="stock_qty" placeholder="Số lượng tồn kho" style="border: 1px solid #ced4da;"/>
                                 <field name="rate" placeholder="Đơn vị đo" style="border: 1px solid #ced4da;"/>
                                 <field name="price" readonly="1"/>
                             </group>
@@ -79,26 +92,41 @@
             <field name="name">material.line.tree</field>
             <field name="model">material.line</field>
             <field name="arch" type="xml">
-                <tree string="Vật tư" class="o_material_list_view">
-                    <field name="mtr_type" string="Phân loại"/>
-                    <field name="mtr_no" string="Mã vật tư"/>
-                    <field name="mtr_code" string="Code nhà cung cấp"/>
-                    <field name="mtr_name" string="Tên vật tư"/>
-                    <field name="dimension" string="Kích thước"/>
-                    <field name="color_item" string="Mã màu vật tư"/>
-                    <field name="color_name" string="Tên màu"/>
-                    <field name="color_set" string="Bộ màu"/>
-                    <field name="color_code" string="Mã code màu"/>
-                    <field name="est_qty" string="SL ước tính"/>
-                    <field name="act_qty" string="SL thực tế"/>
-                    <field name="rate" string="Đơn vị tính"/>
-                    <field name="price" string="Đơn giá" sum="Total"/>
-                    <field name="supplier" string="Nhà cung cấp"/>
-                    <field name="country" string="Quốc gia"/>
-                    <field name="cif_price" string="Giá CIF"/>
-                    <field name="fob_price" string="Giá FOB"/>
-                    <field name="exwork_price" string="Giá EXW"/>
-                    <field name="total" string="Tổng thành tiền" sum="Total Amount"/>
+                <tree string="Vật tư" class="o_program_list_view_product">
+                    <!-- Thông tin vật tư -->
+                    <field name="name" string="Mtr#" /> 
+                    <field name="mtr_type" string="Mtr Type" /> 
+                    <field name="mtr_name" string="Mtr Name" /> 
+                    <field name="mtr_code" string="Mtr Code" /> 
+
+                        <!-- Thông số kỹ thuật -->
+                    <field name="dimension" string="Dimension" /> 
+                    <field name="color_item" string="Color#" /> 
+                    <field name="color_name" string="Color Name" /> 
+                    <field name="color_set" string="Color Set"/> 
+                    
+                    <field name="rate" string="Unit" /> 
+                        
+                    <!-- Thông tin nhà cung cấp -->
+                    <field name="supplier_index" string="Supplier#"/>
+                    <field name="supplier" string="Supplier" /> 
+                    <field name="country" string="Country" optional="hide" />  
+
+                    <!-- Số lượng ước tính
+                    <field name="fct_qty" string="Fct.Qty" />-->
+                    <field name="cons_qty" string="Cons.Qty" />
+                    <field name="percent" widget="percentage" string="%" optional="hide"/>
+                    
+                    <field name="est_qty" string="Est.Qty" optional="hide" />
+                    <field name="act_qty" string="Act.Qty" optional="hide" />
+                    <field name="remaining_qty" string="Remain.Qty" optional="hide"/>
+                    <field name="stock_qty" string="Stock.Qty" optional="hide"/> 
+                    <!-- Thông tin giá -->
+                    <field name="price" string="Price" optional="hide" />
+                    <field name="cif_price" string="CIF Price" optional="hide" />
+                    <field name="fob_price" string="FOB Price" optional="hide" /> 
+                    <field name="exwork_price" string="EXW Price" optional="hide" /> 
+                    <field name="total" string="Total" optional="hide" />     
                 </tree>
             </field>
         </record>
@@ -109,6 +137,7 @@
             <field name="res_model">material.line</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="material_line_tree_view"/>
+            <field name="search_view_id" ref="material_line_search_view"/>
             <field name="context">{'create': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

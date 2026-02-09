@@ -159,6 +159,7 @@
 .dropdown-menu{
     border:none; important
 }
+
 .o_main_navbar .dropdown-menu.show{
 max-height: none !important; */
     padding-top: 2%;
@@ -169,6 +170,7 @@ max-height: none !important; */
     position: absolute;
     right: 0;
 }
+
 nav-container {
     float: left; */
     position: fixed;

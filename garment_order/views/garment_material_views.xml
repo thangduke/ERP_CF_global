@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- #################### Garment Material #################### -->
+    <!-- Search View for Garment Material -->
+    <record id="garment_material_view_search" model="ir.ui.view">
+        <field name="name">garment.material.view.search</field>
+        <field name="model">garment.material</field>
+        <field name="arch" type="xml">
+            <search string="Search Materials">
+                <field name="mtr_no"/>
+                <field name="mtr_code"/>
+                <field name="mtr_name"/>
+                <field name="supplier"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Supplier" name="group_by_supplier" context="{'group_by': 'supplier'}"/>
+                    <filter string="Material Type" name="group_by_mtr_type" context="{'group_by': 'mtr_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Form View for Garment Material -->
+    <record id="garment_material_view_form" model="ir.ui.view">
+        <field name="name">garment.material.view.form</field>
+        <field name="model">garment.material</field>
+        <field name="arch" type="xml">
+            <form string="Material">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="mtr_no"/>
+                        <h1>
+                            <field name="mtr_no" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="mtr_name"/>
+                            <field name="mtr_code"/>
+                            <field name="position"/>
+                        </group>
+                        <group>
+                            <field name="mtr_type"/>
+                            <field name="rate_id"/>
+                            <field name="dimension_id"/>
+                            <field name="supplier"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Material Colors" name="material_colors">
+                            <field name="color_id">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="color_code"/>
+                                    <field name="color" widget="color"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Consumption Lines" name="consumption_lines">
+                            <field name="consumption_line_ids" readonly="1">
+                                <tree>
+                                    <field name="style_id"/>
+                                    <field name="est_qty"/>
+                                    <field name="fct_qty"/>
+                                    <field name="act_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="PI Lines" name="pi_lines">
+                            <field name="pi_line_ids" readonly="1"/>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Detailed description of the material..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!-- Tree View for Garment Material -->
+    <record id="garment_material_view_tree" model="ir.ui.view">
+        <field name="name">garment.material.view.tree</field>
+        <field name="model">garment.material</field>
+        <field name="arch" type="xml">
+            <tree string="Materials">
+                <field name="mtr_no"/>
+                <field name="mtr_name"/>
+                <field name="mtr_code"/>
+                <field name="mtr_type"/>
+                <field name="supplier"/>
+                <field name="rate"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <!-- Action Window for Garment Material -->
+    <record id="garment_material_action" model="ir.actions.act_window">
+        <field name="name">Materials</field>
+        <field name="res_model">garment.material</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="garment_material_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new material
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Garment Material -->
+    <menuitem
+        id="garment_material_menu"
+        name="Materials"
+        parent="garment_order_menu_root"
+        action="garment_material_action"
+        sequence="40"/>
+
+    <!-- #################### Garment Dimension #################### -->
+
+    <record id="garment_dimention_view_tree" model="ir.ui.view">
+        <field name="name">garment.dimention.view.tree</field>
+        <field name="model">garment.dimention</field>
+        <field name="arch" type="xml">
+            <tree string="Dimensions" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="garment_dimention_action" model="ir.actions.act_window">
+        <field name="name">Dimensions</field>
+        <field name="res_model">garment.dimention</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <menuitem
+        id="garment_dimention_menu"
+        name="Dimensions"
+        parent="garment_order_menu_config"
+        action="garment_dimention_action"
+        sequence="10"/>
+
+</odoo>

@@ -34,7 +34,7 @@
     'depends': ['base', 'web', 'mail'],
     'data': [
         'views/responsive_web_menus.xml',
-        'views/web_responsive_home_action.xml',
+     #   'views/web_responsive_home_action.xml',
     ],
     'assets': {
         'web.assets_backend': [
@@ -50,7 +50,6 @@
             'responsive_web/static/src/imgcf/*',
         ]
     },
-    'post_init_hook': 'post_init_hook',
     'license': 'AGPL-3',
     'installable': True,
     'auto_install': False,

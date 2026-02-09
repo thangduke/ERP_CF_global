@@ -12,12 +12,12 @@ class EmployeeBase(models.Model):
     
     employee_index = fields.Char(string='Mã nhân sự', unique=True,  tracking=True)
     
-    department_id = fields.Many2one('employee.department', 'Phòng ban', tracking=True, ondelete='set null')
+    department_id = fields.Many2one('employee.department', 'Bộ phận', tracking=True, ondelete='set null')
     
-    position_id = fields.Many2one('employee.position', 'Vị trí công việc', required=True,
+    position_id = fields.Many2one('employee.position', 'Vị trí công việc',
                                   domain="[('department_id', '=', department_id)]", tracking=True)
     
-    position_type = fields.Many2one(related="position_id.position_type_id", store=True)
+    position_type = fields.Many2one('position.type', 'Vị trí công tác', store=True)
     
     job_title = fields.Char(string="Chức danh", related="position_id.name") 
     position_title = fields.Char(string="Chức danh", related="position_id.name")
@@ -86,7 +86,8 @@ class EmployeeBase(models.Model):
 
     company_id = fields.Many2one(related='user_id.company_id')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    user_image = fields.Image(related='user_id.image_1920')
+    user_image = fields.Image(related='user_id.image_1920', store=True)
+    image_1920 = fields.Image(related='user_id.image_1920', store=True)
 
     avatar_name = fields.Html(compute='_compute_avatar_name', string="Avatar & Name")
     avatar_name_job = fields.Html(compute='_compute_avatar_name_job', string="Avatar & Name & Job")
@@ -99,7 +100,7 @@ class EmployeeBase(models.Model):
          "Số căn cước công dân phải bao gồm 12 kí tự."),
         ('check_employee_index', 'UNIQUE(employee_index)', 'Đã tồn tại mã nhân sự này')]
         
-    @api.onchange('image_1920', 'name')
+    @api.depends('name', 'image_1920')
     def _compute_avatar_name(self):
         for record in self:
             avatar_url = "/web/image/employee.base/%s/image_1920" % record.id

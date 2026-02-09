@@ -1,0 +1,445 @@
+<templates xml:space="preserve">
+    <t t-name="warehouse_pro.StockDashboard" owl="1">
+        <div class="o_stock_dashboard container-fluid">
+            <div class="row">
+                <!-- ========== PHẦN 1: Bộ lọc (Filter) ========== -->
+                <div class="col-lg-2 px-2">
+                    <div class="p-3 sticky-top vh-100"
+                        style="z-index: 10;
+                                background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+                                border-right: 1px solid rgba(255, 255, 255, 0.15);">
+
+                        <!-- Title -->
+                        <h4 class="fw-bold mb-3" style="color: #eaf6fb;">Bộ lọc</h4>
+                        <!-- Page Switcher -->
+                        <div class="d-flex justify-content-around mb-3">
+                            <button t-att-class="state.page === 'page1' ? 'btn btn-primary w-50 me-1' : 'btn btn-secondary w-50 me-1'"
+                                    t-on-click="() => switchPage('page1')">
+                                NXT-Kho
+                            </button>
+                            <button t-att-class="state.page === 'page2' ? 'btn btn-primary w-50 ms-1' : 'btn btn-secondary w-50 ms-1'"
+                                    t-on-click="() => switchPage('page2')">
+                                NXT-CT
+                            </button>
+                            <button t-att-class="state.page === 'page3' ? 'btn btn-primary w-50 ms-1' : 'btn btn-secondary w-50 ms-1'"
+                                    t-on-click="() => switchPage('page3')">
+                                Báo cáo XNT
+                            </button>
+                        </div>
+
+                        <!-- Kho Filter (Page 1) -->
+                        <div t-if="state.page === 'page1'" class="mb-3">
+                            <label for="filter_store_id" class="form-label" style="color: #eaf6fb;">Kho:</label>
+                            <select id="filter_store_id" class="form-select" t-model="state.filter_store_id" t-on-change="onStoreChange" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563;">
+                                <option value=""  style="background-color: #ffffff; color: #000000;">Tất cả</option>
+                                <t t-foreach="state.available_stores" t-as="store" t-key="store.id">
+                                    <option t-att-value="store.id" style="background-color: #ffffff; color: #000000;"><t t-esc="store.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div t-if="state.page === 'page1'" class="mb-3">
+                            <label for="filter_shelf_id" class="form-label" style="color: #eaf6fb;">Kệ:</label>
+                            <select id="filter_shelf_id" class="form-select" t-model="state.filter_shelf_id" t-on-change="onShelfChange" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563;">
+                                <option value="" style="background-color: #ffffff; color: #000000;">Tất cả</option>
+                                <t t-foreach="state.available_shelves" t-as="shelf" t-key="shelf.id">
+                                    <option t-att-value="shelf.id" style="background-color: #ffffff; color: #000000;"><t t-esc="shelf.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div t-if="state.page === 'page1'" class="mb-3">
+                            <label for="filter_shelf_level_id" class="form-label" style="color: #eaf6fb;">Khoang:</label>
+                            <select id="filter_shelf_level_id" class="form-select" t-model="state.filter_shelf_level_id" t-on-change="applyFilters" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563;">
+                                <option value="" style="background-color: #ffffff; color: #000000;">Tất cả</option>
+                                <t t-foreach="state.available_shelf_levels" t-as="level" t-key="level.id">
+                                    <option t-att-value="level.id" style="background-color: #ffffff; color: #000000;"><t t-esc="level.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Chương trình Filter (Page 2) -->
+                        <div t-if="state.page === 'page2'" class="mb-3">
+                            <label for="filter_order_id" class="form-label" style="color: #eaf6fb;">Chương trình:</label>
+                            <select id="filter_order_id" class="form-select" t-model="state.filter_order_id" t-on-change="applyFilters" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563;">
+                                <option value=""  style="background-color: #ffffff; color: #000000;" >Tất cả</option>
+                                <t t-foreach="state.available_orders" t-as="order" t-key="order.id">
+                                    <option t-att-value="order.id" style="background-color: #ffffff; color: #000000;"><t t-esc="order.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <!-- Kho Filter (Page 3 - Báo cáo XNT) -->
+                        <div t-if="state.page === 'page3'" class="mb-3">
+                            <label for="filter_store_id_xnt" class="form-label" style="color: #eaf6fb;">Kho:</label>
+                            <select id="filter_store_id_xnt" class="form-select" t-model="state.filter_store_id" t-on-change="applyFilters" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563;">
+                                <option value=""  style="background-color: #ffffff; color: #000000;">Tất cả</option>
+                                <t t-foreach="state.available_stores" t-as="store" t-key="store.id">
+                                    <option t-att-value="store.id" style="background-color: #ffffff; color: #000000;"><t t-esc="store.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <!-- Thời gian Filter -->
+                        <div t-if="state.page === 'page3'" class="mb-3">
+                            <label for="filter_start_date" class="form-label" style="color: #eaf6fb;">Từ ngày:</label>
+                            <input type="date" id="filter_start_date" class="form-control" t-model="state.filter_start_date" t-on-change="applyFilters" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563; color-scheme: dark;"/>
+                        </div>
+                        <div t-if="state.page === 'page3'" class="mb-3">
+                            <label for="filter_end_date" class="form-label" style="color: #eaf6fb;">Đến ngày:</label>
+                            <input type="date" id="filter_end_date" class="form-control" t-model="state.filter_end_date" t-on-change="applyFilters" style="background-color: #2c3e50; color: #eaf6fb; border: 1px solid #4b5563; color-scheme: dark;"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Content Column -->
+                <div class="col-lg-10 px-2">
+                    <!-- KPI Cards -->
+                    <div class="row mb-4">
+                    <!-- Page 1 KPIs -->
+                    <t t-if="state.page === 'page1'">
+                        <div class="col-lg-3">
+                            <div class="stats-card flex-grow-1 shadow rounded p-4 text-white" 
+                                style="background: linear-gradient(135deg, #8a9eff 0%, #a3bffa 100%); cursor: pointer;">
+                                <div class="card-icon mb-3">
+                                    <i class="fa fa-archive text-success border-success fa-lg"></i>
+                                </div>
+                                <h3 style="font-weight: 700; font-size: 1rem;">Tổng số vật tư</h3>
+                                <div class="number" style="font-size: 2rem; font-weight: 800; color: #f0f4ff;">
+                                    <t t-esc="Math.floor(state.kpis.total_materials || 0)"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="stats-card flex-grow-1 shadow rounded p-4 text-white" 
+                                style="background: linear-gradient(135deg, #fbcf7a 0%, #fceabb 100%); cursor: pointer;">
+                                <div class="card-icon mb-3">
+                                    <i class="fa fa-cubes text-primary border-primary fa-lg"></i>
+                                </div>
+                                <h3 style="font-weight: 700; font-size: 1rem; color: #5a4d00;">Tổng tồn kho</h3>
+                                <div class="number" style="font-size: 2rem; font-weight: 800; color: #5a4d00;">
+                                    <t t-esc="(state.kpis.total_quantity || 0).toFixed(3).replace('.', ',')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <!-- Page 2 KPIs -->
+                    <t t-if="state.page === 'page2'">
+                        <div class="col-lg-3">
+                            <div class="stats-card flex-grow-1 shadow rounded p-4 text-white" 
+                                style="background: linear-gradient(135deg, #7bd5c5 0%, #a3e1d4 100%); cursor: pointer;">
+                                <div class="card-icon mb-3">
+                                    <i class="fa fa-exclamation-triangle text-warning border-warning fa-lg"></i>
+                                </div>
+                                <h3 style="font-weight: 700; font-size: 1rem; color: #1f4d4b;">Tổng sản phẩm theo CT</h3>
+                                <div class="number" style="font-size: 2rem; font-weight: 800; color: #1f4d4b;">
+                                    <t t-esc="(state.kpis.total_order_qty || 0)"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--
+                        <div class="col-lg-3">
+                            <div class="stats-card flex-grow-1 shadow rounded p-4 text-white" 
+                                style="background: linear-gradient(135deg, #ff7f87 0%, #ffb3b8 100%); cursor: pointer;">
+                                <div class="card-icon mb-3">
+                                    <i class="fa fa-times-circle text-danger border-danger fa-lg"></i>
+                                </div>
+                                <h3 style="font-weight: 700; font-size: 1rem; color: #660000;">Sản phẩm đã xuất</h3>
+                                <div class="number" style="font-size: 2rem; font-weight: 800; color: #660000;">
+                                    <t t-esc="(state.kpis.total_delivered_qty || 0)"/>
+                                </div>
+                            </div>
+                        </div>-->
+                    </t>
+                </div>
+
+                    <!-- Stock Lists (Page 2) 
+                    <div t-if="state.page === 'page2'" class="row mt-4 list-view-cards">
+                         Receive List 
+                        <div class="col-lg-4">
+                            <div class="table-card h-100">
+                                <h2 class="table-title">Danh sách phiếu nhập</h2>
+                                <div class="table-responsive mt-3">
+                                    <table class="table list-view-table">
+                                        <thead><tr><th>Phiếu nhập</th><th>Chương trình</th><th>Trạng thái</th></tr></thead>
+                                        <tbody>
+                                            <t t-if="!state.receive_list.length"><tr><td colspan="3" class="no-data">Không có dữ liệu.</td></tr></t>
+                                            <t t-foreach="state.receive_list" t-as="rec" t-key="rec.id">
+                                                <tr t-on-click="() => this.openReceiveRecord(rec.id)">
+                                                    <td><t t-esc="rec.name"/></td>
+                                                    <td><t t-esc="rec.order_id"/></td>
+                                                    <td><t t-esc="rec.state"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         Delivery List 
+                        <div class="col-lg-4">
+                           <div class="table-card h-100">
+                                <h2 class="table-title">Danh sách phiếu xuất</h2>
+                                <div class="table-responsive mt-3">
+                                    <table class="table list-view-table">
+                                        <thead><tr><th>Phiếu xuất</th><th>Chương trình</th><th>Trạng thái</th></tr></thead>
+                                        <tbody>
+                                            <t t-if="!state.delivery_list.length"><tr><td colspan="3" class="no-data">Không có dữ liệu.</td></tr></t>
+                                            <t t-foreach="state.delivery_list" t-as="del" t-key="del.id">
+                                                <tr t-on-click="() => this.openDeliveryRecord(del.id)">
+                                                    <td><t t-esc="del.name"/></td>
+                                                    <td><t t-esc="del.order_id"/></td>
+                                                    <td><t t-esc="del.state"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                         Adjustment List 
+                        <div class="col-lg-4">
+                            <div class="table-card h-100">
+                                <h2 class="table-title">Danh sách phiếu điều chỉnh</h2>
+                                <div class="table-responsive mt-3">
+                                    <table class="table list-view-table">
+                                        <thead><tr><th>Mã yêu cầu</th><th>Trạng thái</th><th>Ngày tạo</th></tr></thead>
+                                        <tbody>
+                                            <t t-if="!state.adjustment_list.length"><tr><td colspan="3" class="no-data">Không có dữ liệu.</td></tr></t>
+                                            <t t-foreach="state.adjustment_list" t-as="adj" t-key="adj.id">
+                                                <tr t-on-click="() => this.openAdjustmentRecord(adj.id)">
+                                                    <td><t t-esc="adj.name"/></td>
+                                                    <td><t t-esc="adj.state"/></td>
+                                                    <td><t t-esc="adj.date"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- Stock Table -->
+                    <div class="row mt-4">
+                        <div class="col-lg-12">
+                            <div class="table-card">
+                                <!-- Table for Page 1 (Warehouse View) -->
+                                <div t-if="state.page === 'page1'">
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <h2 class="table-title mb-0">Vật tư Nhập-Xuất-Tồn theo Kho</h2>
+
+                                        <div class="d-flex align-items-center">
+                                            <!-- Export Button -->
+                                            <button class="btn btn-primary btn-sm me-2" t-on-click="() => this.exportStockList('page1')">
+                                                <i class="fa fa-download"/> Export
+                                            </button>
+
+                                            <!-- Columns Button -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-eye"/> Columns
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <t t-foreach="Object.entries(state.columns)" t-as="col" t-key="col[0]">
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" t-on-click.prevent="() => toggleColumn(col[0])">
+                                                                <input type="checkbox" class="form-check-input" t-att-checked="col[1].visible"/>
+                                                                <span class="ms-2"><t t-esc="col[1].label"/></span>
+                                                            </a>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Search Bar -->
+                                    <div class="row justify-content-center my-4">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Lọc theo tên, loại, mã vật tư, nhà cung cấp..."
+                                                    t-model="state.stock_search_term"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive" >
+                                        <table class="table main-stock-table">
+                                            <thead style="position: sticky; top: 0; z-index: 1; "> 
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                        <th><t t-esc="header.label"/></th>
+                                                    </t>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-if="!filteredStockList.length">
+                                                    <tr class="text-center">
+                                                        <td t-att-colspan="tableHeaders.length + 1" class="no-data">Không có dữ liệu.</td>
+                                                    </tr>
+                                                </t>
+                                                <t t-foreach="filteredStockList" t-as="stock" t-key="stock.id">
+                                                    <tr t-on-click="() => this.openStockCard(stock.material_id[0])" style="cursor:pointer;">
+                                                        <td><t t-esc="stock_index + 1"/></td>
+                                                        <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                            <td t-att-title="stock[header.key]"><t t-esc="stock[header.key]"/></td>
+                                                        </t>
+                                                    </tr>
+                                                </t>                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Table for Page 2 (Program View) -->
+                                <div t-if="state.page === 'page2'">
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <h2 class="table-title mb-0">Vật tư Nhập-Xuất-Tồn theo Chương trình</h2>
+
+                                        <div class="d-flex align-items-center">
+                                            <!-- Export Button -->
+                                            <button class="btn btn-primary btn-sm me-2" t-on-click="() => this.exportStockList('page2')">
+                                                <i class="fa fa-download"/> Export
+                                            </button>
+
+                                            <!-- Columns Button -->
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-eye"/> Columns
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <t t-foreach="Object.entries(state.columns)" t-as="col" t-key="col[0]">
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" t-on-click.prevent="() => toggleColumn(col[0])">
+                                                                <input type="checkbox" class="form-check-input" t-att-checked="col[1].visible"/>
+                                                                <span class="ms-2"><t t-esc="col[1].label"/></span>
+                                                            </a>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Search Bar -->
+                                    <div class="row justify-content-center my-4">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Lọc theo tên, loại, mã vật tư, nhà cung cấp..."
+                                                    t-model="state.order_search_term"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive" >
+                                        <table class="table main-stock-table">
+                                            <thead style="position: sticky; top: 0; z-index: 1;">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                        <th><t t-esc="header.label"/></th>
+                                                    </t>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-if="!filteredOrderList.length">
+                                                    <tr class="text-center">
+                                                        <td t-att-colspan="tableHeaders.length + 1" class="no-data">Không có dữ liệu.</td>
+                                                    </tr>
+                                                </t>
+                                                <t t-foreach="filteredOrderList" t-as="order" t-key="order.id">
+                                                    <tr t-on-click="() => this.openStockListRecord(order.id)">
+                                                        <td><t t-esc="order_index + 1"/></td>
+                                                        <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                            <td t-att-title="order[header.key]"><t t-esc="order[header.key]"/></td>
+                                                        </t>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Table for Page 3 (XNT Report) -->
+                                <div t-if="state.page === 'page3'">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h2 class="table-title mb-0">Báo cáo Xuất-Nhập-Tồn</h2>
+                                        <div class="d-flex align-items-center">
+                                            <!-- Export Button -->
+                                            <button class="btn btn-primary btn-sm me-2" t-on-click="() => this.exportXntReport()">
+                                                <i class="fa fa-download"/> Export
+                                            </button>
+
+                                            <!-- Columns Button -->
+                                            <div class="dropdown me-2">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-eye"/> Columns
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <t t-foreach="Object.entries(state.columns)" t-as="col" t-key="col[0]">
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" t-on-click.prevent="() => toggleColumn(col[0])">
+                                                                <input type="checkbox" class="form-check-input" t-att-checked="col[1].visible"/>
+                                                                <span class="ms-2"><t t-esc="col[1].label"/></span>
+                                                            </a>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Search Bar -->
+                                    <div class="row justify-content-center my-4">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-lg" placeholder="Lọc theo tên vật tư, mã vật tư..."
+                                                    t-model="state.xnt_search_term" t-on-input="applyFilters"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive" >
+                                        <table class="table main-stock-table">
+                                            <thead style="position: sticky; top: 0; z-index: 1;">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                        <th><t t-esc="header.label"/></th>
+                                                    </t>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-if="!filteredXntReportList.length">
+                                                    <tr class="text-center">
+                                                        <td colspan="8" class="no-data">Không có dữ liệu.</td>
+                                                    </tr>
+                                                </t>
+                                                <t t-foreach="filteredXntReportList" t-as="line" t-key="line.material_id" t-foreach-index="line_index">
+                                                    <tr t-on-click="() => this.openStockCard(line.material_id)">
+                                                        <td><t t-esc="line_index + 1"/></td>
+                                                        <t t-foreach="tableHeaders" t-as="header" t-key="header.key">
+                                                            <td t-att-title="line[header.key]"><t t-esc="line[header.key]"/></td>
+                                                        </t>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
+

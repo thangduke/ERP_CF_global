@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="view_asset_status_search" model="ir.ui.view">
+            <field name="name">asset.status.search</field>
+            <field name="model">asset.status</field>
+            <field name="arch" type="xml">
+                <search string="Asset Status">
+                    <field name="name"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_asset_status_form" model="ir.ui.view">
+            <field name="name">asset.status.form</field>
+            <field name="model">asset.status</field>
+            <field name="arch" type="xml">
+                <form string="Asset Status">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" style="border: 1px solid #ced4da;"/>
+                                <field name="color" widget="color" style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" widget="many2one_avatar_user" readonly="1"/>
+                                <field name="date_create" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" style="border: 1px solid #ced4da;"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_asset_status_tree" model="ir.ui.view">
+            <field name="name">asset.status.tree</field>
+            <field name="model">asset.status</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Status" editable="bottom" class="o_general_list_view_product">
+                    <field name="name"/>
+                    <field name="color" widget="color"/>
+                    <field name="employee_id" widget="many2one_avatar_user" optional="show"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_asset_status" model="ir.actions.act_window">
+            <field name="name">Asset Status</field>
+            <field name="res_model">asset.status</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_asset_status_search"/>
+        </record>
+    </data>
+</odoo>

@@ -1,29 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="view_supplier_partner_search" model="ir.ui.view">
+        <field name="name">supplier.partner.search</field>
+        <field name="model">supplier.partner</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm nhà cung cấp">
+                <field name="name_supplier" string="Tên nhà cung cấp"/>
+                <field name="supplier_index" string="Mã nhà cung cấp"/>
+                <field name="phone" string="Số điện thoại"/>
+                <field name="email" string="Email"/>
+                <separator/>
+                <filter string="Đang hoạt động" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Quốc gia" name="country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- View for Supplier -->
     <record id="view_supplier_partner_form" model="ir.ui.view">
         <field name="name">supplier.partner.form</field>
         <field name="model">supplier.partner</field>
         <field name="arch" type="xml">
-            <form string="Nhà cung cấp">
-                <sheet>
+            <form string="Nhà cung cấp" create="0" edit="1">
+                <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                    <h1>
+                        Thêm nhà cung cấp mới
+                    </h1>
+                    <hr/>
                     <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                        <field name="address"/>
-                        <field name="phone"/>
-                        <field name="email"/>
-                        <field name="website"/>
-                        <field name="country_id"/>
-                        <field name="city"/>
-                        <field name="active"/>
-                        <field name="color" widget="color"/>
+                        <field name="name_supplier" placeholder="Tên nhà cung cấp..."/>
                     </group>
                     <group>
-                        <field name="employee_id"/>
+                        <group string="Thông tin liên hệ">
+                            <field name="supplier_index" placeholder="Mã nhà cung cấp..." style="border: 1px solid #ced4da;"/>
+                            <field name="phone" placeholder="Số điện thoại..." style="border: 1px solid #ced4da;"/>
+                            <field name="email" placeholder="Email..." style="border: 1px solid #ced4da;"/>
+                            <field name="website" placeholder="Website..." style="border: 1px solid #ced4da;"/>
+                        </group>
+                        <group string="Địa chỉ">
+                            <field name="address" placeholder="Địa chỉ chi tiết..." style="border: 1px solid #ced4da;"/>
+                            <field name="country_id" style="border: 1px solid #ced4da;"/>
+                            <field name="city" placeholder="Thành phố..." style="border: 1px solid #ced4da;"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin khác">
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                     <group>
                         <field name="avatar_name_job" readonly="1"/>
                         <field name="date_create" readonly="1"/>
                     </group>
+                    <div style="text-align: right; padding-top: 20px;">
+                        <button special="save" class="btn btn-success"><i class="fa fa-check"/> Lưu</button>
+                        <span style="color: white; padding-left:15px;"></span>
+                        <button special="cancel" class="btn btn-secondary ms-2"><i class="fa fa-undo"/> Hủy bỏ</button>
+                    </div>
                 </sheet>
             </form>
         </field>
@@ -33,14 +67,14 @@
         <field name="name">supplier.partner.tree</field>
         <field name="model">supplier.partner</field>
         <field name="arch" type="xml">
-            <tree string="Nhà cung cấp">
-                <field name="name"/>
-                <field name="code"/>
+            <tree string="Nhà cung cấp" class="o_general_list_view_product">
+                <field name="supplier_index"/>
+                <field name="name_supplier"/>
                 <field name="city"/>
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="active"/>
+                <field name="active" widget="boolean_toggle"/>
             </tree>
         </field>
     </record>
@@ -49,5 +83,6 @@
         <field name="name">Nhà cung cấp</field>
         <field name="res_model">supplier.partner</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_supplier_partner_search"/>
     </record>
 </odoo>

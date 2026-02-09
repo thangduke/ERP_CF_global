@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="view_usercfg_groups_search" model="ir.ui.view">
+        <field name="name">res.groups.usercfg.search</field>
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <search string="Groups">
+                <field name="name" filter_domain="['|', ('full_name','ilike',self), ('category_id','ilike',self)]" string="Group"/>
+                <separator orientation="vertical"/>
+                <field name="share"/>
+                <filter name="filter_no_share" string="Internal Groups" domain="[('share','=',False)]"/>
+                <group expand="1" string="Nhóm">
+                    <filter name="group_module" string="Module" domain="[]" context="{'group_by': 'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_usercfg_groups_form" model="ir.ui.view">
+        <field name="name">res.groups.usercfg.form</field>
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <form string="Groups" create="0" >
+                <sheet style="max-width: 70%; margin-right: auto; margin-left: auto;">
+                <div class="oe_title">
+                    <label for="category_id" string="Ứng dụng" class="oe_edit_only"/>
+                    <h1><field name="category_id" readonly="1" placeholder="Tên vai trò..."/></h1>
+                </div>
+                <div class="oe_title">
+                    <label for="name" string="Vai trò" class="oe_edit_only"/>
+                    <h1><field name="name"  readonly="1"/></h1>
+                </div>
+                    <notebook>
+                        <page string="Thành viên">
+                            <field name="users" context="{'search_default_filter_no_share':1}" nolabel="1">
+                                <tree>
+                                    <field name="avatar_128" widget="image" string="Ảnh đại diện" class="oe_avatar" optional="hide"/>
+                                    <field name="name" string="Tên"/>
+                                    <field name="login" string="Tên đăng nhập"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <div style="text-align: right; padding-top: 20px;">
+                        <button  special="save" class="btn btn-success " ><i class="fa fa-check" />Lưu</button>
+                        <span style="padding-left:15px;"></span>
+                        <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_usercfg_groups_tree" model="ir.ui.view">
+        <field name="name">res.groups.usercfg.tree</field>
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <tree string="Groups" expand="1">
+                <field name="full_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_access_right_account" model="ir.actions.act_window">
+            <field name="name">Phân quyền tài khoản</field>
+            <field name="res_model">res.groups</field>
+            <field name="domain">[('category_id.name', 'in', ['Employee','Ứng dụng Tài Khoản', 'Ứng dụng Nhân Viên', 'Ứng dụng Đơn Hàng', 'Ứng dụng Kho Vật Tư', 'Ứng dụng Kho Thành Phẩm', 'Ứng dụng Thư viện thiết kế','Ứng dụng Quản lý tài sản'])]</field>
+            <field name="context">{'search_default_group_module': 1}</field>
+             <field name="search_view_id" ref="view_usercfg_groups_search"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_usercfg_groups_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_usercfg_groups_form')})]"/>
+    </record>
+    <!-- -->
+
+
+    <record id="view_model_access_right_form" model="ir.ui.view">
+            <field name="name">ir.model.access_right.form</field>
+            <field name="model">ir.model</field>
+            <field name="arch" type="xml">
+                <form >
+                  <sheet>
+                    <group>
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="modules"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Phân quyền" name="access_rights">
+                            <field name="access_ids">
+                                <tree string="Access Rights" editable="top"
+                                      decoration-warning="not group_id and
+                                                         (perm_read or perm_write or
+                                                          perm_create or perm_unlink)">
+                                    <field name="group_id"/>
+                                    <field name="perm_read"/>
+                                    <field name="perm_write"/>
+                                    <field name="perm_create"/>
+                                    <field name="perm_unlink"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="view_model_access_right_tree" model="ir.ui.view">
+            <field name="name">ir.model.access_right.tree</field>
+            <field name="model">ir.model</field>
+            <field name="arch" type="xml">
+                <tree >
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+   <!-- Search View for ir.model -->
+    <record id="view_model_access_right_search" model="ir.ui.view">
+        <field name="name">ir.model.search</field>
+        <field name="model">ir.model</field>
+        <field name="arch" type="xml">
+            <search string="Search Models">
+                <field name="name" string="Name"/>
+                <field name="model" string="Model"/>
+                <field name="modules" string="Modules"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_module" string="Module" context="{'group_by': 'modules'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_access_right" model="ir.actions.act_window">
+            <field name="name">Phân quyền thao tác</field>
+            <field name="res_model">ir.model</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_model_access_right_search"/>
+            <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_model_access_right_tree')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('view_model_access_right_form')})]"/>
+        </record>
+</odoo>

@@ -24,6 +24,7 @@
         'wizard/change_main_info.xml',
         'wizard/change_extra_info.xml',
         'wizard/change_managers.xml',
+        'wizard/employee_import_wizard_views.xml',
     
         'data/employee_update_state.xml',
 
@@ -35,6 +36,7 @@
             'Employee/static/src/fields/**/*',
             'Employee/static/src/views/*',
             'Employee/static/src/xml/*',
+            'Employee/static/src/js/button_tree_view.js',
             'Employee/static/src/components/**/*',
         ],
     },

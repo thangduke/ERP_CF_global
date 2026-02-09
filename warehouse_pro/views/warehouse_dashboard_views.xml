@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_warehouse_dashboard_stock_summary_tree" model="ir.ui.view">
+        <field name="name">warehouse.dashboard.stock.summary.tree</field>
+        <field name="model">warehouse.dashboard</field>
+        <field name="arch" type="xml">
+            <tree string="Báo cáo Nhập - Xuất - Tồn Kho">
+                <field name="product_id"/>
+                <field name="store_id"/>
+
+                <field name="qty_open"/>
+                <field name="amount_open"/>
+
+                <field name="qty_in"/>
+                <field name="amount_in"/>
+
+                <field name="qty_out"/>
+                <field name="amount_out"/>
+
+                <field name="qty_close"/>
+                <field name="amount_close"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_warehouse_dashboard_stock_summary" model="ir.actions.act_window">
+        <field name="name">Tổng hợp Nhập - Xuất - Tồn</field>
+        <field name="res_model">warehouse.dashboard</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+</odoo>

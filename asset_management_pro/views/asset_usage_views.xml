@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_asset_usage_form" model="ir.ui.view">
+            <field name="name">asset.usage.form</field>
+            <field name="model">asset.usage</field>
+            <field name="arch" type="xml">
+                <form string="Đơn vị sử dụng">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name"  placeholder="Tên đơn vị sử dụng..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" widget="many2one_avatar_user" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"  placeholder="Mô tả đơn vị sử dụng..." style="border: 1px solid #ced4da;"/>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_asset_usage_unit_tree" model="ir.ui.view">
+            <field name="name">asset.usage.tree</field>
+            <field name="model">asset.usage</field>
+            <field name="arch" type="xml">
+                <tree string="Đơn vị sử dụng" class="o_general_list_view_product" editable="bottom" create="1">
+                    <field name="name"  string="ĐƠN VỊ SỬ DỤNG"/>
+                    <field name="employee_id" widget="many2one_avatar_user" string="NGƯỜI TẠO"/>
+                    <field name="active" string="ACTIVE" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_asset_usage" model="ir.actions.act_window">
+            <field name="name">Đơn vị sử dụng</field>
+            <field name="res_model">asset.usage</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

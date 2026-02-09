@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.module.category" id="module_category_user_cfg">
+            <field name="name">Ứng dụng Tài Khoản</field>
+            <field name="sequence">210</field>
+        </record>
+
+        <record id="group_user_cfg_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_user_cfg"/>
+            <field name="implied_ids" eval="[(6, 0, [ref('base.group_user')])]"/>
+        </record>
+
+        <record id="group_user_cfg_admin" model="res.groups">
+            <field name="name">Quản trị viên</field>
+            <field name="category_id" ref="module_category_user_cfg"/>
+            <field name="implied_ids" eval="[(4, ref('group_user_cfg_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+    </data>
+</odoo>

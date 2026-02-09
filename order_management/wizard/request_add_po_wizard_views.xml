@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_request_add_po_wizard_form" model="ir.ui.view">
+        <field name="name">request.add.po.wizard.form</field>
+        <field name="model">request.add.po.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Gửi yêu cầu tạo thêm PO">
+                <group>
+                    <field name="supplier_id" readonly="1" placeholder="Chọn nhà cung cấp...."/>
+                    <field name="allowed_approval_ids" invisible="1" placeholder="Chọn người duyệt...."/>
+                    <field name="po_id" readonly="1"  style="border: 1px solid #ced4da; padding-left: 2px;" placeholder="Chọn PO...."/>
+                    <field name="approval_ids" widget="many2many_avatar_user"  style="border: 1px solid #ced4da; padding-left: 2px;" placeholder="Chọn người duyệt...."/>
+                    <field name="entry_date" readonly="1"  style="border: 1px solid #ced4da; padding-left: 2px;" placeholder="Chọn ngày nhập...."/>
+                    <field name="approval_note" placeholder="Nhập ghi chú gửi người duyệt..."  style="border: 1px solid #ced4da; padding-left: 2px;"/>
+                   
+                </group>
+                <separator string="Danh sách vật tư đặt hàng"/>
+                <div style="overflow-x: auto; max-width: 100%; height: 500px; overflow-y: auto;">
+                    <field name="line_ids" context="{'default_supplier_id': supplier_id}">
+                        <tree editable="bottom" class="o_program_list_view_product" create="True"  >
+                            <!-- Thông tin vật tư -->
+                            <field name="material_line_id" string="Mtr#" help="Mã vật tư" domain="[('supplier', '=', context.get('default_supplier_id'))]"/> 
+                            <field name="mtr_type" string="Mtr Type" help="Loại vật tư"/> 
+                            <field name="mtr_code" string="Mtr Code" help="Mã vật tư"/>
+                            <field name="mtr_name" string="Mtr Name" help="Tên vật tư"/> 
+                            <field name="rate" string="Unit" help="Đơn vị tính"/>         
+                                <!-- Thông số dimension theo Style(size) -->
+                            <field name="dimension" string="Dimension" help="Kích thước"/> 
+                            <!-- Thông tin màu sắc vật tư -->
+                            <field name="color_item" string="Color#" help="Mã item màu"/>
+                            <field name="color_code" string="Color Code" help="Mã màu" optional="hide"/> 
+                            <field name="color_name" string="Color Name" help="Tên màu"/> 
+                            <field name="color_set" string="Color Set" help="Bộ màu"/> 
+                            <!-- Thông tin nhà cung cấp -->
+                            <field name="supplier" string="Supplier" help="Nhà cung cấp"/>
+                            <field name="country" string="Country" optional="hide" />
+                            <!-- Thông số định mức theo style(Color,size) -->
+
+                            <field name="est_qty" string="Est.Qty" readonly="1"/>
+                            <field name="remaining_qty"  string="Remain.Qty" readonly="1" />
+                            <field name="act_qty" string="PO.Qty" />
+                        </tree>
+                    </field>
+                </div>
+                <footer>
+                    <button string="Tạo yêu cầu đặt hàng"
+                            name="action_confirm"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Hủy" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

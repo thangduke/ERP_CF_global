@@ -11,76 +11,55 @@ class StoreList(models.Model):
     name = fields.Char(string="Tên kho", required=True)
     # Liên kết model danh sách kho 
     shelf_ids = fields.One2many('shelf.list', 'store_id', string="Danh sách kệ hàng")
+    shelf_level_ids = fields.One2many('shelf.level', 'store_id', string="Các khoang")
+    
+    stock_summary_ids = fields.One2many(
+        'material.stock.summary',
+        'store_id',
+        string="Vật tư trong kho (chưa gán kệ)",)
+    #    domain=[('shelf_id', '=', False)])
+    # Trường để lưu mã kho hàng
+    filtered_stock_summary_ids = fields.One2many(
+        'material.stock.summary',
+        'store_id',
+        string="Vật tư chưa gán kệ",
+        compute='_compute_filtered_lines',
+        inverse='_inverse_filtered_lines',
+        store=False
+    )
+
+    @api.depends('stock_summary_ids.shelf_id')
+    def _compute_filtered_lines(self):
+        for rec in self:
+            rec.filtered_stock_summary_ids = rec.stock_summary_ids.filtered(lambda l: not l.shelf_id)
+
+    def _inverse_filtered_lines(self):
+        for rec in self:
+            lines_with_shelf = rec.stock_summary_ids.filtered(lambda l: l.shelf_id)
+            rec.stock_summary_ids = lines_with_shelf + rec.filtered_stock_summary_ids
+            
     
     @api.model
     def _get_employee_default(self):
         employee = self.env['employee.base'].search([('user_id', '=', self.env.uid)], limit=1)
         return employee.id if employee else False
+    
     image_128 = fields.Image("Image 128", max_width=128, max_height=128, store=True)
+    
     employee_id = fields.Many2one(
         'employee.base', 'Người tạo',
         default=lambda self: self._get_employee_default(), store=True
     )
+    
     store_index = fields.Char(string='Mã kho hàng')
-    # Liên kết model danh sách vật tư trong kho
-    grouped_line_ids = fields.One2many(
-        'shelf.material.line.summary', 'stock_id',
-        string='Vật tư đã gộp theo kho',
-        compute='_compute_grouped_line_ids',
-        store=False
-    )
-
-    def _compute_grouped_line_ids(self):
-        for store in self:
-            self.env['shelf.material.line.summary'].search([('stock_id', '=', store.id)]).unlink()
-            group_dict = {}
-            # Lấy tất cả vật tư trong các kệ thuộc kho này
-            all_lines = self.env['shelf.material.line'].search([('stock_id', '=', store.id)])
-            for line in all_lines:
-                key = (
-                    line.position,
-                    line.mtr_no,
-                    line.mtr_type.id if line.mtr_type else False,
-                    line.mtr_code,
-                    line.mtr_name,
-                    line.dimension,
-                    line.color_item,
-                    line.color_name,
-                    line.color_set,
-                    line.color_code,
-                )
-                if key not in group_dict:
-                    group_dict[key] = {
-                        'stock_id': store.id,
-                        'mtr_no': line.mtr_no,
-                        'position': line.position,
-                        'mtr_type': line.mtr_type.id if line.mtr_type else False,
-                        'mtr_code': line.mtr_code,
-                        'mtr_name': line.mtr_name,
-                        'dimension': line.dimension,
-                        'color_item': line.color_item,
-                        'color_name': line.color_name,
-                        'color_set': line.color_set,
-                        'color_code': line.color_code,
-                        'est_qty': 0,
-                        'act_qty': 0,
-                        'rate': line.rate,
-                        'supplier': line.supplier,
-                        'country': line.country,
-                    }
-                group_dict[key]['est_qty'] += line.est_qty or 0
-                group_dict[key]['act_qty'] += line.act_qty or 0
-            for vals in group_dict.values():
-                self.env['shelf.material.line.summary'].create(vals)
-            store.grouped_line_ids = self.env['shelf.material.line.summary'].search([('stock_id', '=', store.id)])
-              
     
     avatar_name_job = fields.Html(related='employee_id.avatar_name_job', string="Người tạo")
 
     date_create = fields.Datetime(string="Ngày tạo", default=fields.Datetime.now, readonly=True)
 
     active = fields.Boolean('Active', default=True)
-    address = fields.Text(string='Địa chỉ')
+    company= fields.Char(string='Công ty', help='Tên công ty mà kho hàng thuộc về')
+    address = fields.Char(string='Địa chỉ')
     phone = fields.Char(string='Số điện thoại')
     description = fields.Text('Mô tả')
     description_display = fields.Text('Mô tả', compute='_compute_description_display')
@@ -90,7 +69,6 @@ class StoreList(models.Model):
         compute='_compute_total_shelf',
         store=True,
     )
-
 
     @api.depends('shelf_ids')
     def _compute_total_shelf(self):
@@ -114,6 +92,8 @@ class StoreList(models.Model):
                 if self.search_count(domain) > 0:
                     raise ValidationError('Tên kho "%s" đã tồn tại!' % record.name)
                 
+                
+    # region (phần 2) : Bộ lọc tìm kiếm 
     search_text = fields.Char(string='Search')
     search_active = fields.Boolean(string='Search Active', default=False)
 
@@ -131,7 +111,6 @@ class StoreList(models.Model):
         self.ensure_one()
         self.search_text = False
         self.search_active = False
-
         return {}
 
     @api.onchange('search_text')
@@ -140,7 +119,40 @@ class StoreList(models.Model):
         if not self.search_text and self.search_active:
             self.clear_search()
     
+    
+    # endregion
+    
     def action_export(self):
         """Export danh sách vật tư trong kệ"""
         self.ensure_one()
         return {}
+    
+    def action_assign_location(self):
+        """Mở wizard gán kệ cho vật tư"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Gán kệ cho vật tư',
+            'res_model': 'assign.shelf.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_store_id': self.id,
+            }
+        }
+        
+    def action_create_shelf(self):
+        """
+        Mở form view để tạo một kệ mới, với kho mặc định là kho hiện tại.
+        """
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tạo kệ mới',
+            'res_model': 'shelf.list',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_store_id': self.id,
+            }
+        }

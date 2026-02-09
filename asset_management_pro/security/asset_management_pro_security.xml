@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="module_category_asset_management_pro" model="ir.module.category">
+            <field name="name">Ứng dụng Quản lý tài sản</field>
+            <field name="description">Quản lý tài sản, loại tài sản, vị trí,...</field>
+            <field name="sequence">5</field>
+        </record>
+
+        <record id="group_asset_management_pro_user" model="res.groups">
+            <field name="name">Người dùng</field>
+            <field name="category_id" ref="asset_management_pro.module_category_asset_management_pro"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_asset_management_pro_manager" model="res.groups">
+            <field name="name">Quản trị viên</field>
+            <field name="category_id" ref="asset_management_pro.module_category_asset_management_pro"/>
+            <field name="implied_ids" eval="[(4, ref('asset_management_pro.group_asset_management_pro_user'))]"/>
+        </record>
+    </data>
+</odoo>

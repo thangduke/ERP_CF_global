@@ -2,11 +2,11 @@ from odoo import models, fields, api, _
 
 class Department(models.Model):
     _name = "employee.department"
-    _description = "Phòng ban"
+    _description = "Bộ phận"
 
-    name = fields.Char(string='Tên phòng ban', required=True)
+    name = fields.Char(string='Tên Bộ phận', required=True)
     sequence = fields.Integer('Thứ tự')
-    department_code = fields.Char('Mã phòng ban', required=True)
+    department_code = fields.Char('Mã Bộ phận', required=True)
     active = fields.Boolean('Active', default=True)
     
     description = fields.Text('Mô tả')

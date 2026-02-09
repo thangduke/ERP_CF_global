@@ -2,6 +2,7 @@ from odoo import models, fields , api, _
 
 class Factory(models.Model):
     _name = 'factory.partner'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Đơn vị sản xuất'
 
     name = fields.Char(string='Tên đơn vị sản xuất', required=True)
@@ -14,7 +15,6 @@ class Factory(models.Model):
     city = fields.Char(string='Thành phố')
     
     active = fields.Boolean(string='Kích hoạt', default=True)
-    color = fields.Integer (string="Màu sắc",)
     
     # Thông tin người tạo
     @api.model
@@ -27,3 +27,7 @@ class Factory(models.Model):
     avatar_name_job = fields.Html(related='employee_id.avatar_name_job', string="Người tạo")
     
     date_create = fields.Datetime(string='Ngày tạo', default=fields.Datetime.now, readonly=True)
+    
+    _sql_constraints = [
+            ('name_factory_unique', 'unique(name)', 'Tên đơn vị sản xuất đã tồn tại!')
+        ]

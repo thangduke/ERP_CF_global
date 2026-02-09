@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="view_program_customer_search" model="ir.ui.view">
+            <field name="name">program.customer.search</field>
+            <field name="model">program.customer</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm định mức khách hàng">
+                    <field name="position" string="Position"/>
+                    <field name="mtr_type"/>
+                    <field name="mtr_no" string="Mtr#" />
+                    <field name="mtr_name"/>
+                    <field name="mtr_code"/>
+                    <field name="color_item"/>
+                    <field name="dimension"/>
+                    <field name="supplier"/>
+                    <group expand="1" string="Lọc theo Style">
+                        <filter name="filter_color_size" string="Style" domain="[]" context="{'group_by': 'color_size_ids'}"/>
+                    </group>
+                    <group expand="0" string="Group By">
+                        <filter string="Lọc theo chương trình" name="warehouse_order_ids" context="{'group_by': 'warehouse_order_ids'}"/>
+                        <filter string="Nhà cung cấp" name="supplier" context="{'group_by': 'supplier'}"/>
+                        <filter string="Lọc theo Style" name="color_size_ids" context="{'group_by': 'color_size_ids'}"/>
+                        <filter string="Người tạo" name="create_uid" context="{'group_by': 'create_uid'}"/>
+                    </group>
+                    <filter name="filter_warehouse_order_ids" string="Vật tư theo chương trình" domain="[]" context="{'group_by': 'warehouse_order_ids'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <!-- Form View - Chỉnh sửa vật tư + định mức đẹp, hiện đại -->
+        <record id="view_program_customer_form" model="ir.ui.view">
+            <field name="name">program.customer.form</field>
+            <field name="model">program.customer</field>
+            <field name="arch" type="xml">
+                <form string="Chi tiết Vật tư - Định mức" class="o_form_narrow">
+                    <sheet style="max-width: 100%; height: auto; margin-left: 10px; padding: 0; background-color: #f8f9fa" invisible="id == False">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <group string="Thông tin vật tư">
+                                    <field name="name" string="Mtr#" readonly="1"/>
+                                    <field name="program_customer_line_id" string="Mtr_no" help="Chọn vật tư gốc" 
+                                        style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                    <field name="mtr_type" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="mtr_code" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="mtr_name" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="rate" style="border: 1px solid #ced4da; width: 100%;"/>
+                                </group>
+                            </div>
+                            <div class="col-lg-4">
+                                <group string="Màu sắc/Kích thước vật tư">
+                                    <field name="material_color_id" style="border: 1px solid #ced4da; width: 100%;" help="Chọn màu sắc vật tư"/>
+                                    <field name="color_code" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="color_name" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="color_set" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="dimension_id" style="border: 1px solid #ced4da; width: 100%;"/>
+                                </group>
+                            </div>
+                            <div class="col-lg-4">
+                                <group string="Thông tin khác">
+                                    <field name="contextual_warehouse_order_id" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="contextual_color_size_id" string="Style (Màu/Size)" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="supplier" style="border: 1px solid #ced4da; width: 100%;" help="Chọn nhà cung cấp"/>
+                                    <field name="country" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    <field name="total" invisible="1"/>
+                                </group>
+                            </div>
+                        </div>
+
+                        <notebook>
+                            <page string="Thông tin chi tiết">
+                                <group col="3">
+                                    <group string="Định mức theo size">
+                                        <field name="norm_line_style_ids" string=" " class="o_program_list_view_product"
+                                            context="{
+                                                    'default_program_customer_id': id,
+                                                    'default_color_size_id': contextual_color_size_id
+                                            }">
+                                            <tree editable="bottom" class="o_program_list_view_product" >
+                                                <field name="size_id"/>
+                                                <field name="consumption" class="o_text_overflow"/>
+                                                <field name="position" class="o_text_overflow"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+
+                                    <group string="Giá FOB/CIF/EXW theo dimension">
+                                        <field name="price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="cif_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="fob_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="exwork_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    </group>
+
+                                    <group string="Tổng Giá FOB/CIF/EXW ">
+                                        <field name="total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="cif_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="fob_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="exwork_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    </group>                                    
+                                </group>
+                            </page>
+                            <page string="Định mức các chương trình và style(Màu/Size)">
+                                <group >
+                                    <group string="Thông tin khác" colspan="1">
+                                        <field name="warehouse_order_ids" readonly="1" widget="many2many_tags" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="color_size_ids" string="Style (Màu/Size)" widget="many2many_tags" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>   
+                                    </group>                                
+                                    <group string="Định mức theo size">
+                                        <field name="norm_line_ids" string=" " class="o_program_list_view_product" >
+                                            <tree editable="bottom" create="false" class="o_program_list_view_product" >
+                                                <field name="color_size_id" />
+                                                <field name="size_id"/>
+                                                <field name="consumption"/>
+                                                <field name="position"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <sheet style="max-width: 100%; height: auto; margin-left: 10px; padding: 0; background-color: #f8f9fa" invisible="id" >
+                        <div class="o_row">
+                            <div class="col-3 o_group" style="margin-right:5px;">
+                                <group string="Thông tin vật tư">
+                                    <field name="name" string="Mtr#" readonly="1"/>
+                                    <field name="program_customer_line_id" string="Mtr_no" help="Chọn vật tư gốc" style="border: 1px solid #ced4da; width: 100%;" 
+                                        placeholder="Chọn vật tư gốc...." />
+                                    <field name="mtr_type" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn loại vật tư...." />
+                                    <field name="mtr_code" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn mã vật tư...." />
+                                    <field name="mtr_name" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn tên vật tư...." />
+                                    <field name="rate" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn tỷ lệ...." />                             
+                                </group>
+                            </div>
+                            <div class="col-3 o_group" style="margin-right:5px;">
+                                <group string="Màu sắc/Kích thước vật tư">
+                                    <field name="material_color_id" style="border: 1px solid #ced4da; width: 100%;" help="Chọn màu sắc vật tư"
+                                        placeholder="Chọn màu sắc vật tư...." />
+                                    <field name="color_code" readonly="1" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn mã màu...." />
+                                    <field name="color_name" readonly="1" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn tên màu...." />           
+                                    <field name="color_set" readonly="1" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn bộ màu...." />
+                                    <field name="dimension_id" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn kích thước...." />
+                                </group>
+                            </div>
+                            
+                            <div class="col-3 o_group">
+                                <group string="Thông tin khác" >
+                                    <field name="warehouse_order_ids" readonly="1" widget="many2many_tags" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn kho...." />
+                                    <field name="color_size_ids" string="Style (Màu/Size)" readonly="1" widget="many2many_tags" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn style...." />
+                                    <field name="supplier" style="border: 1px solid #ced4da; width: 100%;" help="Chọn nhà cung cấp" placeholder="Chọn nhà cung cấp...." />
+                                    <field name="country" readonly="1" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn quốc gia...." /> 
+                                </group>
+                            </div>
+                        </div>
+                        <notebook>
+                            <page string="Thông tin chi tiết">
+                                <group col="2">
+                                    <!--
+                                    <group string="Định mức theo size">
+                                        <field name="norm_line_ids" string=" " class="o_program_list_view_product">
+                                            <tree editable="bottom" create="False">
+                                                <field name="color_size_id" readonly="1"/>
+                                                <field name="size_id" />                                               
+                                                <field name="consumption"/>
+                                            </tree>
+                                        </field>
+                                    </group>-->
+                                    <group string="Giá FOB/CIF/EXW theo dimension">
+                                        <field name="price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="cif_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="fob_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="exwork_price" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    </group>
+
+                                    <group string="Tổng Giá FOB/CIF/EXW ">
+                                        <field name="total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="cif_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="fob_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <field name="exwork_total" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                    </group>  
+                                </group>
+                            </page>
+                        </notebook>
+                        <div style="padding-bottom:25px;"/>
+                            <!-- Chatter log lịch sử và chỉ có quyền Admin hệ thống mới được xem -->
+                            <div class="oe_chatter" string="Lịch sử" groups="order_management.group_order_management_manager">
+                            <h3>Log Lịch sử</h3>
+                                <field name="message_follower_ids" widget="mail_followers"/>
+                                <field name="message_ids" widget="mail_thread"/>
+                            </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View editable="bottom"-->
+        <record id="view_program_customer_tree" model="ir.ui.view">
+            <field name="name">program.customer.tree</field>
+            <field name="model">program.customer</field>
+            <field name="arch" type="xml">
+                <tree string="Định mức khách hàng" class="o_program_list_view_product"  create="true" delete="true">
+                    <!-- Thông tin vật tư -->
+                    <field name="position" string="Position" optional="hide" />
+                    <field name="mtr_type" string="Mtr Type" />
+                    <field name="name" string="Mtr#" /> 
+                    <field name="mtr_code" string="Mtr Code" />
+                    <field name="mtr_name" string="Mtr Name" /> 
+                    <field name="rate" string="Unit" />
+                    <field name="dimension" string="Dimension" />
+
+                    <!-- Thông số kỹ thuật -->
+                    <field name="color_item" string="Color#" /> 
+                    <field name="color_code" string="Color Code" optional="hide" />
+                    <field name="color_name" string="Color Name" /> 
+                    <field name="color_set" string="Color Set"/> 
+                     
+                    <!-- Thông tin nhà cung cấp -->
+                    <field name="supplier_index" string="Supplier#" />
+                    <field name="supplier" string="Supplier" />   
+                    <field name="country" string="Country" optional="hide" />
+                    <field name="price" string="Price" optional="hide"/>
+                    <field name="cif_price" string="CIF Price" optional="hide"/>
+                    <field name="fob_price" string="FOB Price" optional="hide"/>
+                    <field name="exwork_price" string="EXW Price" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_program_customer" model="ir.actions.act_window">
+            <field name="name">Định mức khách hàng</field>
+            <field name="res_model">program.customer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'create': True}</field>        <!--, 'search_default_filter_color_size': 1 -->  
+            <field name="search_view_id" ref="view_program_customer_search"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form View for Garment Costing -->
+    <record id="garment_costing_view_form" model="ir.ui.view">
+        <field name="name">garment.costing.view.form</field>
+        <field name="model">garment.costing</field>
+        <field name="arch" type="xml">
+            <form string="Costing Sheet">
+                <sheet>
+                    <group>
+                        <field name="program_id"/>
+                        <field name="style_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Costing Lines" name="costing_lines">
+                            <field name="costing_line_ids">
+                                <tree editable="bottom">
+                                    <!-- These fields are assumed based on a typical costing line model -->
+                                    <!-- You may need to adjust them after defining GarmentCostingLine -->
+                                    <field name="material_id" required="1"/>
+                                    <field name="consumption" required="1"/>
+                                    <field name="price" required="1"/>
+                                    <field name="amount" sum="Total Material Cost" widget="monetary" force_save="1"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="material_cost" widget="monetary"/>
+                            </group>
+                        </page>
+                        <page string="Cost Summary" name="cost_summary">
+                            <group>
+                                <group string="Material Costs">
+                                    <label for="waste_percent"/>
+                                    <div class="o_row">
+                                        <field name="waste_percent" widget="percentage" class="oe_inline"/>
+                                        <field name="waste" widget="monetary" class="oe_inline" nolabel="1"/>
+                                    </div>
+                                    <label for="finance_percent"/>
+                                    <div class="o_row">
+                                        <field name="finance_percent" widget="percentage" class="oe_inline"/>
+                                        <field name="finance" widget="monetary" class="oe_inline" nolabel="1"/>
+                                    </div>
+                                    <field name="total_net" widget="monetary"/>
+                                </group>
+                                <group string="Production &amp; Admin Costs">
+                                    <field name="cut_make" widget="monetary"/>
+                                    <label for="admin_percent"/>
+                                    <div class="o_row">
+                                        <field name="admin_percent" widget="percentage" class="oe_inline"/>
+                                        <field name="admin" widget="monetary" class="oe_inline" nolabel="1"/>
+                                    </div>
+                                    <field name="inspection_cost" widget="monetary"/>
+                                    <field name="test_cost" widget="monetary"/>
+                                    <field name="import_export_cost" widget="monetary"/>
+                                </group>
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" string="FOB Calculation">
+                                <field name="standard_fob" widget="monetary"/>
+                                <label for="surcharge_percent"/>
+                                <div class="o_row">
+                                    <field name="surcharge_percent" widget="percentage" class="oe_inline"/>
+                                    <field name="surcharge" widget="monetary" class="oe_inline" nolabel="1"/>
+                                </div>
+                                <field name="extra_cost" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator"/>
+                                <field name="final_fob" class="oe_subtotal_footer_separator" widget="monetary"/>
+                                <field name="agreed_fob" widget="monetary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Garment Costing -->
+    <record id="garment_costing_view_tree" model="ir.ui.view">
+        <field name="name">garment.costing.view.tree</field>
+        <field name="model">garment.costing</field>
+        <field name="arch" type="xml">
+            <tree string="Costing Sheets">
+                <field name="program_id"/>
+                <field name="style_id"/>
+                <field name="material_cost" widget="monetary"/>
+                <field name="final_fob" widget="monetary"/>
+                <field name="agreed_fob" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Window for Garment Costing -->
+    <record id="garment_costing_action" model="ir.actions.act_window">
+        <field name="name">Costing</field>
+        <field name="res_model">garment.costing</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new costing sheet
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Garment Costing -->
+    <menuitem
+        id="garment_costing_menu"
+        name="Costing"
+        parent="garment_order_menu_root"
+        action="garment_costing_action"
+        sequence="60"/>
+
+</odoo>

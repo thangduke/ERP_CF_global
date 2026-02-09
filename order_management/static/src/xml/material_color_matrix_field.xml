@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Template cho nội dung của Popover (Vẫn cần thiết) -->
+    <t t-name="order_management.MaterialColorPickerPopover">
+        <div style="min-width: 250px;">
+            <h6 class="p-2 border-bottom mb-0">Chọn màu vật tư</h6>
+            
+            <!-- THÊM MỚI: Ô tìm kiếm -->
+            <div class="p-2 border-bottom">
+                <input type="text" class="form-control form-control-sm" placeholder="Tìm kiếm..." t-on-input="_onSearchInput"/>
+            </div>
+
+            <ul class="list-group list-group-flush" style="max-height: 200px; overflow-y: auto;">
+                <!-- SỬA ĐỔI: Hiển thị thông báo nếu không có kết quả -->
+                <t t-if="state.filteredColors.length === 0">
+                    <li class="list-group-item text-muted">Không có màu nào khớp.</li>
+                </t>
+                <!-- SỬA ĐỔI: Lặp qua danh sách đã lọc -->
+                <t t-foreach="state.filteredColors" t-as="color" t-key="color.id">
+                    <li class="list-group-item list-group-item-action p-2 d-flex justify-content-between align-items-center"
+                        style="cursor:pointer;"
+                        t-on-click="() => this._onSelectColor(color.id)">
+                        <span><t t-esc="color.display_name"/></span>
+                        <span class="text-muted"><t t-esc="color.color_name"/></span>
+                    </li>
+                </t>
+            </ul>
+            <div class="p-2 border-top mt-0">
+                 <button t-on-click="props.close" class="btn btn-secondary btn-sm">Đóng</button>
+            </div>
+        </div>
+    </t>
+
+</templates>

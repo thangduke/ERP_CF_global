@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_material_delivery_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="usd" t-value="doc.env['res.currency'].search([('name', '=', 'USD')], limit=1)"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">PHIẾU XUẤT KHO</h2>
+
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Số phiếu:</strong> <span t-field="doc.delivery_no"/><br/>
+                                <strong>Ngày xuất:</strong> <span t-field="doc.date_delivery" t-options='{"format": "dd/MM/yyyy"}'/><br/>
+                                <strong>Chương trình:</strong> <span t-field="doc.order_id.name"/><br/>
+                                <strong>Kho xuất:</strong> <span t-field="doc.store_id.name"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Chuyền sản xuất:</strong> <span t-field="doc.production_name"/><br/>
+                                <strong>Người nhận hàng:</strong> <span t-field="doc.receiver.name"/><br/>
+                                <strong>Mục đích:</strong> <span t-field="doc.purpose"/>
+                            </div>
+                        </div>
+
+                        <!-- Style Lines Table -->
+                        <t t-if="doc.style_line_ids">
+                            <h5 class="mt-4">Danh sách mã hàng xuất</h5>
+                            <table class="table table-sm o_main_table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th name="th_style_code" class="text-left"><strong>Mã hàng</strong></th>
+                                        <th name="th_style_qty" class="text-right"><strong>Số lượng</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.style_line_ids" t-as="style_line">
+                                        <td><span t-field="style_line.product_code_id.name"/></td>
+                                        <td class="text-right"><span t-field="style_line.quantity"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <h5 class="mt-4">Chi tiết vật tư xuất</h5>
+                        <table class="table table-sm o_main_table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 3%;">STT</th>
+                                    <th class="text-left" style="width: 20%;">Mtr#</th>
+                                    <th class="text-left" style="width: 8%;">Mtr code</th>
+                                    <th class="text-left" style="width: 7%;">Mtr Type</th>
+                                    <th class="text-left" style="width: 5%;">Unit</th>
+                                    <th class="text-left" style="width: 7%;">Dimension</th>
+                                    <th class="text-left" style="width: 7%;">Color#</th>
+                                    <th class="text-left" style="width: 10%;">Color Name</th>
+                                    <th class="text-left" style="width: 10%;">Supplier</th>
+                                    <th class="text-right" style="width: 8%;">SL xuất</th>
+                                    <th class="text-right" style="width: 7%;">Price$</th>
+                                    <th class="text-right" style="width: 8%;">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="i" t-value="1"/>
+                                <t t-set="total" t-value="0"/>
+                                <tr t-foreach="doc.delivery_line_ids" t-as="line">
+                                    <td class="text-center"><span t-esc="i"/></td>
+                                    <td><span t-field="line.mtr_name"/></td>
+                                    <td><span t-field="line.mtr_code"/></td>
+                                    <td><span t-field="line.mtr_type.name"/></td>
+                                    <td><span t-field="line.rate"/></td>
+                                    <td><span t-field="line.dimension"/></td>
+                                    <td><span t-field="line.color_item"/></td>
+                                    <td><span t-field="line.color_name"/></td>
+                                    <td><span t-field="line.supplier.name_supplier"/></td>
+                                    <td class="text-right"><span t-field="line.qty" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    <td class="text-right"><span t-field="line.price" t-options='{"widget": "monetary", "display_currency": usd}'/></td>
+                                    <td class="text-right"><span t-field="line.subtotal" t-options='{"widget": "monetary", "display_currency": usd}'/></td>
+                                    <t t-set="i" t-value="i + 1"/>
+                                    <t t-set="total" t-value="total + line.subtotal"/>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="11" class="text-right"><strong>Tổng cộng</strong></td>
+                                    <td class="text-right">
+                                        <strong t-esc="total" t-options='{"widget": "monetary", "display_currency": usd}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">
+                                        <strong>Tổng cộng số tiền (Viết bằng chữ):</strong>
+                                        <span t-esc="usd.amount_to_text(total)"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="row" style="margin-top: 40px;">
+                            <div class="col-6"/>
+                            <div class="col-6 text-center" style="font-style: italic;">
+                                Ngày <span t-esc="doc.date_delivery.day"/> tháng <span t-esc="doc.date_delivery.month"/> năm <span t-esc="doc.date_delivery.year"/>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-3 text-center">
+                                <strong>Người lập phiếu</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/>
+                                <span t-field="doc.employee_id.name"/>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Người nhận hàng</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/>
+                                <span t-field="doc.receiver_id"/>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Thủ kho</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/>
+                                <span t-field="doc.storekeeper_id.name"/>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Giám đốc</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/>
+                                <span t-field="doc.director_id.name"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

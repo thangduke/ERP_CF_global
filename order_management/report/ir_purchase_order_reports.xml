@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="action_report_purchase_order" model="ir.actions.report">
+            <field name="name">Đơn đặt hàng(PO)</field>
+            <field name="model">material.invoice</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">order_management.report_material_invoice_template</field>
+            <field name="report_file">order_management.report_material_invoice_template</field>
+            <field name="print_report_name">'PO-%s-%s.pdf' % (object.name, object.date_create.strftime('%Y-%m-%d'))</field>          
+            <field name="binding_model_id" ref="model_material_invoice"/>
+            <field name="binding_type">report</field>
+        </record>
+</odoo>

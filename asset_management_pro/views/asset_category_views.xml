@@ -1,0 +1,78 @@
+<odoo>
+    <data>
+        <record id="view_asset_category_search" model="ir.ui.view">
+            <field name="name">asset.category.search</field>
+            <field name="model">asset.category</field>
+            <field name="arch" type="xml">
+                <search string="Asset Category">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_asset_category_form" model="ir.ui.view">
+            <field name="name">asset.category.form</field>
+            <field name="model">asset.category</field>
+            <field name="arch" type="xml">
+                <form string="Asset Category">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Tên loại tài sản..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" widget="many2one_avatar_user" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Asset Types">
+                                <field name="asset_type_ids" />
+
+                            </page>
+                            <page string="Assets">
+                                <field name="asset_line_ids"/>
+                            </page>
+                            <page string="Description">
+                                <field name="description" placeholder="Mô tả loại tài sản..." style="border: 1px solid #ced4da;"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_asset_category_tree" model="ir.ui.view">
+            <field name="name">asset.category.tree</field>
+            <field name="model">asset.category</field>
+            <field name="arch" type="xml">
+                <tree string="Asset Categories" class="o_general_list_view_product" >
+                    <field name="name" string="DANH MỤC"/>
+                    <field name="employee_id" string="NGƯỜI TẠO" widget="many2one_avatar_user" optional="hide"/>
+                    <field name="create_date" string="NGÀY TẠO" optional="hide"/>
+                    <field name="active" string="ACTIVE" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_asset_category" model="ir.actions.act_window">
+            <field name="name">Asset Categories</field>
+            <field name="res_model">asset.category</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_asset_category_search"/>
+        </record>
+    </data>
+</odoo>

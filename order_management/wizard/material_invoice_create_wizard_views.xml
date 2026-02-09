@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_material_invoice_create_wizard_form" model="ir.ui.view">
+        <field name="name">material.invoice.create.wizard.form</field>
+        <field name="model">material.invoice.create.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tạo Phiếu Đặt Hàng Theo Đợt"  edit="false">
+                <group col="2">
+                    <group>
+                    <field name="po_id" string="Mã lọc NCC:" required="1"  style="border: 1px solid #ced4da; padding-left: 2px;"/>
+                    </group>
+                    <group>
+                    <field name="entry_date" string="Ngày đặt:" required="1"  style="border: 1px solid #ced4da; padding-left: 2px;"/>
+                    </group>
+                </group>
+                <separator string="Danh sách vật tư đặt hàng"/>
+                <field name="line_ids">
+                    <tree editable="bottom" class="o_program_list_view_product" create="True"  >
+                        <!-- Thông tin vật tư -->
+                        <field name="material_line_id" string="Mtr#" help="Mã vật tư"/> 
+                        <field name="mtr_type" string="Mtr Type" help="Loại vật tư"/> 
+                        <field name="mtr_code" string="Mtr Code" help="Mã vật tư"/>
+                        <field name="mtr_name" string="Mtr Name" help="Tên vật tư"/> 
+                        <field name="rate" string="Unit" help="Đơn vị tính"/>         
+                            <!-- Thông số dimension theo Style(size) -->
+                        <field name="dimension" string="Dimension" help="Kích thước"/> 
+                        <!-- Thông tin màu sắc vật tư -->
+                        <field name="color_item" string="Color#" help="Mã item màu"/>
+                        <field name="color_code" string="Color Code" help="Mã màu" optional="hide"/> 
+                        <field name="color_name" string="Color Name" help="Tên màu"/> 
+                        <field name="color_set" string="Color Set" help="Bộ màu"/> 
+                        <!-- Thông tin nhà cung cấp -->
+                        <field name="supplier" string="Supplier" help="Nhà cung cấp"/>
+                        <field name="country" string="Country" optional="hide" />
+                        <!-- Thông số định mức theo style(Color,size) -->
+
+                        <field name="est_qty" string="Est.Qty" readonly="1"/>
+                        <field name="remaining_qty"  string="Remain.Qty" readonly="1" />
+                        <field name="act_qty" string="PO.Qty" />
+                    </tree>
+                </field>
+                <footer>
+                    <button name="action_confirm" type="object"
+                            string="Tạo Phiếu đặt hàng" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_material_import_export" model="ir.actions.act_window">
+        <field name="name">Phiếu đặt hàng</field>
+        <field name="res_model">material.import.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <!-- Form view for material.invoice.create.wizard.line -->
+    <record id="view_material_invoice_create_wizard_line_form" model="ir.ui.view">
+        <field name="name">material.invoice.create.wizard.line.form</field>
+        <field name="model">material.invoice.create.wizard.line</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết vật tư đặt hàng">
+                <sheet>
+                    <group>
+                        <group string="Thông tin vật tư">
+                            <field name="material_line_id"/>
+                            <field name="mtr_no"/>
+                            <field name="mtr_type"/>
+                            <field name="mtr_code"/>
+                            <field name="mtr_name"/>
+                            <field name="rate"/>
+                            <field name="dimension"/>
+                        </group>
+                        <group string="Thông tin màu sắc">
+                            <field name="color_item"/>
+                            <field name="color_code"/>
+                            <field name="color_name"/>
+                            <field name="color_set"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Nhà cung cấp">
+                            <field name="supplier"/>
+                            <field name="country"/>
+                        </group>
+                        <group string="Số lượng">
+                            <field name="est_qty" readonly="1"/>
+                            <field name="remaining_qty" readonly="1"/>
+                            <field name="act_qty"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin giá">
+                        <field name="price"/>
+                        <field name="cif_price"/>
+                        <field name="fob_price"/>
+                        <field name="exwork_price"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

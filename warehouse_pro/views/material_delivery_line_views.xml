@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search view -->
+        <record id="material_export_search_view" model="ir.ui.view">
+            <field name="name">material.delivery.line.search</field>
+            <field name="model">material.delivery.line</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm vật tư xuất kho">
+                    <field name="delivery_id" string="Mã xuất kho"/>
+                    <searchpanel>
+                    <!--   <field name="store_id" string="Kho hàng" icon="fa-building-o"  enable_counters="1"
+                            options="{'always_loaded': True}"/>--> 
+                        <field name="delivery_id" string="Mã xuất kho" icon="fa-qrcode" enable_counters="1"
+                            options="{'always_loaded': True}"/>    
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!-- From view 1-->
+        <record id="material_export_form_view" model="ir.ui.view">
+            <field name="name">material.delivery.line.form</field>
+            <field name="model">material.delivery.line</field>
+            <field name="arch" type="xml">
+                <form string="Vật tư xuất kho">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="delivery_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="material_id" required="1" options="{'no_create': True}"/>
+                                <field name="mtr_no" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" widget="many2one_avatar_user" readonly="1"/>
+                                <field name="entry_date" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Số lượng">
+                                <field name="cons_qty"/>
+                                <field name="qty"/>
+                            </group>
+                            <group string="Thông tin giá">
+                                <field name="price" readonly="1"/>
+                                <field name="cif_price" readonly="1"/>
+                                <field name="fob_price" readonly="1"/>
+                                <field name="exwork_price" readonly="1"/>
+                                <field name="subtotal" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View 1 mtr_name-->
+        <record id="material_export_tree_view" model="ir.ui.view">
+            <field name="name">material.delivery.line.tree</field>
+            <field name="model">material.delivery.line</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách vật tư xuất kho" editable="bottom">
+
+                    <field name="material_id" required="1" options="{'no_create': True}"/>
+                    <field name="name" string="Mtr#" readonly="1"/>
+                    <field name="mtr_type" string="Mtr Type" readonly="1"/> 
+                    <field name="mtr_name" string="Mtr Name" readonly="1"/> 
+                    <field name="mtr_code" string="Mtr Code" readonly="1"/> 
+                    <field name="rate" string="Unit" />
+
+                    <!-- Thông số kỹ thuật -->
+                    <field name="dimension" string="Dimension" readonly="1"/> 
+
+                    <field name="color_name" string="Color Name" readonly="1"/> 
+                    <field name="supplier" string="Supplier" readonly="1"/>
+                    <field name="cons_qty" string="Cons.Qty" readonly="1"/>
+                    <field name="qty" string="Est.Qty" readonly="1"/>
+                    <field name="subtotal" string="Thành tiền" readonly="1"/> 
+                    <!-- Số lượng ước tính-->
+                    <!-- Thông tin giá theo Style(size)-->
+                    <field name="price" string="Price" readonly="1" optional="hide"/>
+                    <field name="cif_price" string="CIF.Price" readonly="1" optional="hide"/>
+                    <field name="fob_price" string="FOB.Price" readonly="1" optional="hide"/>
+                    <field name="exwork_price" string="EXW.Price" readonly="1" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window 1: Tạo phê duyệt cho người dùng hiện tại -->
+        <record id="action_material_export" model="ir.actions.act_window">
+            <field name="name">Vật tư xuất kho</field>
+            <field name="res_model">material.delivery.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="material_export_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có vật tư xuất kho nào được tạo.
+                </p><p>
+                    Nhấn vào đây để tạo mới.
+                </p>
+            </field>
+        </record>
+
+    </data>    
+</odoo>
+

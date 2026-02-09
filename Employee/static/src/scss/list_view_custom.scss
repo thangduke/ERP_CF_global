@@ -31,7 +31,9 @@
 }
 
 .o_employee_list_view_2 table {
-    min-width: 2200px !important;
+    table-layout: auto !important;
+    width: max-content !important; /* Buộc bảng giãn theo nội dung rộng nhất */
+    min-width: 100% !important; /* Đảm bảo bảng chiếm ít nhất toàn bộ chiều rộng container */
     --table-striped-bg: none !important;
     thead {
         .o_list_number_th {
@@ -40,28 +42,30 @@
             }
         background-color: #ffffff !important; /* #d6efd8 */
         th {
-        color: #424874 !important; /* Thay đổi màu của tiêu đề cột (#387f39: xanh) */
-        font-size: 12px !important;
-         border-right-width: 1px ;
+            color: #424874 !important; /* Thay đổi màu của tiêu đề cột (#387f39: xanh) */
+            font-size: 12px !important;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            white-space: nowrap; /* Giữ nội dung trên một dòng để xác định độ rộng */
+        }
     }
-}
     tbody {
         tr > :nth-child(n) {
             border-right-width: 1px !important; /* Màu và kích cỡ border */
         }
          tr > :nth-child(3) {
-               color: #375df6 !important;
-               font-weight: bold !important;
+               color: #4a68df !important;
             }
     }
     tbody> tr > td{
+        white-space: nowrap; /* Áp dụng cho cả body để nhất quán */
         &.o_list_number {
                 /*rtl:ignore*/
                 text-align: left !important;
-
             }
         }
-
 }
 
 .o_employee3c_form_view.o_form_view{

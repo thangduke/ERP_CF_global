@@ -7,9 +7,8 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>
-                    <field name="position_type_id"/>
                     <group expand="0" string="Nhóm">
-                        <filter name="group_department" string="Phòng ban" domain="[]" context="{'group_by': 'department_id'}"/>
+                        <filter name="group_department" string="Bộ phận" domain="[]" context="{'group_by': 'department_id'}"/>
                     </group>
                 </search>
             </field>
@@ -29,10 +28,7 @@
                          </group>
                          <group>
                              <group style="display: block">
-                                 <field name="position_type_id" style="border: 1px solid #ced4da; margin-bottom: 6px;" placeholder="-- Chọn --"/>
-                             </group>
-                             <group style="display: block">
-                                 <field name="department_id" style="border: 1px solid #ced4da; margin-bottom: 6px;" placeholder="-- Chọn --"/>
+                                 <field name="department_id" style="border: 1px solid #ced4da; margin-bottom: 6px;" placeholder="-- Chọn bộ phận --"/>
                              </group>
                          </group>
                          <group style="display: block">
@@ -52,11 +48,7 @@
                          <hr/>
                          <group>
                              <group>
-                                 <i class="fa fa-flag-o" aria-hidden="true" style="color: gray;"/> <span style="font-size:11px; color: gray;">LOẠI VỊ TRÍ</span>
-                                 <field name="position_type_id"  string=""/>
-                             </group>
-                             <group>
-                                 <i class="fa fa-flag-o" aria-hidden="true" style="color: gray;"/> <span style="font-size:11px; color: gray;">PHÒNG BAN</span>
+                                 <i class="fa fa-flag-o" aria-hidden="true" style="color: gray;"/> <span style="font-size:11px; color: gray;">BỘ PHẬN</span>
                                  <field name="department_id"  string=""/>
                              </group>
                          </group>
@@ -97,7 +89,7 @@
             <field name="arch" type="xml">
                 <tree string="Vị trí công việc" class="o_employee3c_position_list" expand="1" >
                     <field name="name" string="Vị trí"/>
-                    <field name="position_type_id" string="Loại vị trí"/>
+                    
                     <field name="total_employee" string=""/>
                     <field name="employee_ids" string="Nhân sự" widget="many2many_avatar_user"/>
                 </tree>

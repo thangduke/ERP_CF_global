@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- View Form Wizard -->
+    <record id="view_style_color_size_import_wizard_form" model="ir.ui.view">
+        <field name="name">style.color.size.import.wizard.form</field>
+        <field name="model">style.color.size.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Danh sách Style + Màu + Size">
+                <group>
+                    <field name="product_code_id" readonly="1"/>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+
+                </group>
+                <footer>
+                    <button name="import_excel" type="object" string="Import" class="btn-primary"/>
+                    <button name="action_download_template" type="object" string="📥 Tải file import mẫu" class="btn-secondary"/>
+                    <button string="Đóng" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở wizard -->
+    <record id="action_style_color_size_import" model="ir.actions.act_window">
+        <field name="name">Import danh sách Style + Màu + Size</field>
+        <field name="res_model">style.color.size.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

@@ -23,7 +23,7 @@
                         <div class="app-menu">
                             <t t-foreach="state.menus" t-as="app"
                                t-key="app_index">
-                               <t t-if="app.webIconData">
+                                <t t-if="app.webIconData">
                                     <a role="menuitem"
                                     t-attf-href="#menu_id={{app.id}}"
                                     class="dropdown-item o_app mt0"

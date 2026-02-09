@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_material_transfer_form" model="ir.ui.view">
+        <field name="name">material.transfer.form</field>
+        <field name="model">material.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Phiếu điều chuyển vật tư">
+                <header>
+                    <button name="action_confirm" type="object" string="Xác nhận" class="btn-primary" states="draft"/>
+                    <button name="action_cancel" type="object" string="Hủy" states="draft,done"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="source_store_id"/>
+                            <field name="destination_store_id"/>
+                        </group>
+                        <group>
+                            <field name="transfer_date"/>
+                            <field name="employee_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết vật tư">
+                            <field name="transfer_line_ids">
+                                <tree editable="bottom">
+                                    <field name="material_id" required="1"/>
+                                    <field name="source_store_id" invisible="1"/>
+                                    <field name="destination_store_id" invisible="1"/>
+                                    <field name="source_shelf_id" domain="[('store_id', '=', parent.source_store_id)]" context="{'default_store_id': parent.source_store_id}"/>
+                                    <field name="destination_shelf_id" domain="[('store_id', '=', parent.destination_store_id)]" context="{'default_store_id': parent.destination_store_id}"/>
+                                    <field name="available_quantity" readonly="1"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ghi chú">
+                            <field name="notes" placeholder="Thêm ghi chú..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_material_transfer_tree" model="ir.ui.view">
+        <field name="name">material.transfer.tree</field>
+        <field name="model">material.transfer</field>
+        <field name="arch" type="xml">
+            <tree string="Điều chuyển vật tư">
+                <field name="name"/>
+                <field name="source_store_id"/>
+                <field name="destination_store_id"/>
+                <field name="transfer_date"/>
+                <field name="employee_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-danger="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_material_transfer" model="ir.actions.act_window">
+        <field name="name">Điều chuyển vật tư</field>
+        <field name="res_model">material.transfer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có phiếu điều chuyển nào.
+            </p><p>
+                Tạo một phiếu mới để bắt đầu điều chuyển vật tư giữa các kho.
+            </p>
+        </field>
+    </record>
+
+
+              
+    <!-- Sequence -->
+    <record id="seq_material_transfer" model="ir.sequence">
+        <field name="name">Material Transfer Sequence</field>
+        <field name="code">material.transfer</field>
+        <field name="prefix">DC/%(year)s/%(month)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

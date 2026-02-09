@@ -6,10 +6,12 @@ class ChangeMainInfo(models.TransientModel):
 
     employee_id = fields.Many2one('employee.base', 'Họ và tên')
     user_id = fields.Many2one('res.users')
-    position_id = fields.Many2one('employee.position', 'Vị trí', domain="[('department_id', '=', department_id)]")
+    position_id = fields.Many2one('employee.position', 'Vị trí công việc', domain="[('department_id', '=', department_id)]")
+    position_type = fields.Many2one('position.type', 'Vị trí công tác')
+    
     start_date = fields.Date(string="Ngày bắt đầu")
     official_date = fields.Date(string='Ngày chính thức')
-    department_id = fields.Many2one('employee.department', 'Phòng ban')
+    department_id = fields.Many2one('employee.department', 'Bộ phận')
 
     employee_type_2 = fields.Many2one('employee.type', 'Phân loại nhân sự')
     parent_id = fields.Many2one('employee.base', string="Cấp trên trực tiếp", domain=[('state', '!=', 'quit')])
@@ -41,7 +43,7 @@ class ChangeMainInfo(models.TransientModel):
 
             employee = self.env['employee.base'].browse(vals['employee_id'])
 
-            employee.write({'position_id': vals['position_id'], 'start_date': vals['start_date'],
+            employee.write({'position_id': vals['position_id'], 'position_type': vals['position_type'], 'start_date': vals['start_date'],
                             'official_date': vals['official_date'], 'department_id': vals['department_id'],
                             'employee_type_2': vals['employee_type_2'],
                             'parent_id': vals['parent_id'], 'image_1920': vals['image_1920'],

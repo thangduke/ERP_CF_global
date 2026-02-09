@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+   <t t-name="custom_delivery_button.ListView.Buttons" t-inherit="web.ListView.Buttons">
+       <xpath expr="//div[hasclass('o_list_buttons')]" position="after">
+           <button type="button" class="btn btn-primary" style="margin-left: 10px;"  t-on-click="OnTestClick">
+               Xuất kho theo phiếu nhập
+           </button>
+       </xpath>
+   </t>
+</templates>
+
+

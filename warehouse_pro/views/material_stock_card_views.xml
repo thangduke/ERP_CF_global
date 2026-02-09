@@ -1,0 +1,124 @@
+<odoo>
+    <data>
+
+        <!-- Search View -->
+        <record id="view_material_stock_card_search" model="ir.ui.view">
+            <field name="name">material.stock.card.search</field>
+            <field name="model">material.stock.card</field>
+            <field name="arch" type="xml">
+                <search string="Search Stock Card">
+                    <field name="material_id"/>
+                    <field name="order_id"/>
+                    <field name="store_id"/>
+                    <field name="movement_type"/>
+                    <filter string="Date" name="filter_date" date="date_create"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Material" name="group_by_material" context="{'group_by': 'material_id'}"/>
+                        <filter string="Store" name="group_by_store" context="{'group_by': 'store_id'}"/>
+                        <filter string="Movement Type" name="group_by_movement_type" context="{'group_by': 'movement_type'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_material_stock_card_tree" model="ir.ui.view">
+            <field name="name">material.stock.card.tree</field>
+            <field name="model">material.stock.card</field>
+            <field name="arch" type="xml">
+                <tree string="Material Stock Card" default_order="date_create desc" class="o_general_list_view_product">
+                    <field name="date_create"/>
+                    <field name="material_id"/>
+                    <field name="movement_type"/>
+                    <field name="receive_id" optional="hide"/>
+                    <field name="delivery_id" optional="hide"/>
+                    <field name="adjust_id" optional="hide"/>
+                    <field name="store_id"/>
+                    <field name="qty_opening" sum="Total Opening Qty"/>
+                    <field name="qty_in" sum="Total In Qty"/>
+                    <field name="qty_out" sum="Total Out Qty"/>
+                    <field name="qty_closing" sum="Total Closing Qty"/>
+                    <field name="value_opening" sum="Total Opening Value" optional="hide"/>
+                    <field name="value_in" sum="Total In Value" optional="hide"/>
+                    <field name="value_out" sum="Total Out Value" optional="hide"/>
+                    <field name="value_closing" sum="Total Closing Value" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_material_stock_card_form" model="ir.ui.view">
+            <field name="name">material.stock.card.form</field>
+            <field name="model">material.stock.card</field>
+            <field name="arch" type="xml">
+                <form string="Thẻ kho vật tư" create="false" edit="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="material_id" readonly="1" force_save="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date_create" string="Ngày ghi nhận" readonly="1" force_save="1"/>
+                                <field name="movement_type" string="Loại giao dịch" readonly="1" force_save="1"/>
+                                <field name="store_id" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="order_id" readonly="1" force_save="1"/>
+                                <field name="customer_id" readonly="1" force_save="1"/>
+                                <field name="receive_id" invisible="movement_type != 'in'" readonly="1" force_save="1"/>
+                                <field name="delivery_id" invisible="movement_type != 'out'" readonly="1" force_save="1"/>
+                                <field name="adjust_id" invisible="movement_type != 'adjust'" readonly="1" force_save="1"/>
+                            </group>
+                        </group>
+
+                        <group string="Chi tiết số lượng và giá trị">
+                            <group string="Tồn đầu kỳ">
+                                <field name="qty_opening" readonly="1" force_save="1"/>
+                                <field name="value_opening" readonly="1" force_save="1" widget="monetary"/>
+                            </group>
+                            <group string="Phát sinh trong kỳ">
+                                <label for="qty_in" string="Nhập"/>
+                                <div class="o_row">
+                                    <field name="qty_in" readonly="1" force_save="1"/>
+                                    <span class="oe_grey"> / </span>
+                                    <field name="value_in" readonly="1" force_save="1" widget="monetary" nolabel="1"/>
+                                </div>
+                                <label for="qty_out" string="Xuất"/>
+                                <div class="o_row">
+                                    <field name="qty_out" readonly="1" force_save="1"/>
+                                    <span class="oe_grey"> / </span>
+                                    <field name="value_out" readonly="1" force_save="1" widget="monetary" nolabel="1"/>
+                                </div>
+                            </group>
+                            <group string="Tồn cuối kỳ">
+                                <field name="qty_closing" readonly="1" force_save="1"/>
+                                <field name="value_closing" readonly="1" force_save="1" widget="monetary"/>
+                            </group>
+                        </group>
+
+                        <group string="Ghi chú">
+                            <field name="note" nolabel="1" force_save="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_material_stock_card" model="ir.actions.act_window">
+            <field name="name">Thẻ kho</field>
+            <field name="res_model">material.stock.card</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_material_stock_card_search"/>
+            <field name="context">{'search_default_group_by_material': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có ghi nhận nào về các dịch chuyển kho.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="action_report_price_calculation" model="ir.actions.report">
+            <field name="name">Tính giá sản phẩm</field>
+            <field name="model">product.price.calculation</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">order_management.report_price_calculation_template</field>
+            <field name="report_file">order_management.report_price_calculation_template</field>
+            <field name="print_report_name">'"Tính giá sản phẩm-%s-%s.pdf"' % (object.name, object.date_calculation.strftime('%Y-%m-%d'))</field>     
+            <field name="binding_model_id" ref="model_product_price_calculation"/>
+            <field name="binding_type">report</field>
+        </record>
+</odoo>

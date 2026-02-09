@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="view_product_color_search" model="ir.ui.view">
+        <field name="name">product.color.search</field>
+        <field name="model">product.color</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Màu sắc sản phẩm">
+                <field name="name" string="Tên màu"/>
+                <field name="color_code" string="Mã màu"/>
+                <separator/>
+                <filter string="Đang hoạt động" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
   <!-- View cho model product.color -->
     <record id="view_product_color_form" model="ir.ui.view">
         <field name="name">product.color.form</field>
         <field name="model">product.color</field>
         <field name="arch" type="xml">
-            <form string="Màu sắc sản phẩm">
-                <sheet>
+            <form string="Màu sắc sản phẩm" create="0" edit="1">
+                <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                    <h1>
+                        Thêm màu sắc sản phẩm mới
+                    </h1>
+                    <hr/>
                     <group>
-                        <field name="name"/>
-                        <field name="color_code"/>
-                        <field name="color" widget="color_picker"/>
-                        <field name="active"/>
-                        <field name="employee_id" readonly="1"/>
+                        <field name="name" placeholder="Tên màu..." style="border: 1px solid #ced4da;"/>
+                        <field name="color_code" placeholder="Mã màu..." style="border: 1px solid #ced4da;"/>
+                        <field name="color" widget="color"/>
+                    </group>
+                    <group string="Thông tin khác">
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                    <group>
                         <field name="avatar_name_job" readonly="1"/>
                         <field name="date_create" readonly="1"/>
                     </group>
+                    <div style="text-align: right; padding-top: 20px;">
+                        <button special="save" class="btn btn-success"><i class="fa fa-check"/> Lưu</button>
+                        <span style="color: white; padding-left:15px;"></span>
+                        <button special="cancel" class="btn btn-secondary ms-2"><i class="fa fa-undo"/> Hủy bỏ</button>
+                    </div>
                 </sheet>
             </form>
         </field>
@@ -25,11 +50,11 @@
         <field name="name">product.color.tree</field>
         <field name="model">product.color</field>
         <field name="arch" type="xml">
-            <tree string="Màu sắc sản phẩm">
+            <tree string="Màu sắc sản phẩm" class="o_general_list_view_product">
                 <field name="name"/>
                 <field name="color_code"/>
-                <field name="color" widget="color_picker"/>
-                <field name="active"/>
+                <field name="color" widget="color"/>
+                <field name="active" widget="boolean_toggle"/>
             </tree>
         </field>
     </record>
@@ -39,6 +64,7 @@
         <field name="name">Màu sắc sản phẩm</field>
         <field name="res_model">product.color</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_product_color_search"/>
     </record>
 
 

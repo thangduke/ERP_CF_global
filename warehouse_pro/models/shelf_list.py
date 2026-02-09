@@ -9,57 +9,27 @@ class ShelfList(models.Model):
 
     name = fields.Char(string="Tên kệ", required=True, tracking=True)
     store_id = fields.Many2one('store.list', string="Kho", required=True, ondelete='cascade', tracking=True)
+
+    level_ids = fields.One2many('shelf.level', 'shelf_id', string="Các khoang")   
+    
     receive_id = fields.Many2one('material_receive', string="Đơn nhập hàng", tracking=True)
-    shelf_line_ids= fields.One2many ('shelf.material.line','shelf_id', string="Vật tư trong kệ")
-    grouped_line_ids = fields.One2many(
-        'shelf.material.line.summary', 'shelf_id',
-        string='Vật tư đã gộp',
-        compute='_compute_grouped_line_ids',
-        store=False
+
+    stock_summary_ids = fields.One2many(
+        'material.stock.summary',
+        'shelf_id',
+        string="Vật tư trong kệ",
     )
-    # Tạo trường tổng số lượng vật tư trong kệ
-    def _compute_grouped_line_ids(self):
-        for shelf in self:
-            self.env['shelf.material.line.summary'].search([('shelf_id', '=', shelf.id)]).unlink()
-            group_dict = {}
-            for line in shelf.shelf_line_ids:
-                key = (
-                    line.position,
-                    line.mtr_no,
-                    line.mtr_type.id if line.mtr_type else False,
-                    line.mtr_code,
-                    line.mtr_name,
-                    line.dimension,
-                    line.color_item,
-                    line.color_name,
-                    line.color_set,
-                    line.color_code,
-                )
-                if key not in group_dict:
-                    group_dict[key] = {
-                        'shelf_id': shelf.id,
-                        'stock_id': line.stock_id.id if line.stock_id else False,
-                        'position': line.position,
-                        'mtr_no': line.mtr_no,
-                        'mtr_type': line.mtr_type.id if line.mtr_type else False,
-                        'mtr_code': line.mtr_code,
-                        'mtr_name': line.mtr_name,
-                        'dimension': line.dimension,
-                        'color_item': line.color_item,
-                        'color_name': line.color_name,
-                        'color_set': line.color_set,
-                        'color_code': line.color_code,
-                        'est_qty': 0,
-                        'act_qty': 0,
-                        'rate': line.rate,
-                        'supplier': line.supplier,
-                        'country': line.country,
-                    }
-                group_dict[key]['est_qty'] += line.est_qty or 0
-                group_dict[key]['act_qty'] += line.act_qty or 0
-            for vals in group_dict.values():
-                self.env['shelf.material.line.summary'].create(vals)
-            shelf.grouped_line_ids = self.env['shelf.material.line.summary'].search([('shelf_id', '=', shelf.id)])
+     
+    total_shelf = fields.Integer(
+        string='Tổng số kệ', 
+        compute='_compute_total_shelf_level',
+        store=True,
+    )
+
+    @api.depends('level_ids')
+    def _compute_total_shelf_level(self):
+        for record in self:
+            record.total_shelf = len(record.level_ids) 
     
     # Tự động gán nhân viên tạo kệ
     @api.model
@@ -76,13 +46,22 @@ class ShelfList(models.Model):
     active = fields.Boolean(string="Active", default=True)
     date_create = fields.Datetime(string="Ngày tạo", default=fields.Datetime.now, readonly=True)
     # Danh sách vật tư trong kệ 
-
+    def action_open_shelf_list(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Kệ hàng',
+            'res_model': 'shelf.list',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',  # mở full màn hình
+        }
     
     def action_delete_selected_lines(self):
         for rec in self:
-            lines_to_delete = rec.shelf_line_ids.filtered(lambda l: l.x_selected)
+            lines_to_delete = rec.stock_summary_ids.filtered(lambda l: l.x_selected)
             lines_to_delete.unlink()
             
+    # region (phần) Tìm kiếm vật tư trong kệ
     search_text = fields.Char(string='Search')
     search_active = fields.Boolean(string='Search Active', default=False)
 
@@ -113,6 +92,8 @@ class ShelfList(models.Model):
         """Empty method for dropdown toggle button"""
         return True
     
+    # endregion
+    
     def action_export(self):
         """Export danh sách vật tư trong kệ"""
         self.ensure_one()
@@ -122,7 +103,22 @@ class ShelfList(models.Model):
             'target': 'self',
         }
     
-    
+    def action_create_level(self):
+        """
+        Mở form view để tạo một khoang mới, với kệ mặc định là kệ hiện tại.
+        """
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tạo khoang mới',
+            'res_model': 'shelf.level',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_shelf_id': self.id,
+                'default_store_id': self.store_id.id,
+            }
+        }    
     
     '''
     _sql_constraints = [

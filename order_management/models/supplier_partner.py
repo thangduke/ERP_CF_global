@@ -3,9 +3,11 @@ from odoo import models, fields, api
 class Supplier(models.Model):
     _name = 'supplier.partner'
     _description = 'Nhà cung cấp'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _rec_name = 'name_supplier'
 
-    name = fields.Char(string='Tên nhà cung cấp', required=True)
-    code = fields.Char(string='Mã NCC')
+    name_supplier = fields.Char(string='Tên nhà cung cấp', required=True, tracking=True)
+    supplier_index = fields.Char(string='Mã NCC')
     address = fields.Char(string='Địa chỉ')
     phone = fields.Char(string='Số điện thoại')
     email = fields.Char(string='Email')
@@ -14,8 +16,6 @@ class Supplier(models.Model):
     city = fields.Char(string='Thành phố')
     
     active = fields.Boolean(string='Kích hoạt', default=True)
-    color = fields.Integer (string="Màu sắc",)
-    
     # Thông tin người tạo
     @api.model
     def _get_employee_default(self):
@@ -27,3 +27,8 @@ class Supplier(models.Model):
     avatar_name_job = fields.Html(related='employee_id.avatar_name_job', string="Người tạo")
     
     date_create = fields.Datetime(string='Ngày tạo', default=fields.Datetime.now, readonly=True)
+    
+    _sql_constraints = [
+        ('name_supplier_unique', 'unique(name_supplier)', 'Tên nhà cung cấp đã tồn tại!'),
+        ('supplier_index_unique', 'unique(supplier_index)', 'Mã NCC đã tồn tại!')
+    ]

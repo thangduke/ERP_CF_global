@@ -6,28 +6,38 @@
                   sequence="2"
                   web_icon="Employee,static/description/icon.png"
                   />
+                <menuitem id="menu_employee_employee_employee"
+                            name = "Thông tin nhân sự"
+                            sequence="1"
+                            parent="menu_employee_root"
+                            action="action_open_employee_me"
+                            groups= "Employee.group_cf_user"/>
 
-            <menuitem id="menu_employee_employee"
-                      name = "Công ty"
-                      parent="menu_employee_root"
-                      /> 
+                <menuitem id="menu_employee_all_employee"
+                            name = "Danh sách tất cả nhân sự"
+                            sequence="2"
+                            parent="menu_employee_root"
+                            action="view_all_employee"
+                            groups= "Employee.group_cf_admin"/>
 
-                  <menuitem id="menu_employee_employee_employee"
-                              name = "Danh sách nhân sự"
-                              parent="menu_employee_employee"
-                              action="view_all_employee"/> 
- 
+                <menuitem id="menu_employee_manager_employee"
+                            name = "Danh sách nhân sự quản lý"
+                            sequence="3"
+                            parent="menu_employee_root"
+                            action="view_all_employee_manager"
+                            groups= "Employee.group_cf_manager"/> 
 
-                  <menuitem id="menu_employee_department_department"
-                              name = "Phòng ban"
-                              parent="menu_employee_employee"
-                              action="view_all_department"/> 
-
+                <!-- <menuitem id="menu_employee_department_department"
+                              name = "Bộ phận"
+                              sequence="4"
+                              parent="menu_employee_root"
+                              action="view_all_department"
+                              groups= "Employee.group_cf_manager"/> -->
 
             <menuitem id="menu_employee_configuration"
                       name = "Cài đặt"
                       parent="menu_employee_root"
-                      />
+                      groups= "Employee.group_cf_admin"/>
 
                   <menuitem id="menu_employee_configuration_company"
                               name = "Tổ chức"
@@ -40,7 +50,7 @@
                                     parent="menu_employee_configuration_company"/><!-- action = "action_open_company_info" -->
 
                         <menuitem id="menu_employee_configuration_department"
-                                    name = "Phòng ban"
+                                    name = "Bộ phận"
                                     sequence="2"
                                     parent="menu_employee_configuration_company"
                                     action = "action_department"/> 
@@ -55,17 +65,17 @@
                               name = "Nhân sự"
                               parent="menu_employee_configuration"/>
 
-                        <menuitem id="menu_employee_configuration_position_type"
-                                    name = "Phân loại vị trí"
-                                    sequence="3"
-                                    parent="menu_employee_configuration_employee"
-                                    action = "action_position_type"/>
-
                         <menuitem id="menu_employee_configuration_position"
                                     name = "Vị trí công việc"
                                     sequence="4"
                                     action = "action_position"
                                     parent="menu_employee_configuration_employee"/>
+
+                        <menuitem id="menu_employee_configuration_position_type"
+                                    name = "Vị trí công tác"
+                                    sequence="5"
+                                    parent="menu_employee_configuration_employee"
+                                    action = "action_position_type"/>
 
                         <menuitem id="menu_employee_configuration_employee_type"
                                     name = "Phân loại nhân sự"

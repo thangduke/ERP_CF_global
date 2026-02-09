@@ -1,0 +1,65 @@
+<odoo>
+    <record id="view_create_color_size_wizard_form" model="ir.ui.view">
+        <field name="name">create.style.color.size.wizard.form</field>
+        <field name="model">create.style.color.size.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tạo style (Màu - Size)" class="o_form_narrow">
+                <sheet style="max-width: 100%; margin-left: auto; margin-right: auto;">
+                    <h2 style="font-weight:600; color:#4b4b4b;">Tạo style (Màu - Size)</h2>
+
+                    <group col="3" class="o_group o_inner_group">
+                        <field name="warehouse_order_id" readonly="1" placeholder="Chọn chương trình...."/>
+                        <field name="customer_id" readonly="1" placeholder="Chọn khách hàng...."/>
+                        <field name="product_code_id" readonly="1" placeholder="Chọn mã vật tư...."/>
+                    </group>
+
+                    <group col="2" style="margin-top:10px;">
+                        <group string="Danh sách Màu">
+                            <field name="color_ids" widget="many2many_tags"
+                                style="border: 1px solid #ced4da; padding-left: 2px;" placeholder="Chọn màu..."/>
+                        </group>
+                        <group string="Danh sách Size">
+                            <field name="size_ids" widget="many2many_tags" 
+                                style="border: 1px solid #ced4da; padding-left: 2px;" placeholder="Chọn size..."/>
+                        </group>
+                    </group>
+
+                    <button string="🔍 Xem tổ hợp" name="action_preview_lines" type="object"
+                            class="btn-secondary" style="margin-top:8px;"/>
+
+                    <field name="line_ids" nolabel="1" colspan="2" context="{'default_selected': True}">
+                        <tree editable="bottom" class="o_general_list_view_product">
+                            <field name="selected" string=" " widget="boolean_toggle"/>
+                            <!-- 1. Thêm trường currency_id và ẩn đi -->
+                            <field name="color_id"  string="COLOR NAME"/>
+                            <field name="color_code"  string="COLOR#" readonly="1"/>
+                            <field name="size_id"  string="SIZE"/>
+                            <field name="order_qty" string="Oder.QTY"/>
+                            <field name="test_qty" string="Test.QTY"/>
+                            <!-- 2. Thêm 'options' vào widget monetary -->
+                            <field name="unit_cost" string="UNIT COST" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="ext" string="EXT" widget="monetary" readonly="1" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" string=" " invisible="1"/>
+                        </tree>
+                    </field>
+
+                    <footer>
+                        <button string="🚀 Tạo style"
+                                type="object"
+                                name="action_create_color_size"
+                                class="btn-primary"
+                                style="background-color:#1f77d0; color:white; font-weight:500; border-radius:6px;"/>
+                        <button string="✖️ Hủy" special="cancel" class="btn-secondary" style="margin-left:6px;"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window 
+        id="action_create_color_size_wizard"
+        name="Tạo style (Màu - Size)"
+        res_model="create.style.color.size.wizard"
+        view_mode="form"
+        target="new"/>
+</odoo>

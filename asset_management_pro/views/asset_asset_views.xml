@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Search View for asset.asset -->
+        <record id="view_asset_asset_search" model="ir.ui.view">
+            <field name="name">asset.asset.search</field>
+            <field name="model">asset.asset</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Tài sản">
+                    <field name="name" string="Tên tài sản"/>
+                    <field name="code" string="Mã tài sản"/>
+                    <field name="serial_number" string="Số Serial"/>
+                    <separator/>
+                    <filter string="Đang hoạt động" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Đã lưu trữ" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Vị trí sử dụng" name="group_by_usage" context="{'group_by': 'usage_id'}"/>
+                        <filter string="Danh mục" name="group_by_category" context="{'group_by': 'category_id'}"/>
+                        <filter string="Chủng loại" name="group_by_asset_type" context="{'group_by': 'asset_type_id'}"/>
+                        <filter string="Trạng thái" name="group_by_status" context="{'group_by': 'status_id'}"/>
+                        <filter string="Nơi lưu" name="group_by_location" context="{'group_by': 'location_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="usage_id" string="Vị trí sử dụng" icon="fa-map-marker" enable_counters="1"/>   
+                        <field name="category_id" string="Danh mục" icon="fa-folder" enable_counters="1"/>
+                        <field name="asset_type_id" string="Chủng loại" icon="fa-tag" enable_counters="1"/>
+                        <field name="status_id" string="Trạng thái" icon="fa-check-square-o" enable_counters="1"/>
+                        
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View for asset.asset -->
+        <record id="view_asset_asset_form" model="ir.ui.view">
+            <field name="name">asset.asset.form</field>
+            <field name="model">asset.asset</field>
+            <field name="arch" type="xml">
+                <form string="Tài sản">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <field name="image_128" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Ví dụ: Laptop Dell XPS 15"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code"   style="border: 1px solid #ced4da;"/>
+                                <field name="serial_number" placeholder="Nhập mã tài sản ........" style="border: 1px solid #ced4da;"/>
+                                
+                                <field name="category_id" placeholder="Chọn danh mục tài sản ........" style="border: 1px solid #ced4da;"/>
+                                <field name="asset_type_id" placeholder="Chọn loại tài sản ........" style="border: 1px solid #ced4da;"/>
+                                <field name="date_borrow" placeholder="Chọn ngày mượn tài sản ........" style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group>
+                                <field name="status_color" invisible="1"/>
+                                <field name="status_id" placeholder="Chọn trạng thái tài sản ........" style="border: 1px solid #ced4da;"  />
+                                <field name="usage_id" placeholder="Chọn đơn vị sử dụng ........" style="border: 1px solid #ced4da;"/>
+                                <field name="location_id" placeholder="Chọn chủ sở hữu tài sản ........" style="border: 1px solid #ced4da;"/>
+                                <field name="manager_id" placeholder="Chọn người quản lý tài sản ........" style="border: 1px solid #ced4da;" widget="many2one_avatar_user"/>
+                                <field name="borrower_id" placeholder="Chọn người mượn tài sản ........" style="border: 1px solid #ced4da;" widget="many2one_avatar_user"/>
+                                <field name="position_id" string="Vị trí ngưới mượn" style="border: 1px solid #ced4da;" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Thông tin tài chính">
+                                <group>
+                                    <field name="purchase_date" style="border: 1px solid #ced4da;"/>
+                                    <field name="purchase_value" style="border: 1px solid #ced4da;" widget="monetary"/>
+                                    <field name="current_value" style="border: 1px solid #ced4da;" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="attachment_ids" widget="many2many_binary" />
+                                </group>
+                            </page>
+                            <page string="Mô tả">
+                                <field name="description" placeholder="Thêm mô tả chi tiết về tài sản..." style="border: 1px solid #ced4da;"/>
+                            </page>
+                            <page string="Thông tin khác">
+                                <group>
+                                    <field name="employee_id" readonly="1" widget="many2one_avatar_user"/>
+                                    <field name="date_create" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Lịch sử hoạt động">
+                                <field name="activity_history_ids" readonly="1">
+                                    <tree editable="bottom" create="false" delete="false" edit="false" class="o_general_list_view_product">
+                                        <field name="date" string="THỜI GIAN THỰC HIỆN"/>
+                                        <field name="avatar_name_job" string="NGƯỜI THỰC HIỆN"/>
+                                        <field name="description" string="NỘI DUNG"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for asset.asset -->
+        <record id="view_asset_asset_tree" model="ir.ui.view">
+            <field name="name">asset.asset.tree</field>
+            <field name="model">asset.asset</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách tài sản" class="o_general_list_view_product" >
+                    <field name="name" string="TÀI SẢN"/>
+                    <field name="code" string="MÃ TÀI SẢN"/>
+                    <field name="serial_number" string="SỐ SERIAL"/>
+                    <field name="category_id" string="Danh mục"/>
+                    <field name="asset_type_id" string="CHỦNG LOẠI"/>
+                    <field name="status_id" string="TRẠNG THÁI" />
+                    <field name="location_id" string="CHỦ SỞ HỮU"/>
+                    <field name="manager_id" string="QUẢN LÝ" widget="many2one_avatar_user"/>
+                    <field name="usage_id" string="ĐƠN VỊ SỬ DỤNG"/>
+                    <field name="borrower_id" string="NGƯỜI MƯỢN" widget="many2one_avatar_user"/>
+                    <field name="position_id" string="VI TRÍ NGƯỜI MƯỢN" widget="many2one_tags"/>
+                    <field name="date_borrow" string="NGÀY MƯỢN"/>
+                    <field name="purchase_value" string="GIÁ TRỊ MUA" widget="monetary" optional="hide"/>
+                    <field name="active" widget="boolean_toggle" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action for asset.asset -->
+        <record id="action_asset_asset" model="ir.actions.act_window">
+            <field name="name">Tài sản</field>
+            <field name="res_model">asset.asset</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_asset_asset_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có tài sản nào được tạo.
+                </p>
+                <p>
+                    Bấm vào đây để bắt đầu quản lý tài sản của bạn.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

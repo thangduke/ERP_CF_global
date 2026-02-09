@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search View for Garment Order Breakdown -->
+    <record id="garment_order_breakdown_view_search" model="ir.ui.view">
+        <field name="name">garment.order.breakdown.view.search</field>
+        <field name="model">garment.order.breakdown</field>
+        <field name="arch" type="xml">
+            <search string="Search Order Breakdowns">
+                <field name="program_id"/>
+                <field name="style_id"/>
+                <field name="colorway_id"/>
+                <field name="size"/>
+                <group expand="0" string="Group By">
+                    <filter string="Program" name="group_by_program" context="{'group_by': 'program_id'}"/>
+                    <filter string="Style" name="group_by_style" context="{'group_by': 'style_id'}"/>
+                    <filter string="Colorway" name="group_by_colorway" context="{'group_by': 'colorway_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Form View for Garment Order Breakdown -->
+    <record id="garment_order_breakdown_view_form" model="ir.ui.view">
+        <field name="name">garment.order.breakdown.view.form</field>
+        <field name="model">garment.order.breakdown</field>
+        <field name="arch" type="xml">
+            <form string="Order Breakdown">
+                <sheet>
+                    <group>
+                        <group string="Linkages">
+                            <field name="program_id"/>
+                            <field name="style_id"/>
+                            <field name="colorway_id"/>
+                            <field name="size"/>
+                        </group>
+                        <group string="Quantities">
+                            <field name="order_qty"/>
+                            <field name="test_qty"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!-- Tree View for Garment Order Breakdown -->
+    <record id="garment_order_breakdown_view_tree" model="ir.ui.view">
+        <field name="name">garment.order.breakdown.view.tree</field>
+        <field name="model">garment.order.breakdown</field>
+        <field name="arch" type="xml">
+            <tree string="Order Breakdowns" editable="bottom">
+                <field name="program_id"/>
+                <field name="style_id"/>
+                <field name="colorway_id"/>
+                <field name="size"/>
+                <field name="order_qty"/>
+                <field name="test_qty"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Window for Garment Order Breakdown -->
+    <record id="garment_order_breakdown_action" model="ir.actions.act_window">
+        <field name="name">Order Breakdowns</field>
+        <field name="res_model">garment.order.breakdown</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="garment_order_breakdown_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new order breakdown0   
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Garment Order Breakdown -->
+    <menuitem
+        id="garment_order_breakdown_menu"
+        name="Order Breakdowns"
+        parent="garment_order_menu_root"
+        action="garment_order_breakdown_action"
+        sequence="50"/>
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- View cho Wizard Import -->
+    <record id="view_employee_import_wizard_form" model="ir.ui.view">
+        <field name="name">employee.import.wizard.form</field>
+        <field name="model">employee.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Nhân sự">
+                <group>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                    <button name="action_download_template" string="Tải File Mẫu" type="object" class="btn-secondary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action để mở Wizard Import -->
+    <record id="action_open_employee_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Nhân sự</field>
+        <field name="res_model">employee.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+    <record id="seq_customer_cf" model="ir.sequence">
+        <field name="name">Customer Cf</field>
+        <field name="code">customer.cf</field>
+        <field name="prefix">CUS</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

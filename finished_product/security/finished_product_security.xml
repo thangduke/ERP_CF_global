@@ -2,7 +2,7 @@
 <odoo>
     <data noupdate="0">
         <record id="module_category_finished_product" model="ir.module.category" >
-            <field name="name">Finished Product</field>
+            <field name="name">Ứng dụng Kho Thành Phẩm</field>
             <field name="sequence">4</field>
         </record>
 

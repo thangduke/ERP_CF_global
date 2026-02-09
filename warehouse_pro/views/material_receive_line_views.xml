@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search view -->
+        <record id="shelf_material_line_search_view" model="ir.ui.view">
+            <field name="name">material.receive.line.search</field>
+            <field name="model">material.receive.line</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm vật tư trong kệ">
+                    <field name="shelf_id" string="Kệ hàng"/>
+                    <field name="shelf_level_id" string="Khoang"/>
+                    <filter name="filter_by_shelf" string="Theo kệ" domain="[]" context="{'group_by': 'shelf_id'}"/>
+                    <group expand="1" string="Lọc theo chương trình">
+                        <filter name="filter_shelf_level_id " string="Khoang" domain="[]" context="{'group_by': 'shelf_level_id'}"/>
+                    </group>
+                    <searchpanel>
+                        <field name="store_id" string="Kho hàng" icon="fa-building-o"  enable_counters="1"
+                            options="{'always_loaded': True}"/>
+                        <field name="shelf_id" string="Kệ hàng" icon="fa-cubes" enable_counters="1"
+                            options="{'always_loaded': True}"/>
+                        <field name="shelf_level_id" string="Khoang" icon="fa-th-large" enable_counters="1"
+                            options="{'always_loaded': True}"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!-- From view 1-->
+        <record id="shelf_material_line_form_view" model="ir.ui.view">
+            <field name="name">material.receive.line.form</field>
+            <field name="model">material.receive.line</field>
+            <field name="arch" type="xml">
+                <form string="Vật tư trong kệ">
+                        <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;" >
+                            <h1>
+                                Thêm Vật tư mới trong kệ
+                            </h1>
+                            <h7>
+                                Vui lòng đảm bảo nhập đầy đủ thông tin như mã vật tư, loại, màu sắc, kích thước, để thuận tiện cho quản lý và định mức sản xuất.
+                            </h7>
+                            <hr/>
+                            <group>
+                                <field name="shelf_id" required="1"/>
+                            </group>
+                            <group>
+
+                                <field name="supplier" placeholder="Nhà cung cấp..." style="border: 1px solid #ced4da;"/>
+                                <field name="country" placeholder="Quốc gia..." style="border: 1px solid #ced4da;"/>
+                                <field name="entry_date" placeholder="Ngày nhập" readonly="1" />
+                                <field name="employee_id" widget="many2one_avatar_user" readonly="1" />
+                            </group>
+                            <group >
+                                <group string="Thông tin cơ bản">
+                                    <field name="mtr_no"  placeholder="Mã vật tư..." style="border: 1px solid #ced4da;"/>   
+                                    <field name="mtr_type"  placeholder="Chọn loại vật tư" style="border: 1px solid #ced4da;"/>
+                                    <field name="mtr_name" placeholder="Tên vật tư..." style="border: 1px solid #ced4da;"/>
+                                    <field name="mtr_code" placeholder="Mã nội bộ..." style="border: 1px solid #ced4da;"/>
+                                    <field name="dimension" placeholder="Kích thước..." style="border: 1px solid #ced4da;"/>
+                                   
+                                </group>
+                                <group string="Thông tin màu sắc">
+
+                                    <field name="color_name" placeholder="Tên màu..." style="border: 1px solid #ced4da;"/>
+
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Số lượng và đơn giá">
+
+                                    <field name="rate" placeholder="Đơn vị đo" style="border: 1px solid #ced4da;"/>
+                                    <field name="price" readonly="1"/>
+                                </group>
+                                <group string="Thông tin giá">
+                                    <field name="cif_price" placeholder="Giá CIF..." style="border: 1px solid #ced4da;"/>
+                                    <field name="fob_price" placeholder="Giá FOB..." style="border: 1px solid #ced4da;"/>
+                                    <field name="exwork_price" placeholder="Giá EXW..." style="border: 1px solid #ced4da;"/>
+
+                                </group>
+                            </group>
+                            <div style="text-align: right; padding-top: 20px;">
+                                <button  special="save" class="btn btn-success " ><i class="fa fa-check" /> Thêm vật tư</button>
+                                <span style="color: white; padding-left:15px;"></span>
+                                <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                            </div>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+        <!-- Tree View 1 mtr_name-->
+        <record id="shelf_material_line_tree_view" model="ir.ui.view">
+            <field name="name">material.receive.line.tree</field>
+            <field name="model">material.receive.line</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách vật tư trong kệ" create="False" editable="bottom" 
+                    js_class="button_in_tree" class="o_program_list_view_product">
+                    <!-- Thông tin vị trí và phân loại -->
+                    <field name="name" string="Mtr#" readonly="1"/>
+                    <field name="mtr_type" string="Mtr Type" readonly="1"/> 
+                    <field name="mtr_name" string="Mtr Name" readonly="1"/> 
+                    <field name="mtr_code" string="Mtr Code" readonly="1"/> 
+                    <field name="rate" string="Unit" />
+
+                    <!-- Thông số kỹ thuật -->
+                    <field name="dimension" string="Dimension" readonly="1"/> 
+
+                    <field name="color_name" string="Color Name" readonly="1"/> 
+                    <field name="supplier" string="Supplier" readonly="1"/>
+
+                    <field name="qty" string="SL nhập" readonly="1"/>
+                    <field name="subtotal" string="Thành tiền" readonly="1"/> 
+                    <!-- Số lượng ước tính-->
+                    <!-- Thông tin giá theo Style(size)-->
+                    <field name="price" string="Price" readonly="1" optional="hide"/>
+                    <field name="cif_price" string="CIF.Price" readonly="1" optional="hide"/>
+                    <field name="fob_price" string="FOB.Price" readonly="1" optional="hide"/>
+                    <field name="exwork_price" string="EXW.Price" readonly="1" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action Window 1: Tạo phê duyệt cho người dùng hiện tại -->
+        <record id="action_shelf_material_line" model="ir.actions.act_window">
+            <field name="name">Danh sách vật tư trong kệ</field>
+            <field name="res_model">material.receive.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'create': True, 'search_default_filter_shelf_level_id': 1}</field> 
+            <field name="search_view_id" ref="shelf_material_line_search_view"/>
+        </record>
+
+    </data>    
+</odoo>
+

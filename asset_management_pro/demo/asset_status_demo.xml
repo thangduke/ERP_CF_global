@@ -1,0 +1,29 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Default Asset Statuses -->
+        <record id="asset_status_new" model="asset.status">
+            <field name="name">Mới</field>
+            <field name="color">#28a745</field> <!-- green -->
+        </record>
+
+        <record id="asset_status_in_use" model="asset.status">
+            <field name="name">Đang sử dụng</field>
+            <field name="color">#007bff</field> <!-- blue -->
+        </record>
+
+        <record id="asset_status_repair" model="asset.status">
+            <field name="name">Sửa chữa</field>
+            <field name="color">#ffc107</field> <!-- yellow -->
+        </record>
+
+        <record id="asset_status_liquidated" model="asset.status">
+            <field name="name">Thanh lý</field>
+            <field name="color">#17a2b8</field> <!-- info/cyan -->
+        </record>
+
+        <record id="asset_status_lost" model="asset.status">
+            <field name="name">Mất</field>
+            <field name="color">#dc3545</field> <!-- red -->
+        </record>
+    </data>
+</odoo>

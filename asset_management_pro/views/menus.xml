@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+
+        <!-- Root menu -->
+        <menuitem id="menu_asset_management_root"
+                  name="Quản lý Tài sản"
+                  groups="asset_management_pro.group_asset_management_pro_user"
+                  web_icon="asset_management_pro,static/description/icon.png"
+                  sequence="10"/>
+
+        <!-- Main asset menu -->
+        <menuitem id="menu_asset_asset" name="Danh sách tài sản" parent="menu_asset_management_root" action="action_asset_asset" sequence="1"/>
+
+        <!-- Configuration menu -->
+        <menuitem id="menu_asset_config" name="Thiết lập tài sản" parent="menu_asset_management_root" sequence="100" groups="asset_management_pro.group_asset_management_pro_manager"/>
+        <!-- Asset Properties Submenu -->
+        <menuitem id="menu_asset_properties_config" name="Thuộc tính tài sản" parent="menu_asset_config" sequence="1"/>
+        <menuitem id="menu_asset_category" name="Danh mục" parent="menu_asset_properties_config" action="action_asset_category" sequence="1"/>
+        <menuitem id="menu_asset_type" name="Loại tài sản" parent="menu_asset_properties_config" action="action_asset_type" sequence="2"/>
+        <menuitem id="menu_asset_status" name="Trạng thái tài sản" parent="menu_asset_properties_config" action="action_asset_status" sequence="3"/>
+
+        <!-- General Management Submenu -->
+        <menuitem id="menu_asset_general_management_config" name="Quản lý chung" parent="menu_asset_config" sequence="2"/>
+        <menuitem id="menu_asset_location" name="Chủ sở hữu" parent="menu_asset_general_management_config" action="action_asset_location" sequence="1"/>
+        <menuitem id="menu_asset_usage" name="Đơn vị sử dụng" parent="menu_asset_general_management_config" action="action_asset_usage" sequence="2"/>
+        <menuitem id="menu_asset_activity_history" name="Lịch sử hoạt động" parent="menu_asset_general_management_config" action="action_asset_activity_history" sequence="3"/>
+
+    </data>
+</odoo>

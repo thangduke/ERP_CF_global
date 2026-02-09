@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Template -->
+    <template id="report_material_receive_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">PHIẾU NHẬP KHO</h2>
+                        <div class="text-center">
+                            <strong>Mã phiếu:</strong> <span t-field="doc.receipt_no"/>
+                        </div>
+                        <div class="text-center mb-4">
+                            <strong>Ngày tạo:</strong> <span t-field="doc.date_create" t-options='{"widget": "date"}'/>
+                        </div>
+                        
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <p><strong>Chương trình:</strong> <span t-field="doc.order_id.name"/></p>
+                                <p><strong>Khách hàng:</strong> <span t-field="doc.customer_id.name_customer"/></p>
+                                <p><strong>Mã NCC:</strong> <span t-field="doc.po_id.display_name"/></p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Mã PO (Invoice):</strong> <span t-field="doc.invoice_id.name"/></p>
+                                <p><strong>Nhà cung cấp:</strong> <span t-field="doc.supplier.name_supplier"/></p>
+                                <p><strong>Kho nhập:</strong> <span t-field="doc.store_id.name"/></p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <p><strong>Người tạo:</strong> <span t-field="doc.employee_id.name"/></p>
+                                <p><strong>Mục đích:</strong> <span t-field="doc.purpose"/></p>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Chi tiết vật tư</h4>
+                        <table class="table table-sm o_main_table mt-2">
+                            <thead>
+                                <tr>
+                                    <th name="th_name" class="text-left"><span>Mtr#</span></th>
+                                    <th name="th_mtr_name" class="text-left"><span>Tên vật tư</span></th>
+                                    <th name="th_mtr_code" class="text-left"><span>Mã vật tư</span></th>
+                                    <th name="th_dimension" class="text-left"><span>Kích thước</span></th>
+                                    <th name="th_quantity" class="text-right"><span>Số lượng nhập</span></th>
+                                    <th name="th_supplier" class="text-left"><span>Nhà cung cấp</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="not doc.invoice_id.invoice_line_ids">
+                                    <tr>
+                                        <td colspan="6">Không có dữ liệu vật tư.</td>
+                                    </tr>
+                                </t>
+                                <t t-foreach="doc.invoice_id.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td><span t-field="line.mtr_no"/></td>
+                                        <td><span t-field="line.mtr_name"/></td>
+                                        <td><span t-field="line.mtr_code"/></td>
+                                        <td><span t-field="line.dimension"/></td>
+                                        <td class="text-right"><span t-field="line.act_qty"/></td>
+                                        <td><span t-field="line.supplier.name_supplier"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        
+                        <div class="row mt-4" style="margin-top: 200px;">
+                            <div class="col-3 text-center">
+                                <strong>Người lập phiếu</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/><br/>
+                                <span t-field="doc.employee_id.name"/>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Người giao hàng</strong><br/>
+                                <span>(Ký, họ tên)</span><br/><br/><br/><br/>
+                                <span t-field="doc.employee_id.name"/>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Thủ kho</strong><br/>
+                                <span>(Ký, họ tên)</span>
+                            </div>
+                            <div class="col-3 text-center">
+                                <strong>Kế toán trưởng</strong><br/>
+                                <span>(Ký, họ tên)</span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

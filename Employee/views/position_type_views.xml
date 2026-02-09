@@ -5,7 +5,7 @@
             <field name="name">position.type.form</field>
             <field name="model">position.type</field>
             <field name="arch" type="xml">
-                <form string="Phân loại vị trí" edit="1" create="0" >
+                <form string="Vị trí công tác" edit="1" create="0" >
                     <sheet style="max-width: 700px; margin-left: auto; margin-right: auto;" invisible="not id">
                         <h1>
                             <i class="fa fa-briefcase "/>
@@ -13,14 +13,9 @@
                         </h1>
                         <hr style="height:2px;"/>
                          <h3>
-                            Vị trí công việc đã liên kết
+                            Mô tả vị trí công tác
                          </h3>
-                        <field name="position_ids"  options='{"no_create": True}'>
-                            <tree class="o_employee3c_list_view_no_header_position">
-                                <field name="name"/>
-                                <field name="position_code" />
-                            </tree>
-                        </field>
+                            <field name="description" placeholder="Mô tả khái quát" style="border: 1px solid #ced4da; margin-top: 5px; margin-bottom: 15px;"/>
                     </sheet>
                 </form>
             </field>
@@ -30,7 +25,7 @@
             <field name="name">position.type.form</field>
             <field name="model">position.type</field>
             <field name="arch" type="xml">
-                <form string="Phân loại vị trí" edit="0" create="0" >
+                <form string="Vị trí công tác" edit="0" create="0" >
                     <sheet >
                         <group style="display: block;">
                             <field name="name" placeholder="Ví dụ: Trưởng phòng.." style="border: 1px solid #ced4da; font-size: 20px; margin-top: 5px; margin-bottom: 15px;"/>
@@ -80,7 +75,7 @@
         </record>
 
         <record id="action_position_type" model="ir.actions.act_window">
-            <field name="name">Phân loại vị trí</field>
+            <field name="name">Vị trí công tác</field>
             <field name="res_model">position.type</field>
             <field name="view_mode">kanban,form</field>
             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'kanban', 'view_id': ref('action_position_type_kanban')}),

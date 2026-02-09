@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Tree view consumption-->
+        <record id="view_material_norm_line_tree" model="ir.ui.view">
+            <field name="name">material.norm.line.tree</field>
+            <field name="model">material.norm.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" class="o_general_list_view_product">
+                    <field name="program_customer_id"/>
+                    <field name="color_size_id"/>
+                    <field name="size_id"/>
+                    <field name="consumption"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_material_norm_line_form" model="ir.ui.view">
+            <field name="name">material.norm.line.form</field>
+            <field name="model">material.norm.line</field>
+            <field name="arch" type="xml">
+                <form string="Định mức vật tư" create="0" edit="1">
+                    <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                        <h1>Chỉnh sửa định mức vật tư</h1>
+                        <hr/>
+                        <group>
+                            <field name="program_customer_id" style="border: 1px solid #ced4da;"/>
+                            <field name="color_size_id" style="border: 1px solid #ced4da;"/>
+                            <field name="size_id" style="border: 1px solid #ced4da;"/>
+                            <field name="consumption" placeholder="Định mức..." style="border: 1px solid #ced4da;"/>
+                        </group>
+                        <div style="text-align: right; padding-top: 20px;">
+                            <button special="save" class="btn btn-success"><i class="fa fa-check"/> Lưu</button>
+                            <span style="color: white; padding-left:15px;"></span>
+                            <button special="cancel" class="btn btn-secondary ms-2"><i class="fa fa-undo"/> Hủy bỏ</button>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Form view -->
+        <record id="view_material_norm_line_form" model="ir.ui.view">
+            <field name="name">material.norm.line.form</field>
+            <field name="model">material.norm.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="program_customer_id"/>
+                        <field name="size_id"/>
+                        <field name="consumption"/>
+                        <field name="position"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_material_norm_line" model="ir.actions.act_window">
+            <field name="name">Material Norm Lines</field>
+            <field name="res_model">material.norm.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

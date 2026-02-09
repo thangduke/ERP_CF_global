@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="view_product_price_calculation_search" model="ir.ui.view">
+            <field name="name">product.price.calculation.search</field>
+            <field name="model">product.price.calculation</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Style">
+                    <field name="name" string="Style"/>
+                </search>
+            </field>
+        </record>
+        <!-- Form View -->
+        <record id="view_product_price_calculation_form" model="ir.ui.view">
+            <field name="name">product.price.calculation.form</field>
+            <field name="model">product.price.calculation</field>
+            <field name="arch" type="xml">
+                <form string="Tính giá sản phẩm" create="false">
+                    <header>
+                        <button name="action_report_price_calculation" type="object" class="btn-secondary" string="Tính giá sản phẩm"  icon="fa-print"
+                           invisible="id == False"/>                  
+                    </header>
+                    <sheet style="max-width: 100%; height: auto; margin-left: 10px; padding: 0; background-color: #f8f9fa" >
+                        <!-- PHẦN 1: 3 KHỐI NGANG -->
+                        <notebook>
+                            <page string="Chi phí nguyên vật liệu" class="fw-bold"> 
+                                <div style="display: flex; gap: 10px; margin-bottom: 0px;">
+                                    <!-- Thông tin xuất kho -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-cogs" style="color: gray; margin-right: 5px;"></span>Thông tin chương trình, Style
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 90px; display: inline-block; font-weight: bold;">Chương trình:</span>
+                                            <field name="warehouse_order_id" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div>
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 90px; display: inline-block; font-weight: bold;">Style:</span>
+                                            <field name="product_code_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Style (Color,Size):</span>
+                                            <field name="product_color_size_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>
+                                    </div>
+                                    <!-- Chi phí nguyên vật liệu, hao hụt -->
+                                    <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-industry" style="color: gray; margin-right: 5px;"></span>Chi phí nguyên vật liệu, hao hụt
+                                        </h3>
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">1.Material cost:</span>
+                                            <field name="material_cost" widget ="monetary" style="border: 1px solid #ced4da; width: 100%;" readonly="1" />
+                                        </div>
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">2. Waste %:</span>
+                                            <field name="waste_percent"  readonly="1" class="oe_input" style="width: 80px; margin-right: 2px; text-align: right; border: 1px solid #ced4da;"/>
+                                            <span style="margin-left: 30px; min-width: 80px; font-weight: bold;">Waste :</span>
+                                            <field name="waste" widget="monetary" style="border: 1px solid #ced4da; width: 100%; font-weight: bold;" readonly="1"/>
+                                        </div>
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">3.Finance %:</span>
+                                            <field name="finance_percent"  readonly="1" class="oe_input" style="width: 80px; margin-right: 2px; text-align: right; border: 1px solid #ced4da;"/>
+                                            <span style="margin-left: 30px; min-width: 80px; font-weight: bold;">Finance :</span>
+                                            <field name="finance" widget="monetary" style="border: 1px solid #ced4da; width: 100%; font-weight: bold;" readonly="1"/>
+                                        </div>
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">4.Total Net:</span>
+                                            <field name="total_net" widget="monetary" style="border: 1px solid #ced4da; width: 100%;" readonly="1" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Chi phí sản xuất, quản lý -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-shopping-cart" style="color: gray; margin-right: 5px;"></span>Chi phí sản xuất, quản lý
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">5.CM :</span>
+                                            <field name="cut_make" widget="monetary" readonly="1" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">6.Admin %</span>
+                                            <field name="admin_percent" readonly="1" class="oe_input" style="width: 80px; margin-right: 2px; text-align: right; border: 1px solid #ced4da;"/>
+                                            <span style="margin-left: 30px; min-width: 80px; font-weight: bold;">Admin :</span>
+                                            <field name="admin" widget="monetary" style="border: 1px solid #ced4da; width: 100%; font-weight: bold;" readonly="1"/>
+                                        </div>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">7.Inspection cost per:</span>
+                                            <field name="inspection_cost" widget="monetary" readonly="1" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>
+                                    </div>     
+                                  
+                                </div>
+                            </page>
+                            <page string="Tổng chi phí sản xuất" class="fw-bold">
+                                <div style="display: flex; gap: 10px; margin-bottom: 0px;">
+                                    <!-- Thông tin người tạo -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-info-circle" style="color: gray; margin-right: 5px;"></span>Thông tin người tạo
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Người tạo :</span>
+                                            <field name="employee_id"  widget="many2one_avatar_user" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div>
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Ngày tạo:</span>
+                                            <field name="date_calculation" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Chi phí kiểm nghiệm, xuất nhập khẩu -->
+                                    <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-list-alt" style="color: gray; margin-right: 5px;"></span>Chi phí kiểm nghiệm, xuất nhập khẩu
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">8.Testing cost per pc :</span>
+                                            <field name="test_cost" widget="monetary" readonly="1" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div> 
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">9.Import/Export cost :</span>
+                                            <field name="import_export_cost" widget="monetary" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        </div>  
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">10.Standard FOB per pc :</span>
+                                            <field name="standard_fob" widget="monetary" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div>                               
+                                    </div>
+
+                                    <!-- Thông tin tính giá FOB-->
+                                    <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
+                                            <span class="fa fa-list-alt" style="color: gray; margin-right: 5px;"></span>Giá FOB (Free On Board)
+                                        </h3>
+
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">11.Surcharge %:</span>
+                                            <field name="surcharge_percent" readonly="1" class="oe_input" style="width: 80px; margin-right: 2px; text-align: right; border: 1px solid #ced4da;"/>
+                                            <span style="margin-left: 30px; min-width: 80px; font-weight: bold;">Surcharge :</span>
+                                            <field name="surcharge" widget="monetary" style="border: 1px solid #ced4da; width: 100%; font-weight: bold;" readonly="1"/>
+                                        </div>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">12.Extra cost per pc :</span>
+                                            <field name="extra_cost" widget="monetary" readonly="1" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>  
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">13.Final FOB :</span>
+                                            <field name="final_fob" widget="monetary" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div> 
+
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;" >
+                                            <span style="min-width: 110px; display: inline-block; font-weight: bold;">14.Agreed FOB per pc :</span>
+                                            <field name="agreed_fob" widget="monetary" style="border: 1px solid #ced4da; width: 100%;" readonly="1"/>
+                                        </div>                                      
+                                    </div>  
+                          
+                                </div>
+                            </page>
+                        </notebook>
+                            <!-- PHẦN 2: DANH SÁCH VẬT TƯ -->
+                        <div style="background-color: rgb(237, 237, 237); padding:15px; border-radius: 6px;">
+                            <!-- Thanh tiêu đề và tìm kiếm -->
+                            <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 10px;">     
+                                <!-- BÊN TRÁI: Tiêu đề -->
+                                <div style="flex: 1; font-weight: bold; font-size: 14px;">
+                                    <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>Danh sách Vật tư định mức
+                                </div>
+                                <!-- Ở GIỮA: Ô tìm kiếm -->
+                                <div style="flex: 1; display: flex; justify-content: center;">
+                                    <div style="width: 500px; display: flex; justify-content: center; align-items: center; height: 38px; border: 1px solid #ced4da; border-radius: 3px; padding: 4px 8px;">
+                                        <field name="available_material_type_ids" invisible="1"/>
+                                        <field name="available_supplier_ids" invisible="1"/>                                      
+                                        <field name="search_mtr_type" domain="[('id', 'in', available_material_type_ids)]" placeholder="Lọc theo loại vật tư..." style="flex: 1; border: none; outline: none; margin-right: 5px; "/>
+                                        <field name="search_supplier" domain="[('id', 'in', available_supplier_ids)]" placeholder="Lọc theo nhà cung cấp..." style="flex: 1; border: none; outline: none; margin-right: 5px; "/>
+                                        <field name="search_text" placeholder="Lọc theo mã vật tư..." style="flex: 1; border: none; outline: none;"/>
+                                    </div>
+                                </div>
+
+                                <!-- BÊN PHẢI: Các nút -->
+                                <div style="flex: 1; display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+                                    <!-- Nút Export -->
+                                    <button type="object" name="action_export_excel" class="btn btn-outline-primary btn-sm" title="Export"
+                                            style="border-radius: 4px;">
+                                        <span class="fa fa-upload" style="margin-right: 5px;"></span>
+                                        <span style="color: #007bff;">Export</span>
+                                    </button>
+
+                                    <!-- Nút Tuỳ chọn -->
+                                    <div class="dropdown">
+                                        <button name="button_dummy" type="object" class="btn btn-light fa fa-ellipsis-v"
+                                                data-bs-toggle="dropdown" aria-expanded="false" title="Tuỳ chọn"/>
+                                        <div class="dropdown-menu" role="menu">
+                                            <div class="dropdown-divider"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: right; font-size: 14px; color: #6c757d; margin: 4px 10px;">
+                                    <i class="fa fa-list-ul" style="margin-right: 5px; color: #6c757d;"/> 
+                                    <span><field name="material_count" readonly="1" nolabel="1"/> VẬT TƯ</span>
+                            </div>
+
+                            <div style="overflow-x: auto; max-width: 100%; height: 500px; overflow-y: auto;">
+                                <!-- Tree view danh sách vật tư -->
+                                <field name="filtered_calculation_line_ids" string=" ">
+                                    <tree string="Định mức" class="o_program_list_view_product" editable="bottom" create="false" delete="false"  >
+                                        <!-- Thông tin vật tư -->
+                                        <field name="position" string="Position" optional="hide"/>
+                                        <field name="program_customer_id" string="Mtr#" help="Mã vật tư"/> 
+                                        <field name="mtr_type" string="Mtr Type" help="Loại vật tư"/> 
+                                        <field name="mtr_code" string="Mtr Code" help="Mã vật tư"/>
+                                        <field name="mtr_name" string="Mtr Name" help="Tên vật tư"/> 
+                                        <field name="rate" string="Unit" help="Đơn vị tính"/> 
+                                        <!-- Thông số dimension theo Style(size) -->
+                                        <field name="dimension" string="Dimension" help="Kích thước"/> 
+                                        <!-- Thông tin màu sắc vật tư -->
+                                        <field name="color_item" string="Color#" help="Mã item màu"/>
+                                        <field name="color_code" string="Color Code" help="Mã màu" optional="hide"/> 
+                                        <field name="color_name" string="Color Name" help="Tên màu"/> 
+                                        <field name="color_set" string="Color Set" help="Bộ màu"/> 
+                                        <!-- Thông tin nhà cung cấp -->
+                                        <field name="supplier_index" string="Supplier#" />
+                                        <field name="supplier" string="Supplier" help="Nhà cung cấp"/>
+                                        <field name="country" string="Country" optional="hide" />
+                                        <!-- Số lượng ước tính--> 
+                                        <field name="consumption" string="Consumption" />  
+                                        <!-- Thông tin giá -->
+                                        <field name="price" string="Price" help="Đơn Giá"/>
+                                        <field name="cif_price" string="CIF Price" help="Giá bán cho khách"/>
+                                        <field name="fob_price" string="FOB Price" help="Giá mua vào"/> 
+                                        <field name="exwork_price" string="EXW Price" help="Giá xuất xưởng"/> 
+                                        <!-- Thành tiền -->
+                                        <field name="total_price" string="Total" help="Tổng giá trị =consumption*Price" />
+                                        <field name="total_cif" string="CIF.Total" help="Tổng giá trị =consumption*cif_price" />
+                                        <field name="total_fob" string="FOB.Total" help="Tổng giá trị =consumption*fob_price" />
+                                        <field name="total_exwork" string="EXW.Total" help="Tổng giá trị =consumption*exwork_price" />
+                                       
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </sheet> 
+                    
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for product.price.calculation -->
+        <record id="view_product_price_calculation_tree" model="ir.ui.view">
+            <field name="name">product.price.calculation.tree</field>
+            <field name="model">product.price.calculation</field>
+            <field name="arch" type="xml">
+                <tree string="Bảng tính giá sản phẩm">
+                    <field name="name" string="Costing.Sheet#"/>
+                    <field name="product_code_id" string="Style#"/>
+                    <field name="product_color_size_id" string="Style(Color,Size)"/>
+                    <field name="material_cost" string="Material Cost.US$"/>  
+                    <field name="employee_id" widget="many2one_avatar_user" string="Người Tạo"/>
+                    <field name="date_calculation" string="Ngày Tạo"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action for product.price.calculation -->
+        <record id="action_product_price_calculation" model="ir.actions.act_window">
+            <field name="name">Bảng tính giá</field>
+            <field name="res_model">product.price.calculation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có bảng tính giá nào được tạo.
+                </p><p>
+                    Tạo một bảng tính giá mới để tính toán giá thành sản phẩm dựa trên định mức vật tư.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

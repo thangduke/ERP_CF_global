@@ -37,7 +37,7 @@ patch(Dialog.prototype, {
         this.setSize = this.setSize.bind(this);
         this.getSize = this.getSize.bind(this);
         // Set initial size to medium
-        this.props.size = 'dialog_full_screen';
+        this.props.size = this.props.size || 'md';
     },
 
     setSize(size) {
@@ -55,7 +55,6 @@ patch(SelectCreateDialog.prototype, {
         super.setup();
         this.setSize = this.setSize.bind(this);
         this.getSize = this.getSize.bind(this);
-        this.props.size = 'dialog_full_screen';
     },
 
     setSize(size) {

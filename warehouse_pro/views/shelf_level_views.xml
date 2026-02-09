@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="view_shelf_level_search" model="ir.ui.view">
+            <field name="name">shelf.level.search</field>
+            <field name="model">shelf.level</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm khoang">
+                    <field name="name" string="Tên khoang"/>
+                    <field name="code" string="Mã khoang"/>
+                    <field name="shelf_id" string="Kệ"/>
+                    <field name="store_id" string="Kho"/>
+                    <field name="capacity" string="Sức chứa"/>
+                    <field name="active" string="Trạng thái"/>
+                    <searchpanel>
+                        <field name="store_id" string="Kho" icon="fa fa-archive"  enable_counters="1"
+                            options="{'always_loaded': True}"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <!-- Kanban View -->
+        <record id="view_shelf_level_kanban" model="ir.ui.view">
+            <field name="name">shelf.level.kanban</field>
+            <field name="model">shelf.level</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="shelf_id" class="o_custom_warehouse_small_kanban" create="true">
+                    <field name="shelf_id"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="capacity"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click"
+                                 style="padding: 1rem; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <div class="o_kanban_card_content d-flex flex-column align-items-center">
+                                    <div class="mb-3">
+                                        <i class="fa fa-bars fa-3x" style="color: #6c757d;"/>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="mb-2"><field name="name"/></h4>
+                                        <div class="text-muted">
+                                            <strong>Mã khoang:</strong> <field name="code"/>
+                                        </div>
+                                        <div class="text-muted">
+                                            <strong>Kệ:</strong> <field name="shelf_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_shelf_level_form" model="ir.ui.view">
+            <field name="name">shelf.level.form</field>
+            <field name="model">shelf.level</field>
+            <field name="arch" type="xml">
+                <form string="Khoang trong kệ">
+                        <sheet  style="max-width: 100%; height: auto; margin: 0; padding: 0; background-color: #f8f9fa" invisible="id == False"  >
+                            <span style="background-color: #dcd6f7; padding-top: 10px; padding-bottom: 5px; display: block; width: 100%; ">
+                                <div style="text-align: center; ">
+                                    <h1>
+                                         <i class="fa fa-cubes fa-lg" aria-hidden="true"/>
+                                        <br/>
+                                        <field name="name"/>
+                                    </h1>
+                                </div>
+                            </span>
+
+                            <!-- PHẦN 1: 3 KHỐI NGANG -->
+                            <div style="display: flex; gap: 10px; margin-bottom: 0px;">
+                                <!-- Thông tin nhà cung cấp -->
+                                <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                    <h3 style="font-size: 16px; font-weight: bold;">
+                                        <span class="fa fa-industry" style="color: gray; margin-right: 5px;"></span>Thông tin chi tiết
+                                    </h3>
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Mã kệ :</span>
+                                            <field name="code" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div> 
+
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Active :</span>
+                                            <field name="active" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>                                        
+
+                                </div>
+
+                                <!-- Chương trình-->
+                                <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                    <h3 style="font-size: 16px; font-weight: bold;">
+                                        <span class="fa fa-building-o" style="color: gray; margin-right: 5px;"></span>Thông tin Kho hàng
+                                    </h3>
+
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Kho hàng :</span>
+                                            <field name="store_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div> 
+
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">kệ hàng :</span>
+                                            <field name="shelf_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>  
+                                </div>
+
+                                <!-- Thông tin người tạo -->
+                                <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                    <h3 style="font-size: 16px; font-weight: bold;">
+                                        <span class="fa fa-user-circle" style="color: gray; margin-right: 5px;"></span>Thông tin người tạo
+                                    </h3>
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Người tạo :</span>
+                                            <field name="employee_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div> 
+
+                                        <div style="display: flex;margin-bottom: 8px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Ngày tạo :</span>
+                                            <field name="date_create" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div> 
+                                </div>
+                            </div>
+                            <!-- PHẦN 2: DANH SÁCH VẬT TƯ -->
+                            <div style="background-color: rgb(237, 237, 237); padding: 0 15px; border-radius: 6px;">
+                                <notebook>
+                                    <page string="DANH SÁCH VẬT TƯ TRONG KHOANG" class="fw-bold">
+                                        <!--Thanh tiêu đề và tìm kiếm -->
+                                        <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 10px;">
+                                                
+                                            <!-- BÊN TRÁI: Tiêu đề -->
+                                            <div style="flex: 1; font-weight: bold; font-size: 14px;">
+                                                <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>DANH SÁCH VẬT TƯ TRONG KHOANG
+                                            </div>
+
+                                            <!-- Ở GIỮA: Ô tìm kiếm -->
+                                            <div style="flex: 1; display: flex; justify-content: center;">
+                                                <div style="width: 500px; display: flex; justify-content: center; align-items: center; height: 38px; border: 1px solid #ced4da; border-radius: 3px; padding: 4px 8px;">
+                                                    <field name="search_active" invisible="1"/>
+                                                    <field name="search_text" placeholder="Tìm kiếm vật tư..." style="flex: 1; border: none; outline: none;"/>
+                                                    <button type="object" name="action_search" class="btn btn-link p-0" title="Search" invisible="search_active == True">
+                                                        <span class="fa fa-search" style="color: #6c757d;"/>
+                                                    </button>
+                                                    <button type="object" name="clear_search" class="btn btn-link p-0" title="Clear" invisible="search_active == False">
+                                                        <span class="fa fa-times" style="color: #6c757d;"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- BÊN PHẢI: Các nút -->
+                                            <div style="flex: 1; display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+                                                <!-- Nút Export -->
+                                                <button type="object" name="action_export" class="btn btn-outline-primary btn-sm" title="Export"
+                                                        style="border-radius: 4px;">
+                                                    <span class="fa fa-upload" style="margin-right: 5px;"></span>
+                                                    <span style="color: #007bff;">Export</span>
+                                                </button>
+
+                                                <!-- Nút Tuỳ chọn -->
+                                                <div class="dropdown">
+                                                    <button name="button_dummy" type="object" class="btn btn-light fa fa-ellipsis-v"
+                                                            data-bs-toggle="dropdown" aria-expanded="false" title="Tuỳ chọn"/>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <div class="dropdown-divider"/>
+                                                        <button name="action_delete_selected_lines" type="object" class="dropdown-item text-danger">
+                                                            <i class="fa fa-trash me-2"/>Xoá
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="overflow-x: auto; max-width: 100%; height: 500px; overflow-y: auto;">
+                                            <!-- Tree view danh sách vật tư -->
+                                            <field name="stock_summary_ids" string=" ">
+                                                <tree string="Vật tư" class="o_program_list_view_product" editable="bottom" create="false"  >
+                                                <!-- Thông tin vị trí và phân loại -->
+                                                    <field name="name" string="Mtr#"/>
+                                                    <field name="mtr_type" string="Mtr Type" /> 
+                                                    <field name="mtr_name" string="Mtr Name" /> 
+                                                    <field name="mtr_code" string="Mtr Code" /> 
+
+                                                        <!-- Thông số kỹ thuật -->
+                                                    <field name="dimension" string="Dimension" /> 
+                                                    <field name="color_item" string="Color#" /> 
+                                                    <field name="color_name" string="Color Name" /> 
+                                                    <field name="color_set" string="Color Set"/> 
+                                                    
+                                                    <field name="rate" string="Unit" /> 
+                                                        
+                                                    <!-- Thông tin nhà cung cấp -->
+                                                    <field name="supplier" string="Supplier" /> 
+
+                                                    <!-- Số lượng ước tính -->
+                                                    
+                                                    <field name="qty_closing" string="SL Tồn" />
+                                                    <field name="value_closing" string="Dư cuối" optional="hide" />
+
+                                                    <!-- Thông tin giá -->
+                                                    <field name="price" string="Price" optional="hide" />
+                                                    <field name="cif_price" string="CIF Price" optional="hide" />
+                                                    <field name="fob_price" string="FOB Price" optional="hide" /> 
+                                                    <field name="exwork_price" string="EXW Price" optional="hide" /> 
+
+                                                </tree>
+                                            </field>                 
+                                        </div>
+                                    </page>
+                                </notebook>
+                            </div>
+                        </sheet> 
+
+                        <sheet  invisible="id" style="max-width: 50%; margin-left: auto; margin-right: auto;" >
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <!-- Tiêu đề -->
+                                <h1 style="margin: 0;">
+                                    Thêm khoang mới
+                                </h1>
+                                <!-- Ảnh -->
+                            </div>
+                            <hr/>
+                            <group>
+                                <field name="name" placeholder="Tên khoang mới ..."/>
+
+                            </group>
+                            
+                            <group>
+                               <!--  <field name="employee_id"  widget= "many2one_user_avatar" readonly="1"/>-->
+                                <field name="date_create" readonly="1"/>
+                            </group> 
+                            <group>
+                                <group string="Thông tin kho">
+                                    <field name="code" placeholder="Mã kệ..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="store_id" placeholder="Nhập kho lưu trữ..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="shelf_id" placeholder="Chọn kệ hàng..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="stock_summary_ids" invisible="1"/>
+                                </group>
+                                <group string="Thông tin kệ hàng">
+                                    <field name="capacity" placeholder="Sức chứa (kg)..."  style="border: 1px solid #ced4da;"/>
+                                    <field name="active" widget="boolean_toggle" string="Trạng thái" style="border: 1px solid #ced4da;"/>
+                                </group>
+                            </group>
+                            <group string="Thông tin khác"> 
+                                <field name="description" placeholder="Mô tả về kho ..."  style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <div style="text-align: right; padding-top: 20px;">
+                                <button  special="save" class="btn btn-success " ><i class="fa fa-check" /> Tạo mới</button>
+                                <span style="color: white; padding-left:15px;"></span>
+                                <button special="cancel" class="btn btn-secondary ms-2" ><i class="fa fa-undo" /> Hủy bỏ</button>
+                            </div>
+                        </sheet>
+                    </form>
+                </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_shelf_level_tree" model="ir.ui.view">
+            <field name="name">shelf.level.tree</field>
+            <field name="model">shelf.level</field>
+            <field name="arch" type="xml">
+                <tree class="o_general_list_view_product">
+                    <field name="name" string="Tên khoang"/>
+                    <field name="code" string="Mã khoang"/>
+                    <field name="shelf_id" string="Kệ"/>
+                    <field name="capacity" string="Sức chứa (kg)"/>
+                    <field name="active" widget="boolean_toggle" string="Trạng thái"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_shelf_level_list" model="ir.actions.act_window">
+            <field name="name">Danh sách khoang</field>
+            <field name="res_model">shelf.level</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="view_shelf_level_search"/>
+        </record>
+
+    </data>
+</odoo>

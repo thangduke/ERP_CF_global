@@ -1,0 +1,27 @@
+.o_notebook .nav-tabs {
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    border: none;
+    padding: 4px 8px;
+}
+.o_notebook .nav-tabs .nav-item .nav-link {
+    border: none;
+    border-radius: 6px 6px 0 0;
+    margin-right: 4px;
+    background: #e9ecef;
+    color: #003366;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    font-size: 13px;
+    padding: 6px 18px 6px 14px;
+}
+.o_notebook .nav-tabs .nav-item .nav-link.active,
+.o_notebook .nav-tabs .nav-item .nav-link:hover {
+    background: #8e9ba7;
+    color: #fff;
+    box-shadow: 0 2px 8px #959eac;
+}
+.o_notebook .nav-tabs .nav-item .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #959eac;
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search View for Garment Colorway -->
+    <record id="garment_colorway_view_search" model="ir.ui.view">
+        <field name="name">garment.colorway.view.search</field>
+        <field name="model">garment.colorway</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Colors">
+                <field name="name"/>
+                <field name="color_code"/>
+                <field name="style_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Form View for Garment Colorway -->
+    <record id="garment_colorway_view_form" model="ir.ui.view">
+        <field name="name">garment.colorway.view.form</field>
+        <field name="model">garment.colorway</field>
+        <field name="arch" type="xml">
+            <form string="Product Color">
+                <header>
+                    <!-- Header buttons can be placed here -->
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Ocean Blue"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="style_id"/>
+                            <field name="color_code"/>
+                            <field name="color" widget="color"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date_create"/>
+                            <field name="avatar_name_job" widget="html"/>
+                            <field name="employee_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Garment Colorway -->
+    <record id="garment_colorway_view_tree" model="ir.ui.view">
+        <field name="name">garment.colorway.view.tree</field>
+        <field name="model">garment.colorway</field>
+        <field name="arch" type="xml">
+            <tree string="Product Colors">
+                <field name="name"/>
+                <field name="color_code"/>
+                <field name="style_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action Window for Garment Colorway -->
+    <record id="garment_colorway_action" model="ir.actions.act_window">
+        <field name="name">Colorways</field>
+        <field name="res_model">garment.colorway</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="garment_colorway_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new product color
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Garment Colorway -->
+    <menuitem
+        id="garment_colorway_menu"
+        name="Colorways"
+        parent="garment_order_menu_root"
+        action="garment_colorway_action"
+        sequence="30"/>
+
+</odoo>

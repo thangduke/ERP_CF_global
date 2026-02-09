@@ -2,11 +2,12 @@ from odoo import models, fields, api
 
 class ProductSize(models.Model):
     _name = 'product.size'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Kích thước sản phẩm'
 
-    name = fields.Char ( string="Size", required=True)
+    name = fields.Char ( string="Size", required=True, tracking=True)
     active = fields.Boolean(string='Kích hoạt', default=True)
-    color = fields.Integer (string="Màu sắc")
+
     
     # Thông tin người tạo
     @api.model
@@ -19,4 +20,8 @@ class ProductSize(models.Model):
     avatar_name_job = fields.Html(related='employee_id.avatar_name_job', string="Người tạo")
     
     date_create = fields.Datetime(string='Ngày tạo', default=fields.Datetime.now, readonly=True)
+    ''''''
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Size đã tồn tại. Vui lòng chọn một tên khác!')
+    ]
     

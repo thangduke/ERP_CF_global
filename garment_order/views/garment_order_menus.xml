@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root menu -->
+        <menuitem id="menu_order_management_root"
+                  name="Đơn hàng"
+                  groups= "order_management.group_order_management_user"
+                  web_icon="order_management,static/description/icon.png"
+                  sequence="3"/>
+
+        <!-- Main Menus -->
+        <menuitem id="menu_order_management"
+                name="Danh sách chương trình"
+                parent="menu_order_management_root"
+                action="action_warehouse_order"
+                sequence="1"/>
+        
+        <!-- Create Invoice -->
+        <menuitem id="menu_order_management_invoice"
+                name="Danh sách vật tư"
+                parent="menu_order_management_root"
+                action="action_material_invoice"
+                groups= "order_management.group_order_management_user"
+                sequence="4"/>
+
+        <!-- Settings Menu -->
+        <menuitem id="menu_setting_order_management_root"
+                name="Thiết lập"
+                groups= "order_management.group_order_management_user"
+                parent="menu_order_management_root"
+                sequence="40"/>
+
+                <!-- Settings Menu order management               groups= "order_management.group_order_management_manager"-->
+                <menuitem id="menu_setting_order_management"
+                        name="Thiết lập chương trình"
+                        groups= "order_management.group_order_management_user"
+                        parent="menu_setting_order_management_root"
+                        sequence="10"/>
+
+                        <menuitem id="menu_customer_cf_list"
+                                name="Khách hàng"
+                                parent="menu_setting_order_management"
+                                groups= "order_management.group_order_management_user"
+                                action="action_customer_cf"
+                                sequence="1"/> 
+
+                        <menuitem id="menu_supplier_partner_list"
+                                name="Nhà cung cấp"
+                                parent="menu_setting_order_management"
+                                groups= "order_management.group_order_management_user"
+                                action="action_supplier_partner"
+                                sequence="3"/> 
+
+                        <menuitem id="menu_supplier_manager_partner_list"
+                                name="Quản lý Đặt hàng NCC"
+                                parent="menu_setting_order_management"
+                                groups= "order_management.group_order_management_user"
+                                action="action_material_purchase_order"
+                                sequence="4"/>                         
+
+                <!-- Settings Menu product code-->
+                <menuitem id="menu_setting_product_code"
+                        name="Thiết lập Style"
+                        parent="menu_setting_order_management_root"
+                        groups= "order_management.group_order_management_user"
+                        sequence="20"/>
+
+                        <menuitem id="menu_product_color_list"
+                                name="Color Style (Color Card)"
+                                parent="menu_setting_product_code"
+                                groups= "order_management.group_order_management_user"
+                                action="action_product_color"
+                                sequence="1"/>
+
+                        <menuitem id="menu_product_size_list"
+                                name="Size Style"
+                                parent="menu_setting_product_code"
+                                groups= "order_management.group_order_management_user"
+                                action="action_product_size"
+                                sequence="2"/>
+
+                        <menuitem id="menu_product_manager_styles"
+                                name="Quản lý Styles"
+                                parent="menu_setting_product_code"
+                                action="action_product_code"
+                                groups= "order_management.group_order_management_user"
+                                sequence="3"/>
+                
+                <!-- Settings Menu material -->
+                <menuitem id="menu_setting_material"
+                        name="Thiết lập vật tư"
+                        parent="menu_setting_order_management_root"
+                        sequence="30"/>
+                        <menuitem id="menu_setting_manage_material_line"
+                                name="Danh sách vật tư"
+                                parent="menu_setting_material"
+                                groups= "order_management.group_order_management_user"
+                                action="action_program_customer"
+                                sequence="1"/>
+
+                        <menuitem id="menu_setting_material_color"
+                                name="Màu vật tư (Color#)"
+                                parent="menu_setting_material"
+                                groups= "order_management.group_order_management_user"
+                                action="action_material_color"
+                                sequence="3"/>
+
+                        <menuitem id="menu_setting_material_line"
+                                name="Danh sách (Mtr_no)"
+                                parent="menu_setting_material"
+                                groups= "order_management.group_order_management_user"
+                                action="action_program_customer_line"
+                                sequence="5"/>
+
+                        <menuitem id="menu_setting_material_type"
+                                name="Loại vật tư (Type)"
+                                groups= "order_management.group_order_management_user"
+                                parent="menu_setting_material"
+                                action="action_material_type"
+                                sequence="7"/>
+
+                        <menuitem id="menu_material_rate"
+                                name="Danh sách (Unit)"
+                                parent="menu_setting_material"
+                                groups= "order_management.group_order_management_user"
+                                action="action_material_rate"
+                                sequence="9"/>
+
+    </data>
+</odoo>

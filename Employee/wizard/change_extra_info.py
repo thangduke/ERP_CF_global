@@ -37,7 +37,7 @@ class ChangeExtraInfo(models.TransientModel):
         if 'employee_id' in vals :
             employee = self.env['employee.base'].browse(vals['employee_id'])
             employee.write({'nationality': vals['nationality'], 'identification_id': vals['identification_id'],
-                            'gender': vals['gender'], 'birthday': vals['birthday'],
+                            'gender': vals['gender'], 'birthday': vals['birthday'], 'name': vals['name'],
                             'permanent_address': vals['permanent_address'],
                             'mobile_phone': vals['phone_number'], 'current_address': vals['current_address']})
 

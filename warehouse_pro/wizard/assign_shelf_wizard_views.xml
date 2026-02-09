@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_assign_shelf_wizard_form" model="ir.ui.view">
+        <field name="name">assign.shelf.wizard.form</field>
+        <field name="model">assign.shelf.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="store_id"/>
+                    <field name="shelf_id"/>
+                    <field name="shelf_level_id"/>
+                </group>
+                <field name="selected_material_line_ids" nolabel="1" readonly="1">
+                    <tree>
+                        <field name="is_selected" widget="boolean" string="Chọn" />
+                        <field name="mtr_no" string="Mtr#"/>
+                        <field name="mtr_type" string="Mtr Type" /> 
+                        <field name="mtr_name" string="Mtr Name" /> 
+                        <field name="mtr_code" string="Mtr Code" /> 
+
+                            <!-- Thông số kỹ thuật -->
+                        <field name="dimension" string="Dimension" /> 
+                        <field name="color_item" string="Color#" /> 
+                        <field name="color_name" string="Color Name" /> 
+                        <field name="color_set" string="Color Set"/> 
+                        
+                        <field name="rate" string="Unit" /> 
+                            
+                        <!-- Thông tin nhà cung cấp -->
+                        <field name="supplier" string="Supplier" /> 
+
+                        <!-- Số lượng ước tính -->
+                        
+                        <field name="qty_closing" string="SL Tồn" />
+                        <field name="value_closing" string="Dư cuối" optional="hide" />
+
+                        <!-- Thông tin giá -->
+                        <field name="price" string="Price" optional="hide" />
+                        <field name="cif_price" string="CIF Price" optional="hide" />
+                        <field name="fob_price" string="FOB Price" optional="hide" /> 
+                        <field name="exwork_price" string="EXW Price" optional="hide" /> 
+                        <field name="cif_price" string="CIF Price" optional="hide" />
+                        <field name="fob_price" string="FOB Price" optional="hide" /> 
+                    </tree>
+                </field>
+                <footer>
+                    <button name="action_assign" type="object" class="btn btn-primary" string="Gán vật tư"/>
+                    <button string="Hủy" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_material_receive" model="ir.actions.report">
+        <field name="name">Phiếu Nhập Kho</field>
+        <field name="model">material.receive</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">warehouse_pro.report_material_receive_template</field>
+        <field name="report_file">warehouse_pro.report_material_receive_template</field>
+         <field name="print_report_name">'"Phiếu nhập kho-%s-%s.pdf"' % (object.receipt_no, object.date_create.strftime('%Y-%m-%d'))</field>
+        <field name="binding_model_id" ref="model_material_receive"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

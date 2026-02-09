@@ -22,6 +22,7 @@
                 </search>
             </field>
         </record>
+        
         <!-- From view -->
             <record id="production_list_form_view" model="ir.ui.view">
                 <field name="name">production.list.form</field>
@@ -124,7 +125,7 @@
             <field name="name">production.list.tree</field>
             <field name="model">production.list</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree class="o_general_list_view_product">
                     <field name="name" string="TÊN DÂY CHUYỀN"/>
                     <field name="production_index" string="MÃ DÂY CHUYỀN"/>
                     <field name="avatar_name_job" string="NGƯỜI TẠO" widget="html"/>

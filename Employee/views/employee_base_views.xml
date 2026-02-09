@@ -16,7 +16,7 @@
             <field name="arch" type="xml">
                 <search string="Nhân sự">
                     <searchpanel>
-                        <field name="department_id" string="Phòng ban" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
+                        <field name="department_id" string="Bộ phận" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
                     </searchpanel>
                 </search>
             </field>
@@ -28,10 +28,11 @@
             <field name="arch" type="xml">
                 <search>
                     <searchpanel class="o_custom_search_panel">
-                        <field name="department_id" string="Phòng ban" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
+                        <field name="department_id" string="Bộ phận" icon="fa-users" enable_counters="1" options="{'order': 'sequence asc'}" />
+                        <field name="position_type" string="Vị trí" icon="fa-bookmark" enable_counters="1" />
                         <field name= "state" string="Trạng thái" icon="fa-check-square-o" enable_counters="1" select="multi"/>
                         <field name="gender" string="Giới tính" icon="fa-venus-mars" enable_counters="1" />
-                        <field name="position_type" string="Vị trí" icon="fa-bookmark" enable_counters="1" />
+
                     </searchpanel>
                     <field name="search_name" string="Search" placeholder="Search across fields"/>
                     <field name="name"/>
@@ -46,7 +47,7 @@
                     <filter name="birthday_month" string="Sinh nhật tháng này" domain="[('birthday_month', '=', context_today().month)]"/>
                     <separator/>
                     <group expand="0" string="Nhóm">
-                        <filter name="group_department" string="Phòng ban" domain="[]" context="{'group_by': 'department_id'}"/>
+                        <filter name="group_department" string="Bộ phận" domain="[]" context="{'group_by': 'department_id'}"/>
                     </group>
                 </search>
             </field>
@@ -152,7 +153,7 @@
                                              <tr>
                                                  <th style='width:2%; '/>
                                                  <th style='width:32%; '><span >Chức danh</span></th>
-                                                 <th style='width:32%; '><span >Phòng ban</span></th>
+                                                 <th style='width:32%; '><span >Bộ phận</span></th>
                                                  <th style='width:34%; '><span >Phân loại nhân sự</span></th>
                                              </tr>
                                              <tr>
@@ -160,6 +161,22 @@
                                                  <td ><field name="position_title" /></td>
                                                  <td><field name="department_id" readonly="1"/></td>
                                                  <td><field name="employee_type_2" readonly="1"/></td>
+                                             </tr>
+                                             <tr style="height:20px">
+                                                 <td/>
+                                                 <td/>
+                                                 <td/>
+                                                 <td/>
+                                             </tr>
+                                             <tr>
+                                                 <th style='width:2%; '/>
+                                                 <th style='width:32%; '><span >Vị trí công tác</span></th>
+                                                <!-- <th style='width:32%; '><span >Bộ phận</span></th>
+                                                 <th style='width:34%; '><span >Phân loại nhân sự</span></th>-->
+                                             </tr>
+                                             <tr>
+                                                 <td />
+                                                 <td ><field name="position_type" /></td>
                                              </tr>
                                              <tr style="height:20px">
                                                  <td/>
@@ -305,16 +322,15 @@
                              <field string="" name="latest_employee_index" style="font-size: 11px; color: gray;"/>
                          </group>
                          <group string="Thông tin đồng bộ từ tài khoản">
-                             <field name="name" />
-                             <field name="work_email" />
+                            <group>
+                                <field name="name" readonly="1" style="border: 1px solid #ced4da;" placeholder="-- Hệ thống tự động điền tên nhân sự--" />
+                                <field name="work_email" readonly="1" style="border: 1px solid #ced4da;" placeholder="-- Hệ thống tự động điền email nhân sự--"/>
+                            </group>
+                            <group>
+                                <field name="image_1920" widget='image' string="Ảnh đại diện" options="{'size': [80, 80]}"/>
+                            </group>
                          </group>
-                         <div id="o_work_employee_container2" class="d-lg-flex">
-                                     <div id="o_work_employee_main2" class="flex-grow-1">
-                                         <separator string="chọn ảnh đại diện"/>
-                                         <field name="image_1920" widget='image' string="" options="{'size': [80, 80]}"/>
-                                     </div>
 
-                         </div>
                          <group string="Thông tin chính">
                              <group>
                                  <field name="birthday" string="Ngày sinh *" style="border: 1px solid #ced4da;" placeholder="Chọn ngày sinh"/>
@@ -323,12 +339,18 @@
                                  <field name="start_date"  string="Ngày bắt đầu *" placeholder="Ngày làm việc đầu tiên" style="border: 1px solid #ced4da;"/>
                              </group>
                              <group>
-                                 <field name="department_id" string="Phòng ban *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn --" />
-                                 <field name="position_id" required="1" string="Vị trí *" options="{'no_create': true}" style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/> <!-- domain="[('department_id', '=', 'department_id')]" -->
-                                 <field name="employee_type_2" required="1" string="Phân loại nhân sự *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn --"/>
-                                 
+                                 <field name="department_id" string="Bộ phận *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn phòng ban--" />
+                                 <field name="position_id" required="1" string="Vị trí công việc *" options="{'no_create': true}" style="border: 1px solid #ced4da;" placeholder="-- Chọn vị trí công việc --"/> <!-- domain="[('department_id', '=', 'department_id')]" -->
+                                 <field name="position_type" string="Vị trí công tác *" options="{'no_create': true}" style="border: 1px solid #ced4da;" placeholder="-- Chọn vị trí công tác --"/> 
+                                 <field name="employee_type_2" required="1" string="Phân loại nhân sự *" options="{'no_create': true}"  style="border: 1px solid #ced4da;" placeholder="-- Chọn loại nhân sự --"/>
+                                
                              </group>
                          </group>
+                         
+                        <group string="Thông tin chính">  
+                            <field name="parent_id" string="Quản lý trực tiếp *" widget="many2one_avatar_user" style="border: 1px solid #ced4da;" placeholder="-- Chọn quản lý trực tiếp (1 người) --"/>
+                            <field name="parent_ids" string="Quản lý cấp trên *" widget="many2many_avatar_user" style="border: 1px solid #ced4da;" placeholder="-- Chọn quản lý cấp trên (nhiều người)--"/>
+                        </group>      
                          <group string="Thông tin cá nhân">
                             <field name="mobile_phone" placeholder="Số điện thoại" style="border: 1px solid #ced4da;" string="Số điện thoại"/>
                              <field name="current_address" placeholder="Nơi ở hiện tại" string="Đia chỉ" style="border: 1px solid #ced4da;" />
@@ -349,27 +371,41 @@
             </field>
     </record>
 
-
     <record id="view_employee_tree" model="ir.ui.view">
             <field name="name">employee.base.tree</field>
             <field name="model">employee.base</field>
+            <field name="priority">20</field>
             <field name="arch" type="xml">
-                <tree string="Employees" class="o_employee_list_view_2" duplicate="0" default_order="employee_index" >
-                    <field name="user_id"/> 
+                <tree string="Employees" class="o_employee_list_view_2" duplicate="0" default_order="employee_index" js_class="button_open_tree">
+                    <field name="user_id" string="TÀI KHOẢN" optional="hide"/> 
                     <field name="avatar_name" widget="html" string="NHÂN SỰ" />
                     <field name="employee_index" string="MÃ" optional="show"/>
-                    <field name="gender" string="GIỚI TÍNH" optional="show"/>
-                    <field name="birthday" string="NGÀY SINH" optional="show"/>
-                    <field name="state" string="TRẠNG THÁI" widget="employee3c_status"  class="text-center" optional="show"/>
+                    <field name="gender" string="GIỚI TÍNH" optional="hide"/>
+                    <field name="birthday" string="NGÀY SINH" optional="hide"/>
                     <field name="position_id" string="CHỨC DANH" optional="show"/>
-                    <field name="start_date" string="NGÀY BẮT ĐẦU" optional="show"/>
+                    <field name="start_date" string="NGÀY BẮT ĐẦU" optional="hide"/>
                     <field name="official_date" string="NGÀY CHÍNH THỨC" optional="show"/>
-                    <field name="department_id" string="PHÒNG BAN" widget="many2one" optional="show"/>
+                    <field name="department_id" string="BỘ PHẬN" widget="many2one" optional="show"/>
                     <field name="employee_type_2" string="PHÂN LOẠI NHÂN SỰ" widget="many2one" optional="show"/>
-                    <field name="mobile_phone" string="ĐIỆN THOẠI" widget="phone" optional="show"/>
+                    <field name="position_type" string="VỊ TRÍ CÔNG TÁC" icon="fa-bookmark" enable_counters="1" optional="show"/>
+                    <field name="state" string="TRẠNG THÁI" widget="employee3c_status"  class="text-center" optional="show"/>
+                    <field name="mobile_phone" string="ĐIỆN THOẠI" widget="phone" optional="hide"/>
                     <field name="work_email" string="EMAIL" widget="email" optional="show"/>
                     <field name="parent_ids" string="QUẢN LÝ" widget="many2many_avatar_user" optional="show"/>
                     <field name="parent_id" string="QUẢN LÝ (M1)" widget="many2one_avatar" optional="show"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="view_employee_tree_members" model="ir.ui.view">
+            <field name="name">employee.base.tree.members</field>
+            <field name="model">employee.base</field>
+            <field name="priority">10</field> 
+            <field name="arch" type="xml">
+                <tree string="Members" create="0" >
+                    <field name="avatar_name_job" string="NHÂN SỰ"/> 
+                    <field name="work_email"  />
+                    <field name="parent_ids" widget="many2many_avatar_user" />
                 </tree>
             </field>
     </record>
@@ -380,21 +416,8 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{'search_default_official_employee': 1}</field>
             <field name="search_view_id" ref="empty_search_view_employee"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Không có thông tin.
-                </p>
-            </field>
-    </record>
-
-    <record id="view_all_employee_manager" model="ir.actions.act_window">
-            <field name="name">Danh sách nhân sự</field>
-            <field name="res_model">employee.base</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_official_employee': 1}</field>
-            <field name="search_view_id" ref="empty_search_view_employee"/>
-             <field name="domain">['|',('parent_ids.user_id', '=', uid), ('user_id', '=', uid)]</field>
-             <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('view_employee_tree')}),
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_employee_tree')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_employee_form')})]"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -403,16 +426,51 @@
             </field>
     </record>
 
-    <record id="view_all_employee2" model="ir.actions.act_window">
-            <field name="name">Nhân sự</field>
+    <record id="view_all_employee_manager" model="ir.actions.act_window">
+            <field name="name">Thông tin nhân sự quản lý</field>
             <field name="res_model">employee.base</field>
-            <field name="view_mode">kanban</field>
-            <field name="search_view_id" ref="view_all_employee_filter"/>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_official_employee': 1}</field>
+            <field name="search_view_id" ref="empty_search_view_employee"/>
+            <field name="domain">['|',('parent_ids.user_id', '=', uid), ('user_id', '=', uid)]</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_employee_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_employee_form')})]"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Không có nhân sự nào!
+                    Không có thông tin.
                 </p>
             </field>
+    </record>
+
+    <!-- Action để gọi Controller Export -->
+    <record id="action_export_employee_list" model="ir.actions.act_url">
+        <field name="name">Export Nhân sự</field>
+        <field name="url">/export/employee_list</field>
+        <field name="target">self</field>
+    </record>
+
+    <!-- Gắn các action vào menu "Hành động" của employee.base -->
+    <record id="action_employee_import_custom" model="ir.actions.server">
+        <field name="name">Import Nhân sự (Tùy chỉnh)</field>
+        <field name="model_id" ref="Employee.model_employee_base"/>
+        <field name="binding_model_id" ref="Employee.model_employee_base"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = env.ref('Employee.action_open_employee_import_wizard').read()[0]
+        </field>
+    </record>
+
+    <record id="action_employee_export_custom" model="ir.actions.server">
+        <field name="name">Export Nhân sự (Tùy chỉnh)</field>
+        <field name="model_id" ref="Employee.model_employee_base"/>
+        <field name="binding_model_id" ref="Employee.model_employee_base"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = env.ref('Employee.action_export_employee_list').read()[0]
+        </field>
     </record>
 
 </odoo>

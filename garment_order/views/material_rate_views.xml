@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Search View for material.rate -->
+        <record id="view_material_rate_search" model="ir.ui.view">
+            <field name="name">material.rate.search</field>
+            <field name="model">material.rate</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Đơn vị tính">
+                    <field name="name" string="Uint"/>
+                    <field name="description" string="Mô tả"/>
+                    
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View for material.rate -->
+        <record id="view_material_rate_form" model="ir.ui.view">
+            <field name="name">material.rate.form</field>
+            <field name="model">material.rate</field>
+            <field name="arch" type="xml">
+                <form string="Đơn vị tính">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="active" string="Active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for material.rate -->
+        <record id="view_material_rate_tree" model="ir.ui.view">
+            <field name="name">material.rate.tree</field>
+            <field name="model">material.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Đơn vị tính" editable="bottom" class="o_general_list_view_product">
+                    <field name="name" string="UNIT"/>
+                    <field name="description" string="MÔ TẢ"/>
+                    <field name="active" string="ACTIVE" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action for material.rate -->
+        <record id="action_material_rate" model="ir.actions.act_window">
+            <field name="name">Đơn vị tính vật tư</field>
+            <field name="res_model">material.rate</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_material_rate_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Chưa có đơn vị tính nào được tạo.
+                </p>
+                <p>
+                    Bấm vào đây để tạo mới đơn vị tính cho vật tư của bạn.
+                </p>
+            </field>
+        </record>
+
+        <!-- You will need a parent menu to place this item. 
+             Assuming you have a configuration menu for 'order_management'.
+             If not, you can create one like this:
+        
+        <menuitem id="menu_order_management_config" 
+                  name="Configuration" 
+                  parent="your_module.menu_order_management_root" 
+                  sequence="100"/>
+        -->
+
+    </data>
+</odoo>

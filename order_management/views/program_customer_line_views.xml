@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Search View -->
+        <record id="view_program_customer_line_search" model="ir.ui.view">
+            <field name="name">program.customer.line.search</field>
+            <field name="model">program.customer.line</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm chi tiết vật tư">
+                    <field name="name"/>
+                    <field name ="mtr_type"/>
+                    <field name="mtr_name"/>
+                    <field name="mtr_code"/>
+                    <!-- Tạo filter chung để gõ 1 lần tìm trong nhiều trường -->
+                    <filter string="Tìm theo từ khóa"
+                            name="keyword_search"
+                            domain="['|','|','|',
+                                    ('name','ilike',self),
+                                    ('mtr_type','ilike',self),
+                                    ('mtr_name','ilike',self),
+                                    ('mtr_code','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_program_customer_line_form" model="ir.ui.view">
+            <field name="name">program.customer.line.form</field>
+            <field name="model">program.customer.line</field>
+            <field name="arch" type="xml">
+                <form string="Chi tiết vật tư">
+                    <sheet style="max-width: 50%; margin-left: auto; margin-right: auto;">
+                        <h1>
+                            Vật tư chi tiết
+                        </h1>
+                        <hr/>
+                        <group>
+                            <group string="Thông tin vật tư">
+                                <field name="name" readonly="1" placeholder="Mã tự động..." style="border: 1px solid #ced4da;"/>
+                                <field name="mtr_code" placeholder="Mã vật tư..." style="border: 1px solid #ced4da;"/>
+                                <field name="mtr_name" placeholder="Tên vật tư..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                            <group string="Thông tin khác">
+                                <field name="mtr_type" style="border: 1px solid #ced4da;"/>
+                                <field name="rate_id" placeholder="Chọn Unit vật tư..." style="border: 1px solid #ced4da;"/>
+                            </group>
+                        </group>
+                        <group string="Thông tin khác"> 
+                            <field name="description" placeholder="Mô tả về vật tư..."  style="border: 1px solid #ced4da;"/>
+                        </group>
+                        <div style="padding-bottom:25px;"/>
+                        <!-- Chatter log lịch sử và chỉ có quyền Admin hệ thống mới được xem -->
+                        <div class="oe_chatter" string="Lịch sử" groups="order_management.group_order_management_manager">
+                        <h3>Log Lịch sử</h3>
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div> 
+                    </sheet>
+ 
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_program_customer_line_tree" model="ir.ui.view">
+            <field name="name">program.customer.line.tree</field>
+            <field name="model">program.customer.line</field>
+            <field name="arch" type="xml">
+                <tree string="Chi tiết vật tư" class="o_general_list_view_product">
+                    <field name="name" string="Mtr_no"/>
+                    <field name="mtr_code" string="Mtr Code"/>
+                    <field name="mtr_type" string="Mtr Type"/>
+                    <field name="mtr_name" string="Mtr Name"/>
+                    <field name="rate_id" string="Unit"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_program_customer_line" model="ir.actions.act_window">
+            <field name="name">Chi tiết vật tư</field>
+            <field name="res_model">program.customer.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_program_customer_line_search"/>
+        </record>
+    </data>
+</odoo>

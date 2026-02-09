@@ -1,44 +1,295 @@
 <odoo>
     <data>
+        <!-- Search View -->
+        <record id="view_material_delivery_search" model="ir.ui.view">
+            <field name="name">material.delivery.search</field>
+            <field name="model">material.delivery</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Phiếu Xuất Kho">
+                    <field name="delivery_no" string="Mã Xuất Kho"/>
+                    <field name="order_id" string="Chương trình"/>
+                    <field name="store_id" string="Kho xuất"/>
+                    <field name="production_name" string="Chuyền sản xuất"/>
+                    <field name="employee_id" string="Người tạo"/>
+                    <separator/>
+                    <filter string="Kho xuất" name="group_by_store" context="{'group_by': 'store_id'}"/>
+                    <filter string="Chương trình" name="group_by_order" context="{'group_by': 'order_id'}"/>
+                    <searchpanel>
+                        <field name="store_id" string="KHO NHẬP" icon="fa-warehouse" enable_counters="1"
+                            options="{'always_loaded': True}"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
         <!-- Form View -->
         <record id="view_material_delivery_form" model="ir.ui.view">
             <field name="name">material.delivery.form</field>
             <field name="model">material.delivery</field>
             <field name="arch" type="xml">
                 <form string="Delivery">
-                    <sheet style="max-width: 100%; height: 90vh; margin-left: auto; margin-right: auto; background-color: #f8f9fa">
-                        <h3>TẠO MÃ XUẤT KHO</h3>
-                        <hr/>
+                    <header>
+                        <button name="action_report_material_delivery" type="object" class="btn-secondary" string="Phiếu Xuất Kho"  icon="fa-print"
+                           invisible="state != 'done'"/>    
+                        <button name="action_export_form_delivery" string="Phiếu Xuất Kho" type="object" icon="fa-download"
+                            class="btn-primary" invisible="state != 'done'"/>  
 
-                        <!-- PHẦN 1: 3 KHỐI NGANG -->
+                         
+                    </header>
+                    <sheet style="max-width: 100%; height: auto; margin-left: 10px; padding: 0; background-color: #f8f9fa;" >
+                        <div style=" display:flex;align-items:flex-start;
+                            justify-content:space-between;padding:6px 8px; margin-bottom:6px; width:100%;">
+                            <field name="state" invisible="1"/>
+
+                            <!-- ===== STEP 1: DRAFT ===== -->
+                            <div style="flex:1;text-align:center;position:relative;">
+                                <div style="width:42px;height:42px;border-radius:50%;
+                                            background:#3b5688;
+                                            display:flex;align-items:center;justify-content:center;
+                                            color:#fff;font-size:18px;margin:0 auto;">
+                                    <span class="fa fa-pencil"/>
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#3b5688;"
+                                    invisible="state != 'draft'">
+                                    Điền thông tin phiếu xuất
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#333;"
+                                    invisible="state == 'draft'">
+                                    Điền thông tin phiếu xuất
+                                </div>
+                            </div>
+
+                            <!-- LINE -->
+                            <div style="flex:1;border-bottom:1px dashed #ccc;margin:0 6px;top:20px;position:relative;"/>
+
+                            <!-- ===== STEP 2: CONFIRMED ===== -->
+                            <div style="flex:1;text-align:center;position:relative;">
+                                <button name="action_confirm_style" type="object"
+                                        invisible="state != 'draft'"
+                                        style="background:none;border:none;padding:0;cursor:pointer;margin:0 auto;">
+                                    <div style="width:42px;height:42px;border-radius:50%;
+                                                background:#ccc; display:flex;align-items:center;justify-content:center;
+                                                color:#666;font-size:18px;">
+                                        <span class="fa fa-briefcase"/>
+                                    </div>
+                                </button>
+
+                                <div invisible="state == 'draft'"
+                                    style="width:42px;height:42px;border-radius:50%;
+                                            background:#3b5688;display:flex;align-items:center;justify-content:center;
+                                            color:#fff;font-size:18px;margin:0 auto;">
+                                    <span class="fa fa-briefcase"/>
+                                </div>
+
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#3b5688;"
+                                    invisible="state != 'confirmed'">
+                                    Chọn style (color, size)
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#333;"
+                                    invisible="state == 'confirmed'">
+                                    Chọn style (color, size)
+                                </div>
+                            </div>
+
+                            <!-- LINE -->
+                            <div style="flex:1;border-bottom:1px dashed #ccc;margin:0 6px;top:20px;position:relative;"/>
+
+                            <!-- ===== STEP 3: PROCESSING ===== -->
+                            <div style="flex:1;text-align:center;position:relative;">
+                                <button name="action_generate_material_lines" type="object"
+                                        invisible="state != 'confirmed'"
+                                        style="background:none;border:none;padding:0;cursor:pointer;margin:0 auto;">
+                                    <div style="width:42px;height:42px;border-radius:50%;
+                                                background:#ccc;
+                                                display:flex;align-items:center;justify-content:center;
+                                                color:#666;font-size:18px;">
+                                        <span class="fa fa-calculator"/>
+                                    </div>
+                                </button>
+
+                                <div invisible="state not in ['processing','done']"
+                                    style="width:42px;height:42px;border-radius:50%;
+                                            background:#3b5688;display:flex;align-items:center;justify-content:center;
+                                            color:#fff;font-size:18px;margin:0 auto;">
+                                    <span class="fa fa-calculator"/>
+                                </div>
+
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#3b5688;"
+                                    invisible="state != 'processing'">
+                                    Tạo dòng vật tư
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#333;"
+                                    invisible="state == 'processing'">
+                                    Tạo dòng vật tư
+                                </div>
+                            </div>
+
+                            <!-- LINE -->
+                            <div style="flex:1;border-bottom:1px dashed #ccc;margin:0 6px;top:20px;position:relative;"/>
+
+                            <!-- ===== STEP 4: DONE ===== -->
+                            <div style="flex:1;text-align:center;position:relative;">
+                                <button name="action_done" type="object"
+                                        invisible="state != 'processing'"
+                                        style="background:none;border:none;padding:0;cursor:pointer;margin:0 auto;">
+                                    <div style="width:42px;height:42px;border-radius:50%;
+                                                background:#ccc; display:flex;align-items:center;justify-content:center;
+                                                color:#666;font-size:18px;">
+                                        <span class="fa fa-list"/>
+                                    </div>
+                                </button>
+
+                                <div invisible="state != 'done'"
+                                    style="width:42px;height:42px;border-radius:50%;
+                                            background:#3b5688;
+                                            display:flex;align-items:center;justify-content:center;
+                                            color:#fff;font-size:18px;margin:0 auto;">
+                                    <span class="fa fa-list"/>
+                                </div>
+
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#3b5688;"
+                                    invisible="state != 'done'">
+                                    Hoàn thành
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#333;"
+                                    invisible="state == 'done'">
+                                    Hoàn thành
+                                </div>
+                            </div>
+
+                            <!-- ===== STEP 5: CANCEL ===== -->
+                            <div style="flex:1;text-align:center;position:relative;">
+                                <button name="action_cancel" type="object"
+                                        invisible="state in ['cancel','done']"
+                                        style="background:none;border:none;padding:0;cursor:pointer;margin:0 auto;">
+                                    <div style="width:42px;height:42px;border-radius:50%;
+                                                background:#ccc;
+                                                display:flex;align-items:center;justify-content:center;
+                                                color:#925353;font-size:18px;">
+                                        <span class="fa fa-ban"/>
+                                    </div>
+                                </button>
+
+                                <div invisible="state != 'cancel'"
+                                    style="width:42px;height:42px;border-radius:50%;
+                                            background:#925353;
+                                            display:flex;align-items:center;justify-content:center;
+                                            color:#fff;font-size:18px;margin:0 auto;">
+                                    <span class="fa fa-ban"/>
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#333;"
+                                    invisible="state in ['cancel','done']">
+                                    Hủy phiếu xuất kho
+                                </div>
+                                <div style="margin-top:4px;font-size:12px;font-weight:600;color:#925353;"
+                                    invisible="state != 'cancel'">
+                                    Đã hủy
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHẦN 1: THÔNG TIN CHUNG -->
                         <notebook>
                             <page string="Thông tin xuất kho" class="fw-bold"> 
-                                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                                <!-- Thông tin đơn hàng -->
+                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <!-- Thông tin xuất kho -->
                                     <div style="flex: 1; background-color:rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
-                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                        <h3 style="font-size: 14px; font-weight: bold;">
                                             <span class="fa fa-industry" style="color: gray; margin-right: 5px;"></span>Thông tin xuất kho
                                         </h3>
-                                        <label for="delivery_no">Mã xuất kho :</label>
-                                        <field name="delivery_no" style="border: 1px solid #ced4da;width: 100%;"/>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Mã xuất kho :</span>
+                                            <field name="delivery_no" style="border: 1px solid #ced4da; width: 100%;"  placeholder="Nhập mã xuất kho" readonly="1" />
+                                        </div>
 
-                                        <label for="order_id">Đơn hàng :</label>
-                                        <field name="order_id" style="border: 1px solid #ced4da;width: 100%;"/>
-
-                                    <!--    <label for="program_id">Mã hàng :</label>
-                                        <field name="program_id" style="border: 1px solid #ced4da;width: 100%;"/>
-                                    -->
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Chương trình :</span>
+                                            <field name="order_id" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn chương trình" readonly=" state in ['cancel','done']" />
+                                        </div>      
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Style :</span>
+                                            <field name="product_code_id" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn style" readonly=" state in ['cancel','done']" />
+                                        </div>                                                                            
                                     </div>
+                                    <!-- Thông tin Style  -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px; ">
+                                        <button name="action_confirm" type="object" invisible="state != 'draft'" style="background-color: #007bff; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                                            Tạo Style(color,size)
+                                        </button>
+                                        <field name="style_line_ids" style='width: 100%; margin-top: 10px;' readonly=" state in ['cancel','done','processing']">
+                                            <tree string="Styles" editable="bottom" create="false" class="o_program_list_view_product">
+                                                <field name="product_code_id" string="Style" optional="hide"/>
+                                                <field name="product_color_size_id" string="Danh sách Styles xuất"/>
+                                                <field name="quantity" string="SL xuất"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+
+                                    <!-- Thông tin kho hàng -->
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                            <span class="fa fa-building " style="color: gray; margin-right: 5px;"></span>Thông tin kho hàng
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Kho xuất :</span>
+                                            <field name="store_id" style="border: 1px solid #ced4da; width: 100%;" placeholder="Chọn kho xuất" readonly=" state in ['cancel','done']" />
+                                        </div>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">SL sản phẩm:</span>
+                                            <field name="total_qty" style="border: 1px solid #ced4da; width: 100%;" placeholder="Tổng số lượng sản phẩm" />
+                                        </div>
+                                        <!--  
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Kệ hàng :</span>
+                                            <field name="shelf_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Khoang :</span>
+                                            <field name="shelf_level_id" style="border: 1px solid #ced4da; width: 100%;" />
+                                        </div>--> 
+                                    </div>
+
+                                </div>
+                            </page>
+                            <page string="Thông tin chuyền sản xuất" class="fw-bold">
+                                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <!-- Thông tin khác -->
                                     <!-- Thông tin xuất kho -->
                                     <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
                                         <h3 style="font-size: 16px; font-weight: bold;">
-                                            <span class="fa fa-shopping-cart" style="color: gray; margin-right: 5px;"></span>Thông tin kho xuất
+                                            <span class="fa fa-cogs" style="color: gray; margin-right: 5px;"></span>Thông tin chuyền sản xuất
                                         </h3>
-                                        <label for="store_id">Kho xuất :</label>
-                                        <field name="store_id" style="border: 1px solid #ced4da;width: 100%;"/>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Chuyền sản xuất :</span>
+                                            <field name="production_name" string="Chuyền sản xuất :" style="border: 1px solid #ced4da;width: 100%;"
+                                            placeholder="Nhập chuyền xuất kho"  readonly=" state in ['cancel','done']"/>
+                                        </div>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Người nhận :</span>
+                                            <field name="receiver_id"  string="Người nhận :" style="border: 1px solid #ced4da;width: 100%;" 
+                                                placeholder="Nhập người nhận ... "  readonly=" state in ['cancel','done']"/>
+                                        </div>   
 
-                                        <label for="shelf_id">Kệ hàng :</label>
-                                        <field name="shelf_id" style="border: 1px solid #ced4da;width: 100%;"/>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Giám đốc :</span>
+                                            <field name="director_id" widget="many2one_avatar_user" string="Giám đốc :" style="border: 1px solid #ced4da;width: 100%;" 
+                                                placeholder="Chọn giám đốc" readonly=" state in ['cancel','done']" />
+                                        </div>                                        
+
+                                    </div>
+
+                                    <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
+                                        <h3 style="font-size: 16px; font-weight: bold;">
+                                            <span class="fa fa-info-circle" style="color: gray; margin-right: 5px;"></span>Thông tin khác
+                                        </h3>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Thủ kho :</span>
+                                            <field name="storekeeper_id" widget="many2one_avatar_user" style="border: 1px solid #ced4da;width: 100%;" 
+                                                string="Thủ kho :" placeholder="Nhập tên thủ kho ..."  readonly=" state in ['cancel','done']"/>
+                                        </div> 
+
+                                                
+                                        <label for="purpose">Mục đích xuất kho:</label>
+                                        <field name="purpose" style="border: 1px solid #ced4da;width: 100%;" placeholder="Nhập mô tả/mục đích" readonly=" state in ['cancel','done']"/>
                                     </div>
 
                                     <!-- Thông tin người tạo -->
@@ -46,72 +297,66 @@
                                         <h3 style="font-size: 16px; font-weight: bold;">
                                             <span class="fa fa-user-circle" style="color: gray; margin-right: 5px;"></span>Thông tin người tạo
                                         </h3>
-                                        <label for="employee_id">Người tạo :</label>
-                                        <field name="employee_id" widget="many2one_user_avatar" readonly="1" style="border: 1px solid #ced4da;width: 100%;"/>
-                                        <label for="date_delivery">Ngày tạo :</label>
-                                        <field name="date_delivery" readonly="1" style="border: 1px solid #ced4da; width: 100%;"/>
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Người tạo :</span>
+                                            <field name="employee_id" widget="many2one_user_avatar" string="Người tạo :"  style="border: 1px solid #ced4da;width: 100%;" readonly="True"/>
+                                        </div>
+                                        
+                                        <div style="display: flex;margin-bottom: 8px;font-size: 13px;">
+                                            <span style="min-width: 100px; display: inline-block; font-weight: bold;">Ngày tạo :</span>
+                                            <field name="date_delivery"  string="Ngày tạo :" style="border: 1px solid #ced4da; width: 100%;" readonly="True"/>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                             </page>
-                            <page string="Thông tin chuyền sản xuất" class="fw-bold">
-                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                            <!-- Thông tin khác -->
-                                <!-- Thông tin xuất kho -->
-                                <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
-                                    <h3 style="font-size: 16px; font-weight: bold;">
-                                        <span class="fa fa-cogs" style="color: gray; margin-right: 5px;"></span>Thông tin chuyền sản xuất
-                                    </h3>
-                                    <label for="production_id">Chuyền sản xuất:</label>
-                                    <field name="production_id" style="border: 1px solid #ced4da;width: 100%;"
-                                        placeholder="Nhập chuyền xuất kho"/>
-
-                                    <label for="receiver">Người nhận :</label>
-                                    <field name="receiver" widget="many2many_avatar_user" style="border: 1px solid #ced4da;width: 100%;"/>
-                                </div>
-                                <div style="flex: 1; background-color: rgb(237, 237, 237); padding: 10px; border-radius: 6px;">
-                                    <h3 style="font-size: 16px; font-weight: bold;">
-                                        <span class="fa fa-info-circle" style="color: gray; margin-right: 5px;"></span>Thông tin khác
-                                    </h3>
-                                    <label for="purpose">Mô tả :</label>
-                                    <field name="purpose" style="border: 1px solid #ced4da;width: 100%;"/>
-                                </div>
-                            </div>
-                            </page>
                         </notebook>
-                        
 
-                        <!-- PHẦN 2: DANH SÁCH VẬT TƯ -->
-                        <div style="background-color: rgb(237, 237, 237); padding: 15px; border-radius: 6px;">
-                            <!-- Thanh tiêu đề và tìm kiếm -->
+                        <!-- PHẦN 3: DANH SÁCH VẬT TƯ -->
+                        <div style="background-color: rgb(237, 237, 237); padding: 15px; border-radius: 6px; margin-top: 10px;">
                             <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 10px;">
-                                <!-- BÊN TRÁI: Tiêu đề -->
                                 <div style="flex: 1; font-weight: bold; font-size: 16px;">
-                                    <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>Danh sách vật tư
+                                    <span class="fa fa-list-alt" style="padding-right: 6px; color: gray;"/>Danh sách vật tư (tự động tính toán)
+                                </div>
+                                <!-- Thanh tìm kiếm-->
+                                <div style="flex: 1; display: flex; justify-content: center;">
+                                    <div style="width: 500px; display: flex; justify-content: center; align-items: center; height: 38px; border: 1px solid #ced4da; border-radius: 3px; padding: 4px 8px;">
+                                        <field name="available_material_type_ids" invisible="1" />
+                                        <field name="available_supplier_ids" invisible="1" />
+                                        <field name="delivery_line_search_mtr_type" domain="[('id', 'in', available_material_type_ids)]" placeholder="Lọc theo loại vật tư..." style="flex: 1; border: none; outline: none; margin-right: 5px; "/>
+                                        <field name="delivery_line_search_supplier" domain="[('id', 'in', available_supplier_ids)]" placeholder="Lọc theo nhà cung cấp..." style="flex: 1; border: none; outline: none; margin-right: 5px;"/>
+                                        <field name="delivery_line_search_text" placeholder="Lọc theo mã vật tư..." style="flex: 1; border: none; outline: none;"/>
+                                    </div>
+                                </div>
+
+                                <div style="flex: 1; display: flex; gap: 10px; align-items: center; justify-content: flex-end;">
+                                    <div class="dropdown">
+                                        <button name="button_dummy" type="object" class="btn btn-light fa fa-ellipsis-v" data-bs-toggle="dropdown" aria-expanded="false" title="Tuỳ chọn"/>
+                                        <div class="dropdown-menu" role="menu">
+                                            <div class="dropdown-divider"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div style="overflow-x: auto; max-width: 100%; height: 500px; overflow-y: auto;">
 
-                            <div style="overflow-x: auto; max-width: 100%;">
-                                <!-- Tree view danh sách vật tư -->
-                                <field name="program_line_ids" string=" ">
-                                    <tree string="Vật tư" class="o_material_list_view table" editable="bottom" create="false">
-                                        <!-- Thông tin vị trí và phân loại -->
-                                        <field name="position" string="VỊ TRÍ"/>
-                                        <field name="mtr_type" string="PHÂN LOẠI"/>
-                                        
-                                        <!-- Mã và thông tin cơ bản -->
-                                        <field name="mtr_no" string="MÃ ITEM"/>
-                                        <field name="mtr_code" string="CODE NHÀ CUNG CẤP"/>
-                                        <field name="mtr_name" string="TÊN VẬT TƯ"/>
-                                        
-                                        <!-- Thông số kỹ thuật -->
-                                        <field name="dimension" string="KÍCH THƯỚC"/>
-                                        <field name="color_item" string="KÍ HIỆU"/>
-                                        <field name="color_name" string="MÀU SẮC"/>
-                                        <!-- Số lượng ước tính-->
-                                        <field name="est_qty" string="SL ƯỚC TÍNH" />
-                                        <field name="act_qty" string="SL THỰC TẾ" />                   
-                                        <!-- Định mức và đơn vị -->
-                                        <field name="rate" string="ĐƠN VỊ TÍNH"/>                   
+                                <field name="filtered_delivery_line_ids" string=" " readonly="state in ['cancel','done']"  >
+                                    <tree string="Vật tư" class="o_program_list_view_product" create="false" editable="bottom" >
+                                        <field name="mtr_no" string="Mtr#" />
+                                        <field name="mtr_type" string="Mtr Type" />
+                                        <field name="mtr_name" string="Mtr Name" />
+                                        <field name="mtr_code" string="Mtr Code" />
+                                        <field name="rate" string="Unit" />
+                                        <field name="dimension" string="Dimension" />
+                                        <field name="color_name" string="Color Name" />
+                                        <field name="supplier" string="Supplier" />
+                                        <field name="cons_qty" string="Cons.Qty" />
+                                        <field name="qty" string="Est.Qty" />
+                                        <field name="subtotal" string="Thành tiền" />
+                                        <field name="price" string="Price"  optional="hide"/>
+                                        <field name="cif_price" string="CIF.Price"  optional="hide"/>
+                                        <field name="fob_price" string="FOB.Price"  optional="hide"/>
+                                        <field name="exwork_price" string="EXW.Price"  optional="hide"/>
                                     </tree>
                                 </field>
                             </div>
@@ -126,17 +371,23 @@
             <field name="name">material.delivery.tree</field>
             <field name="model">material.delivery</field>
             <field name="arch" type="xml">
-                <tree string="Danh sách Phiếu Xuất Kho">
-                    <field name="delivery_no" string="MÃ XUẤT KHO"/>
-                    <field name="store_id" string="KHO XUẤT"/>
-                    <field name="shelf_id" string="KỆ HÀNG"/>
-                    <field name="order_id" string="ĐƠN HÀNG"/>
-                    <field name="production_id" string="CHUYỀN SẢN XUẤT"/>
-                    <field name="employee_id" widget="many2one_avatar_user" string="NGƯỜI XUẤT KHO"/>
-                    <field name="date_delivery" string="NGÀY XUẤT " />
-                    <field name="purpose" optional="hide" string="MÔ TẢ"/>
+                <tree string="Danh sách Phiếu Xuất Kho" class="o_general_list_view_product" js_class="button_delivery_tree">
+                    <field name="delivery_no" string="MÃ XUẤT KHO" optional="show" />
+                    <field name="store_id" string="KHO XUẤT" optional="show" />
+                    <!-- <field name="shelf_id" string="KỆ HÀNG"/> -->
+                    <field name="order_id" string="CHƯƠNG TRÌNH" optional="show"/>
+                    <field name="production_name" string="CHUYỀN SẢN XUẤT" optional="show"/>
+                    <field name="employee_id" widget="many2one_avatar_user" string="NGƯỜI XUẤT KHO" optional="show"/>
+                    <field name="date_delivery" string="NGÀY XUẤT " optional="show"/>
+                    <field name="purpose"  string="MÔ TẢ" optional="hide" />
+                    <field name="state" string="Trạng thái" widget="badge" optional="show"
+                        decoration-primary = "state == 'confirmed'"
+                        decoration-danger ="state == 'cancel'"
+                        decoration-info ="state == 'processing'"
+                        decoration-success ="state == 'done'"
+                    />
                 </tree>
-            </field>
+            </field>       
         </record>
 
         <!-- Action -->
@@ -144,11 +395,59 @@
             <field name="name">Phiếu Xuất Kho</field>
             <field name="res_model">material.delivery</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_material_delivery_search"/>
+            <field name="context">{'create': True, 'search_default_group_by_order': 1}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Tạo phiếu xuất kho mới
                 </p>
             </field>
         </record>
+
+        <!-- Form View for Material Delivery Style Line -->
+        <record id="view_material_delivery_style_line_form" model="ir.ui.view">
+            <field name="name">material.delivery.style.line.form</field>
+            <field name="model">material.delivery.style.line</field>
+            <field name="arch" type="xml">
+                <form string="Style Line">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_code_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="product_color_size_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="quantity"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_material_delivery_style_line_tree" model="ir.ui.view">
+            <field name="name">material.delivery.style.line.tree</field>
+            <field name="model">material.delivery.style.line</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách Phiếu Xuất Kho"  editable="bottom" class="o_general_list_view_product">
+                    <field name="product_code_id" optional="hide" />
+                    <field name="delivery_id" optional="hide" />
+                    <field name="product_color_size_id" string="Danh sách Styles xuất"/>
+                    <field name="quantity" string="SL xuất"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_material_delivery_style_line" model="ir.actions.act_window">
+            <field name="name">Phiếu Xuất Kho - Styles</field>
+            <field name="res_model">material.delivery.style.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo chọn styles cho phiếu xuất kho
+                </p>
+            </field>
+        </record>
     </data>
 </odoo>
+
+
+
